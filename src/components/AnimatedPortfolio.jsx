@@ -27,6 +27,9 @@ const AnimatedPortfolio = () => {
       shortDesc: "Advanced fraud detection with 2.5D car imagery",
       fullDesc: "Developed a model to detect fraud from 2.5D vehicle imagery (photos from four sides of a car). The solution was optimized to run inference on a single-core CPU with 3GB of RAM, meeting stringent resource constraints.",
       techStack: ["Python", "PyTorch", "EfficientFormer"],
+      links: {
+        github: "https://github.com/rlohaw/fraud-detection"
+      },
       achievements: [
         "Implemented a unified backbone (EfficientFormer_l1) with separate heads for damage, fraud, and side classification",
         "Introduced a combined binary target for an ALL_GOOD class for better generalization",
@@ -35,7 +38,6 @@ const AnimatedPortfolio = () => {
       ]
     }
   ];
-  
 
   const skills = {
     "Computer Vision": {
@@ -63,7 +65,6 @@ const AnimatedPortfolio = () => {
       level: "Beginner"
     }
   };
-  
 
   const toggleSkill = (skillName) => {
     setOpenSkills(prev => ({
@@ -119,26 +120,32 @@ const AnimatedPortfolio = () => {
               </ul>
             </div>
 
-            <div className="flex gap-4 pt-2">
-              <a 
-                href={project.links.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 text-cyan-400 hover:text-cyan-300 transition-colors duration-300"
-              >
-                <Github size={16} />
-                View Code
-              </a>
-              <a 
-                href={project.links.demo}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 text-cyan-400 hover:text-cyan-300 transition-colors duration-300"
-              >
-                <ExternalLink size={16} />
-                Live Demo
-              </a>
-            </div>
+            {(project.links?.github || project.links?.demo) && (
+              <div className="flex gap-4 pt-2">
+                {project.links?.github && (
+                  <a 
+                    href={project.links.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 text-cyan-400 hover:text-cyan-300 transition-colors duration-300"
+                  >
+                    <Github size={16} />
+                    View Code
+                  </a>
+                )}
+                {project.links?.demo && (
+                  <a 
+                    href={project.links.demo}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 text-cyan-400 hover:text-cyan-300 transition-colors duration-300"
+                  >
+                    <ExternalLink size={16} />
+                    Live Demo
+                  </a>
+                )}
+              </div>
+            )}
           </div>
         )}
       </div>
