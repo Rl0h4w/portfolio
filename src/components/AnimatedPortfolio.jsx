@@ -1,9 +1,5 @@
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ChevronDown, ChevronUp, ExternalLink, Github, Filter } from 'lucide-react';
-
-// Lazy loaded components
-const ProjectSection = React.lazy(() => import('./sections/ProjectSection'));
-const SkillSection = React.lazy(() => import('./sections/SkillSection'));
 
 const AnimatedPortfolio = () => {
   const [activeSection, setActiveSection] = useState('home');
@@ -13,7 +9,6 @@ const AnimatedPortfolio = () => {
   const [selectedTech, setSelectedTech] = useState('all');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // Project data
   const projects = [
     {
       id: 1,
@@ -47,7 +42,6 @@ const AnimatedPortfolio = () => {
     }
   ];
 
-  // Skills data
   const skills = {
     "Computer Vision": {
       items: ["Image Denoising", "Color Correction", "Image Super-Resolution", "Object Detection", "Semantic Segmentation"],
@@ -75,14 +69,12 @@ const AnimatedPortfolio = () => {
     }
   };
 
-  // Scroll tracking
   useEffect(() => {
     const handleScroll = () => {
       const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
       const currentProgress = (window.pageYOffset / totalScroll) * 100;
       setScrollProgress(currentProgress);
-
-      // Update active section
+      
       const sections = ['home', 'achievements', 'skills', 'projects', 'contact'];
       for (const section of sections) {
         const element = document.getElementById(section);
@@ -95,7 +87,7 @@ const AnimatedPortfolio = () => {
         }
       }
     };
-
+    
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -116,6 +108,7 @@ const AnimatedPortfolio = () => {
     }
   };
 
+  // Navigation Component
   const Navigation = () => (
     <nav className={`fixed top-0 right-0 p-4 bg-black/80 backdrop-blur-md z-50 transition-all duration-300 ${isMenuOpen ? 'w-64' : 'w-auto'}`}>
       <div className="progress-bar h-1 bg-gray-700 fixed top-0 left-0 right-0">
@@ -161,6 +154,7 @@ const AnimatedPortfolio = () => {
     </nav>
   );
 
+  // Featured Projects Component
   const FeaturedProjects = () => {
     const featuredProjects = projects.filter(p => p.featured);
     
@@ -201,17 +195,6 @@ const AnimatedPortfolio = () => {
       </div>
     );
   };
-
-  // Loading placeholder
-  const SkeletonLoader = () => (
-    <div className="animate-pulse space-y-4">
-      <div className="h-8 bg-gray-700/50 rounded w-1/4" />
-      <div className="space-y-3">
-        <div className="h-4 bg-gray-700/50 rounded w-3/4" />
-        <div className="h-4 bg-gray-700/50 rounded w-1/2" />
-      </div>
-    </div>
-  );
 
   return (
     <div className="portfolio-container min-h-screen bg-black text-white p-8 font-mono relative overflow-hidden">
@@ -283,188 +266,186 @@ const AnimatedPortfolio = () => {
 
         {/* Main sections */}
         <div className="main-content space-y-16">
-          <Suspense fallback={<SkeletonLoader />}>
-            {/* Achievements Section */}
-            <section id="achievements" className="achievements-section">
-              <h2 className="text-xl text-cyan-400 mb-6">$ cat achievements.md</h2>
-              <div className="achievement-card border border-white/20 p-6 rounded-lg relative overflow-hidden group bg-black/40 backdrop-blur-sm">
-                <div className="achievement-gradient absolute inset-0 bg-gradient-to-br from-purple-900/30 via-purple-900/10 to-cyan-900/30 opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="achievement-content relative space-y-4">
-                  <div className="achievement-item">
-                    <h3 className="text-purple-300 text-lg mb-2">🏆 Key Technical Achievements</h3>
-                    <ul className="list-disc list-inside space-y-2 text-gray-300">
-                    <li>Finalist in the AIDAO International AI Olympiad by Yandex, competing against top AI talents to solve real-world challenges in AI and machine learning</li>
-                      <li>Recipient of the Central University Scholarship, recognizing academic excellence and innovative contributions to AI research</li>
-                      <li>Team Leader and Winner of the DataThon 2024, leading a team to secure 1st place by developing a cutting-edge solution for complex data challenges</li>
-                    </ul>
+          {/* Achievements Section */}
+          <section id="achievements" className="achievements-section">
+            <h2 className="text-xl text-cyan-400 mb-6">$ cat achievements.md</h2>
+            <div className="achievement-card border border-white/20 p-6 rounded-lg relative overflow-hidden group bg-black/40 backdrop-blur-sm">
+              <div className="achievement-gradient absolute inset-0 bg-gradient-to-br from-purple-900/30 via-purple-900/10 to-cyan-900/30 opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="achievement-content relative space-y-4">
+                <div className="achievement-item">
+                  <h3 className="text-purple-300 text-lg mb-2">🏆 Key Technical Achievements</h3>
+                  <ul className="list-disc list-inside space-y-2 text-gray-300">
+                    <li>Finalist in the AIDAO International AI Olympiad by Yandex</li>
+                    <li>Recipient of the Central University Scholarship</li>
+                    <li>Team Leader and Winner of the DataThon 2024</li>
+                  </ul>
+                </div>
+                <div className="achievement-item">
+                  <h3 className="text-purple-300 text-lg mb-2">🎯 Project Impact</h3>
+                  <ul className="list-disc list-inside space-y-2 text-gray-300">
+                    <li>Developed and deployed a high-performance fraud detection model</li>
+                    <li>Successfully designed a resource-efficient deep learning pipeline</li>
+                    <li>Led the creation of a custom image processing architecture</li>
+                  </ul>
                   </div>
-                  <div className="achievement-item">
-                    <h3 className="text-purple-300 text-lg mb-2">🎯 Project Impact</h3>
-                    <ul className="list-disc list-inside space-y-2 text-gray-300">
-                      <li>Developed and deployed a high-performance fraud detection model for a 2.5D car image dataset under strict hardware limitations</li>
-                      <li>Successfully designed a resource-efficient deep learning pipeline, achieving significant results while optimizing for limited computational resources</li>
-                      <li>Led the creation of a custom image processing architecture that effectively handles challenging real-world data</li>
-                    </ul>
+              </div>
+            </div>
+          </section>
+
+          {/* Skills Section */}
+          <section id="skills" className="skills-section">
+            <h2 className="text-xl text-cyan-400 mb-6">$ ls -la skills/</h2>
+            <div className="skills-grid space-y-4">
+              {Object.entries(skills).map(([name, skill]) => (
+                <div key={name} 
+                     className="skill-card border border-white/20 p-4 rounded-lg transition-all duration-500 hover:border-cyan-400/50 bg-black/40 backdrop-blur-sm">
+                  <div 
+                    className="skill-header flex items-center justify-between cursor-pointer group"
+                    onClick={() => setOpenSkills(prev => ({ ...prev, [name]: !prev[name] }))}
+                    role="button"
+                    aria-expanded={openSkills[name]}
+                    tabIndex={0}
+                  >
+                    <div className="flex items-center gap-2">
+                      <span className="text-cyan-400 transform group-hover:rotate-90 transition-transform duration-300">❯</span>
+                      <h3 className="text-purple-300 font-medium">{name}</h3>
+                    </div>
+                    {openSkills[name] ? 
+                      <ChevronUp className="text-cyan-400 transform transition-transform duration-300 group-hover:-translate-y-1" /> : 
+                      <ChevronDown className="text-cyan-400 transform transition-transform duration-300 group-hover:translate-y-1" />
+                    }
+                  </div>
+                  
+                  <div className={`skill-content overflow-hidden transition-all duration-500 ${openSkills[name] ? 'max-h-96 opacity-100 mt-4' : 'max-h-0 opacity-0'}`}>
+                    <div className="space-y-4">
+                      <div className="flex flex-wrap gap-2">
+                        {skill.items.map((item, index) => (
+                          <span key={index} className="skill-badge px-2 py-1 bg-purple-900/30 rounded-md text-sm text-cyan-200">
+                            {item}
+                          </span>
+                        ))}
+                      </div>
+                      <div className="skill-details space-y-2 text-sm">
+                        <p className="text-gray-300">
+                          <span className="text-purple-300">Experience: </span>
+                          {skill.experience}
+                        </p>
+                        <p className="text-gray-300">
+                          <span className="text-purple-300">Projects: </span>
+                          {skill.projects}
+                        </p>
+                        <p className="text-gray-300">
+                          <span className="text-purple-300">Level: </span>
+                          <span className={`
+                            ${skill.level === 'Advanced' ? 'text-green-400' : ''}
+                            ${skill.level === 'Intermediate' ? 'text-yellow-400' : ''}
+                            ${skill.level === 'Beginner' ? 'text-red-400' : ''}
+                          `}>
+                            {skill.level}
+                          </span>
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </section>
+              ))}
+            </div>
+          </section>
 
-            {/* Skills Section */}
-            <section id="skills" className="skills-section">
-              <h2 className="text-xl text-cyan-400 mb-6">$ ls -la skills/</h2>
-              <div className="skills-grid space-y-4">
-                {Object.entries(skills).map(([name, skill]) => (
-                  <div key={name} 
-                       className="skill-card border border-white/20 p-4 rounded-lg transition-all duration-500 hover:border-cyan-400/50 bg-black/40 backdrop-blur-sm">
+          {/* Projects Section */}
+          <section id="projects" className="projects-section">
+            <h2 className="text-xl text-cyan-400 mb-6">$ git log --oneline projects/</h2>
+            <div className="project-filters mb-6">
+              <div className="flex flex-wrap gap-2">
+                <button 
+                  onClick={() => setSelectedTech('all')}
+                  className={`px-3 py-1 rounded-full transition-colors duration-300 
+                    ${selectedTech === 'all' ? 'bg-cyan-400 text-black' : 'bg-gray-800 text-gray-300 hover:bg-gray-700'}`}
+                >
+                  All
+                </button>
+                {Array.from(new Set(projects.flatMap(p => p.techStack))).map(tech => (
+                  <button
+                    key={tech}
+                    onClick={() => setSelectedTech(tech)}
+                    className={`px-3 py-1 rounded-full transition-colors duration-300 
+                      ${selectedTech === tech ? 'bg-cyan-400 text-black' : 'bg-gray-800 text-gray-300 hover:bg-gray-700'}`}
+                  >
+                    {tech}
+                  </button>
+                ))}
+              </div>
+            </div>
+            
+            <div className="projects-grid space-y-4">
+              {projects
+                .filter(project => selectedTech === 'all' || project.techStack.includes(selectedTech))
+                .map(project => (
+                  <div key={project.id} 
+                       className="project-card border border-white/20 p-4 rounded-lg transition-all duration-300 hover:border-cyan-400/50 bg-black/40 backdrop-blur-sm">
                     <div 
-                      className="skill-header flex items-center justify-between cursor-pointer group"
-                      onClick={() => setOpenSkills(prev => ({ ...prev, [name]: !prev[name] }))}
+                      className="project-header flex items-center justify-between cursor-pointer"
+                      onClick={() => setOpenProjects(prev => ({ ...prev, [project.id]: !prev[project.id] }))}
                       role="button"
-                      aria-expanded={openSkills[name]}
+                      aria-expanded={openProjects[project.id]}
                       tabIndex={0}
                     >
                       <div className="flex items-center gap-2">
-                        <span className="text-cyan-400 transform group-hover:rotate-90 transition-transform duration-300">❯</span>
-                        <h3 className="text-purple-300 font-medium">{name}</h3>
+                        <span className="text-cyan-400">❯</span>
+                        <h3 className="text-purple-300 font-medium">{project.title}</h3>
                       </div>
-                      {openSkills[name] ? 
-                        <ChevronUp className="text-cyan-400 transform transition-transform duration-300 group-hover:-translate-y-1" /> : 
-                        <ChevronDown className="text-cyan-400 transform transition-transform duration-300 group-hover:translate-y-1" />
+                      {openProjects[project.id] ? 
+                        <ChevronUp className="text-cyan-400" /> : 
+                        <ChevronDown className="text-cyan-400" />
                       }
                     </div>
-                    
-                    <div className={`skill-content overflow-hidden transition-all duration-500 ${openSkills[name] ? 'max-h-96 opacity-100 mt-4' : 'max-h-0 opacity-0'}`}>
+
+                    <div className={`project-content overflow-hidden transition-all duration-500 
+                      ${openProjects[project.id] ? 'max-h-[1000px] opacity-100 mt-4' : 'max-h-0 opacity-0'}`}>
                       <div className="space-y-4">
-                        <div className="flex flex-wrap gap-2">
-                          {skill.items.map((item, index) => (
-                            <span key={index} className="skill-badge px-2 py-1 bg-purple-900/30 rounded-md text-sm text-cyan-200">
-                              {item}
-                            </span>
-                          ))}
+                        <p className="text-gray-300">{project.fullDesc}</p>
+                        
+                        <div className="tech-stack space-y-2">
+                          <h4 className="text-purple-300">Tech Stack:</h4>
+                          <div className="flex flex-wrap gap-2">
+                            {project.techStack.map((tech, index) => (
+                              <span key={index} className="tech-badge px-2 py-1 bg-purple-900/30 rounded-md text-sm text-cyan-200">
+                                {tech}
+                              </span>
+                            ))}
+                          </div>
                         </div>
-                        <div className="skill-details space-y-2 text-sm">
-                          <p className="text-gray-300">
-                            <span className="text-purple-300">Experience: </span>
-                            {skill.experience}
-                          </p>
-                          <p className="text-gray-300">
-                            <span className="text-purple-300">Projects: </span>
-                            {skill.projects}
-                          </p>
-                          <p className="text-gray-300">
-                            <span className="text-purple-300">Level: </span>
-                            <span className={`
-                              ${skill.level === 'Advanced' ? 'text-green-400' : ''}
-                              ${skill.level === 'Intermediate' ? 'text-yellow-400' : ''}
-                              ${skill.level === 'Beginner' ? 'text-red-400' : ''}
-                            `}>
-                              {skill.level}
-                            </span>
-                          </p>
+
+                        <div className="achievements space-y-2">
+                          <h4 className="text-purple-300">Key Achievements:</h4>
+                          <ul className="list-disc list-inside space-y-1 text-gray-300">
+                            {project.achievements.map((achievement, index) => (
+                              <li key={index}>{achievement}</li>
+                            ))}
+                          </ul>
                         </div>
+
+                        {project.links && (
+                          <div className="project-links flex gap-4 pt-2">
+                            {project.links?.github && (
+                              <a 
+                                href={project.links.github}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="link-github flex items-center gap-2 text-cyan-400 hover:text-cyan-300 transition-colors duration-300"
+                              >
+                                <Github size={16} />
+                                View Code
+                              </a>
+                            )}
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
                 ))}
-              </div>
-            </section>
-
-            {/* Projects Section */}
-            <section id="projects" className="projects-section">
-              <h2 className="text-xl text-cyan-400 mb-6">$ git log --oneline projects/</h2>
-              <div className="project-filters mb-6">
-                <div className="flex flex-wrap gap-2">
-                  <button 
-                    onClick={() => setSelectedTech('all')}
-                    className={`px-3 py-1 rounded-full transition-colors duration-300 
-                      ${selectedTech === 'all' ? 'bg-cyan-400 text-black' : 'bg-gray-800 text-gray-300 hover:bg-gray-700'}`}
-                  >
-                    All
-                  </button>
-                  {Array.from(new Set(projects.flatMap(p => p.techStack))).map(tech => (
-                    <button
-                      key={tech}
-                      onClick={() => setSelectedTech(tech)}
-                      className={`px-3 py-1 rounded-full transition-colors duration-300 
-                        ${selectedTech === tech ? 'bg-cyan-400 text-black' : 'bg-gray-800 text-gray-300 hover:bg-gray-700'}`}
-                    >
-                      {tech}
-                    </button>
-                  ))}
-                </div>
-              </div>
-              
-              <div className="projects-grid space-y-4">
-                {projects
-                  .filter(project => selectedTech === 'all' || project.techStack.includes(selectedTech))
-                  .map(project => (
-                    <div key={project.id} 
-                         className="project-card border border-white/20 p-4 rounded-lg transition-all duration-300 hover:border-cyan-400/50 bg-black/40 backdrop-blur-sm">
-                      <div 
-                        className="project-header flex items-center justify-between cursor-pointer"
-                        onClick={() => setOpenProjects(prev => ({ ...prev, [project.id]: !prev[project.id] }))}
-                        role="button"
-                        aria-expanded={openProjects[project.id]}
-                        tabIndex={0}
-                      >
-                        <div className="flex items-center gap-2">
-                          <span className="text-cyan-400">❯</span>
-                          <h3 className="text-purple-300 font-medium">{project.title}</h3>
-                        </div>
-                        {openProjects[project.id] ? 
-                          <ChevronUp className="text-cyan-400" /> : 
-                          <ChevronDown className="text-cyan-400" />
-                        }
-                      </div>
-
-                      <div className={`project-content overflow-hidden transition-all duration-500 
-                        ${openProjects[project.id] ? 'max-h-[1000px] opacity-100 mt-4' : 'max-h-0 opacity-0'}`}>
-                        <div className="space-y-4">
-                          <p className="text-gray-300">{project.fullDesc}</p>
-                          
-                          <div className="tech-stack space-y-2">
-                            <h4 className="text-purple-300">Tech Stack:</h4>
-                            <div className="flex flex-wrap gap-2">
-                              {project.techStack.map((tech, index) => (
-                                <span key={index} className="tech-badge px-2 py-1 bg-purple-900/30 rounded-md text-sm text-cyan-200">
-                                  {tech}
-                                </span>
-                              ))}
-                            </div>
-                          </div>
-
-                          <div className="achievements space-y-2">
-                            <h4 className="text-purple-300">Key Achievements:</h4>
-                            <ul className="list-disc list-inside space-y-1 text-gray-300">
-                              {project.achievements.map((achievement, index) => (
-                                <li key={index}>{achievement}</li>
-                              ))}
-                            </ul>
-                          </div>
-
-                          {project.links && (
-                            <div className="project-links flex gap-4 pt-2">
-                              {project.links?.github && (
-                                <a 
-                                  href={project.links.github}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="link-github flex items-center gap-2 text-cyan-400 hover:text-cyan-300 transition-colors duration-300"
-                                >
-                                  <Github size={16} />
-                                  View Code
-                                </a>
-                              )}
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-              </div>
-            </section>
-          </Suspense>
+            </div>
+          </section>
 
           {/* Contact Section */}
           <section id="contact" className="footer mt-12 border-t border-white/20 pt-4">
@@ -566,6 +547,73 @@ const AnimatedPortfolio = () => {
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           animation: textGradient 2s linear infinite;
+        }
+
+        /* Дополнительные стили для мобильных устройств */
+        @media (max-width: 768px) {
+          .header-section {
+            flex-direction: column;
+            gap: 2rem;
+          }
+
+          .profile-info {
+            width: 100%;
+          }
+
+          .social-links {
+            flex-direction: column;
+            align-items: flex-start;
+          }
+
+          .featured-projects {
+            grid-template-columns: 1fr;
+          }
+        }
+
+        /* Улучшенные стили для hover-эффектов */
+        .project-card:hover,
+        .skill-card:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .social-link:hover {
+          transform: scale(1.05);
+        }
+
+        /* Плавные переходы */
+        .project-card,
+        .skill-card,
+        .social-link {
+          transition: all 0.3s ease-in-out;
+        }
+
+        /* Доступность - фокус клавиатуры */
+        .nav-item:focus,
+        .project-header:focus,
+        .skill-header:focus,
+        .social-link:focus {
+          outline: 2px solid #60daff;
+          outline-offset: 2px;
+          border-radius: 4px;
+        }
+
+        /* Скроллбар */
+        ::-webkit-scrollbar {
+          width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+          background: rgba(0, 0, 0, 0.2);
+        }
+
+        ::-webkit-scrollbar-thumb {
+          background: rgba(96, 218, 255, 0.3);
+          border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+          background: rgba(96, 218, 255, 0.5);
         }
       `}</style>
     </div>
