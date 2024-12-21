@@ -1,9 +1,52 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ChevronDown, ChevronUp, ExternalLink, Github } from 'lucide-react';
 
 const AnimatedPortfolio = () => {
   const [openSkills, setOpenSkills] = useState({});
   const [openProjects, setOpenProjects] = useState({});
+
+  // Function to open all projects
+  const openAllProjects = () => {
+    const allOpen = projects.reduce((acc, project) => {
+      acc[project.id] = true;
+      return acc;
+    }, {});
+    setOpenProjects(allOpen);
+  };
+
+  // Function to open all skills
+  const openAllSkills = () => {
+    const allOpen = Object.keys(skills).reduce((acc, skill) => {
+      acc[skill] = true;
+      return acc;
+    }, {});
+    setOpenSkills(allOpen);
+  };
+
+  // Scroll to section with offset for header
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      const offset = 80; // Adjust this value based on your header height
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  // Navigation handler
+  const handleNavigation = (section) => {
+    if (section === 'projects') {
+      openAllProjects();
+    } else if (section === 'skills') {
+      openAllSkills();
+    }
+    scrollToSection(section);
+  };
 
   const projects = [
     {
@@ -62,6 +105,33 @@ const AnimatedPortfolio = () => {
       level: "Beginner"
     }
   };
+
+
+  const NavigationMenu = () => (
+    <div className="navigation-menu ml-auto">
+      <nav>
+        <ul className="nav-list space-y-2">
+          <li onClick={() => scrollToSection('home')} className="nav-item hover:text-cyan-400 cursor-pointer transition-colors duration-300">→ Home</li>
+          <li onClick={() => handleNavigation('projects')} className="nav-item hover:text-cyan-400 cursor-pointer transition-colors duration-300">→ Projects</li>
+          <li onClick={() => handleNavigation('skills')} className="nav-item hover:text-cyan-400 cursor-pointer transition-colors duration-300">→ Skills</li>
+          <li onClick={() => scrollToSection('contact')} className="nav-item hover:text-cyan-400 cursor-pointer transition-colors duration-300">→ Contact</li>
+          <li className="nav-item">
+            <a 
+              href="https://t.me/rlohaw"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hire-button mt-4 relative group block"
+            >
+              <div className="button-gradient absolute -inset-0.5 bg-gradient-to-r from-purple-600 via-cyan-500 to-purple-600 rounded blur opacity-60 group-hover:opacity-100 transition duration-1000" />
+              <div className="button-content relative bg-black px-6 py-2 rounded">
+                HIRE ME
+              </div>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  );
 
   const toggleSkill = (skillName) => {
     setOpenSkills(prev => ({
@@ -318,7 +388,7 @@ const AnimatedPortfolio = () => {
 
       {/* Main content */}
       <div className="content-wrapper relative z-10">
-        <div className="header-section flex items-center mb-12">
+        <div id="home" className="header-section flex items-center mb-12">
           <div className="header-content mr-8">
             <div className="header-title text-4xl font-bold tracking-wider animate-text-gradient">
               RLOHAW
@@ -329,22 +399,31 @@ const AnimatedPortfolio = () => {
           <div className="navigation-menu ml-auto">
             <nav>
               <ul className="nav-list space-y-2">
-                <li className="nav-item hover:text-cyan-400 cursor-pointer transition-colors duration-300">→ Home</li>
-                <li className="nav-item hover:text-cyan-400 cursor-pointer transition-colors duration-300">→ Projects</li>
-                <li className="nav-item hover:text-cyan-400 cursor-pointer transition-colors duration-300">→ Skills</li>
-                <li className="nav-item hover:text-cyan-400 cursor-pointer transition-colors duration-300">→ Contact</li>
+                <li onClick={() => handleNavigation('home')} 
+                    className="nav-item hover:text-cyan-400 cursor-pointer transition-colors duration-300">→ Home</li>
+                <li onClick={() => handleNavigation('projects')} 
+                    className="nav-item hover:text-cyan-400 cursor-pointer transition-colors duration-300">→ Projects</li>
+                <li onClick={() => handleNavigation('skills')} 
+                    className="nav-item hover:text-cyan-400 cursor-pointer transition-colors duration-300">→ Skills</li>
+                <li onClick={() => handleNavigation('contact')} 
+                    className="nav-item hover:text-cyan-400 cursor-pointer transition-colors duration-300">→ Contact</li>
                 <li className="nav-item">
-                  <button className="hire-button mt-4 relative group">
+                  <a 
+                    href="https://t.me/rlohaw"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hire-button mt-4 relative group block"
+                  >
                     <div className="button-gradient absolute -inset-0.5 bg-gradient-to-r from-purple-600 via-cyan-500 to-purple-600 rounded blur opacity-60 group-hover:opacity-100 transition duration-1000" />
                     <div className="button-content relative bg-black px-6 py-2 rounded">
                       HIRE ME
                     </div>
-                  </button>
+                  </a>
                 </li>
               </ul>
             </nav>
           </div>
-          </div>
+        </div>
 
         {/* Profile section */}
         <div className="main-content grid grid-cols-1 gap-8">
@@ -362,7 +441,7 @@ const AnimatedPortfolio = () => {
           </div>
 
           {/* Skills section */}
-          <div className="skills-section space-y-4">
+          <div id="skills" className="skills-section space-y-4">
             <h2 className="section-title text-xl text-cyan-400 mb-6">$ ls -la skills/</h2>
             {Object.entries(skills).map(([name, skill]) => (
               <SkillCard key={name} name={name} skill={skill} />
@@ -370,7 +449,7 @@ const AnimatedPortfolio = () => {
           </div>
 
           {/* Projects section */}
-          <div className="projects-section space-y-4">
+          <div id="projects" className="projects-section space-y-4">
             <h2 className="section-title text-xl text-cyan-400 mb-6">$ git log --oneline projects/</h2>
             {projects.map(project => (
               <ProjectCard key={project.id} project={project} />
@@ -379,7 +458,7 @@ const AnimatedPortfolio = () => {
         </div>
 
         {/* Footer with social links */}
-        <div className="footer mt-12 border-t border-white/20 pt-4 text-sm">
+        <div id="contact" className="footer mt-12 border-t border-white/20 pt-4 text-sm">
           <div className="social-links flex items-center flex-wrap gap-4">
             <span className="text-cyan-400">❯ Find me on:</span>
             <a
@@ -441,6 +520,6 @@ const AnimatedPortfolio = () => {
       </div>
     </div>
   );
-};
+}
 
 export default AnimatedPortfolio;
