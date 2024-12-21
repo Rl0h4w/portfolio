@@ -34,8 +34,9 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm install lucide-react@0.263.1 --save-exact
-        run: npm ci
+        run: |
+          npm install lucide-react@0.263.1 --save-exact
+          npm ci
 
       - name: Build
         run: npm run build
