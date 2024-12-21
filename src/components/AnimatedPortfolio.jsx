@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronDown, ChevronUp, ExternalLink, Github, Filter } from 'lucide-react';
 
+/**
+ * AnimatedPortfolio Component
+ * A modern, animated portfolio showcasing skills, projects, and achievements
+ * Features smooth transitions, responsive design, and interactive elements
+ */
 const AnimatedPortfolio = () => {
+  // State management for UI interactions
   const [activeSection, setActiveSection] = useState('home');
   const [scrollProgress, setScrollProgress] = useState(0);
   const [openSkills, setOpenSkills] = useState({});
@@ -9,6 +15,7 @@ const AnimatedPortfolio = () => {
   const [selectedTech, setSelectedTech] = useState('all');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  // Project data structure
   const projects = [
     {
       id: 1,
@@ -42,6 +49,7 @@ const AnimatedPortfolio = () => {
     }
   ];
 
+  // Skills data structure
   const skills = {
     "Computer Vision": {
       items: ["Image Denoising", "Color Correction", "Image Super-Resolution", "Object Detection", "Semantic Segmentation"],
@@ -69,33 +77,53 @@ const AnimatedPortfolio = () => {
     }
   };
 
+  /**
+   * Handle scroll events and update active section
+   * Controls the progress bar and navigation highlighting
+   */
   useEffect(() => {
     const handleScroll = () => {
+      // Calculate scroll progress
       const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
       const currentProgress = (window.pageYOffset / totalScroll) * 100;
       setScrollProgress(currentProgress);
-      
+
+      // Update active section based on scroll position
       const sections = ['home', 'achievements', 'skills', 'projects', 'contact'];
+      let currentSection = sections[0];
+      
       for (const section of sections) {
         const element = document.getElementById(section);
         if (element) {
           const rect = element.getBoundingClientRect();
-          if (rect.top <= 100 && rect.bottom >= 100) {
-            setActiveSection(section);
+          const offset = 150;
+          if (rect.top <= offset && rect.bottom >= offset) {
+            currentSection = section;
             break;
           }
         }
       }
+
+      // Check if reached the end of the page
+      if (window.innerHeight + window.pageYOffset >= document.documentElement.scrollHeight - 100) {
+        currentSection = 'contact';
+      }
+
+      setActiveSection(currentSection);
     };
-    
+
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  /**
+   * Smooth scroll to section when clicking navigation items
+   * @param {string} sectionId - ID of the target section
+   */
   const handleNavigation = (sectionId) => {
     const element = document.getElementById(sectionId);
     if (element) {
-      const offset = 80;
+      const offset = 100;
       const elementPosition = element.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - offset;
 
@@ -108,15 +136,25 @@ const AnimatedPortfolio = () => {
     }
   };
 
-  // Navigation Component
+  /**
+   * Navigation Component
+   * Fixed position navigation with progress bar and responsive menu
+   */
   const Navigation = () => (
-    <nav className={`fixed top-0 right-0 p-4 bg-black/80 backdrop-blur-md z-50 transition-all duration-300 ${isMenuOpen ? 'w-64' : 'w-auto'}`}>
-      <div className="progress-bar h-1 bg-gray-700 fixed top-0 left-0 right-0">
+    <nav className={`
+      fixed top-0 right-0 p-4 
+      bg-black/40 backdrop-blur-sm 
+      z-50 transition-all duration-300 
+      ${isMenuOpen ? 'w-64' : 'w-auto'}
+      rounded-bl-lg border-l border-b border-white/10
+    `}>
+      <div className="progress-bar h-1 bg-gray-700/30 fixed top-0 left-0 right-0">
         <div 
           className="h-full bg-gradient-to-r from-purple-500 to-cyan-500"
           style={{ width: `${scrollProgress}%` }}
         />
       </div>
+      {/* Mobile menu toggle */}
       <button 
         onClick={() => setIsMenuOpen(!isMenuOpen)}
         className="md:hidden text-cyan-400 p-2 hover:text-cyan-300 transition-colors"
@@ -124,19 +162,35 @@ const AnimatedPortfolio = () => {
       >
         <Filter size={20} />
       </button>
-      <ul className={`nav-list space-y-2 ${isMenuOpen ? 'block' : 'hidden md:block'}`}>
-        {['Home', 'Achievements', 'Skills', 'Projects', 'Contact'].map((item) => (
+      {/* Navigation links */}
+      <ul className={`
+        nav-list space-y-2 
+        ${isMenuOpen ? 'block' : 'hidden md:block'}
+        relative z-10
+      `}>
+        {[
+          { id: 'home', label: 'Home' },
+          { id: 'achievements', label: 'Achievements' },
+          { id: 'skills', label: 'Skills' },
+          { id: 'projects', label: 'Projects' },
+          { id: 'contact', label: 'Contact' }
+        ].map(({ id, label }) => (
           <li 
-            key={item}
-            onClick={() => handleNavigation(item.toLowerCase())}
-            className={`nav-item cursor-pointer transition-all duration-300 
-              ${activeSection === item.toLowerCase() 
-                ? 'text-cyan-400 translate-x-2' 
-                : 'text-gray-400 hover:text-cyan-400'}`}
+            key={id}
+            onClick={() => handleNavigation(id)}
+            className={`
+              nav-item cursor-pointer 
+              transition-all duration-300 
+              hover:bg-white/5 rounded px-2 py-1
+              ${activeSection === id 
+                ? 'text-cyan-400 translate-x-2 bg-white/10' 
+                : 'text-gray-400 hover:text-cyan-400'}
+            `}
           >
-            → {item}
+            → {label}
           </li>
         ))}
+        {/* Hire me button */}
         <li className="mt-4">
           <a 
             href="https://t.me/rlohaw"
@@ -145,7 +199,7 @@ const AnimatedPortfolio = () => {
             className="hire-button relative group block"
           >
             <div className="button-gradient absolute -inset-0.5 bg-gradient-to-r from-purple-600 via-cyan-500 to-purple-600 rounded blur opacity-60 group-hover:opacity-100 transition duration-1000" />
-            <div className="button-content relative bg-black px-6 py-2 rounded">
+            <div className="button-content relative bg-black/60 backdrop-blur-sm px-6 py-2 rounded">
               HIRE ME
             </div>
           </a>
@@ -154,7 +208,10 @@ const AnimatedPortfolio = () => {
     </nav>
   );
 
-  // Featured Projects Component
+  /**
+   * Featured Projects Component
+   * Displays highlighted projects in a grid layout
+   */
   const FeaturedProjects = () => {
     const featuredProjects = projects.filter(p => p.featured);
     
@@ -198,9 +255,11 @@ const AnimatedPortfolio = () => {
 
   return (
     <div className="portfolio-container min-h-screen bg-black text-white p-8 font-mono relative overflow-hidden">
-      {/* Background effects */}
+      {/* Background elements */}
       <div className="background-main absolute inset-0 bg-gradient-to-br from-purple-950/80 via-black to-cyan-950/80" />
       <div className="background-overlay absolute inset-0 bg-black/40" />
+      
+      {/* Animated background */}
       <div className="background-animated absolute top-0 left-0 w-full h-full overflow-hidden">
         <div className="gradient-container absolute w-full h-full">
           <div 
@@ -235,7 +294,8 @@ const AnimatedPortfolio = () => {
 
       <Navigation />
 
-      <div className="content-wrapper relative z-10 max-w-6xl mx-auto pt-16">
+      {/* Main content */}
+      <div className="content-wrapper relative z-10 max-w-6xl mx-auto pt-20">
         {/* Header Section */}
         <div id="home" className="header-section flex flex-col md:flex-row items-start md:items-center justify-between mb-12">
           <div className="header-content mr-8">
@@ -263,9 +323,8 @@ const AnimatedPortfolio = () => {
         </div>
 
         <FeaturedProjects />
-
-        {/* Main sections */}
-        <div className="main-content space-y-16">
+{/* Main content sections */}
+<div className="main-content space-y-16">
           {/* Achievements Section */}
           <section id="achievements" className="achievements-section">
             <h2 className="text-xl text-cyan-400 mb-6">$ cat achievements.md</h2>
@@ -287,7 +346,7 @@ const AnimatedPortfolio = () => {
                     <li>Successfully designed a resource-efficient deep learning pipeline</li>
                     <li>Led the creation of a custom image processing architecture</li>
                   </ul>
-                  </div>
+                </div>
               </div>
             </div>
           </section>
@@ -316,8 +375,12 @@ const AnimatedPortfolio = () => {
                     }
                   </div>
                   
-                  <div className={`skill-content overflow-hidden transition-all duration-500 ${openSkills[name] ? 'max-h-96 opacity-100 mt-4' : 'max-h-0 opacity-0'}`}>
-                    <div className="space-y-4">
+                  <div className={`
+                    skill-content overflow-hidden transition-all duration-500 
+                    ${openSkills[name] ? 'max-h-96 opacity-100 mt-4' : 'max-h-0 opacity-0'}
+                    relative z-10
+                  `}>
+                    <div className="space-y-4 p-4 bg-black/20 rounded-lg">
                       <div className="flex flex-wrap gap-2">
                         {skill.items.map((item, index) => (
                           <span key={index} className="skill-badge px-2 py-1 bg-purple-900/30 rounded-md text-sm text-cyan-200">
@@ -355,6 +418,7 @@ const AnimatedPortfolio = () => {
           {/* Projects Section */}
           <section id="projects" className="projects-section">
             <h2 className="text-xl text-cyan-400 mb-6">$ git log --oneline projects/</h2>
+            {/* Project filters */}
             <div className="project-filters mb-6">
               <div className="flex flex-wrap gap-2">
                 <button 
@@ -377,6 +441,7 @@ const AnimatedPortfolio = () => {
               </div>
             </div>
             
+            {/* Projects grid */}
             <div className="projects-grid space-y-4">
               {projects
                 .filter(project => selectedTech === 'all' || project.techStack.includes(selectedTech))
@@ -384,14 +449,14 @@ const AnimatedPortfolio = () => {
                   <div key={project.id} 
                        className="project-card border border-white/20 p-4 rounded-lg transition-all duration-300 hover:border-cyan-400/50 bg-black/40 backdrop-blur-sm">
                     <div 
-                      className="project-header flex items-center justify-between cursor-pointer"
+                      className="project-header flex items-center justify-between cursor-pointer group"
                       onClick={() => setOpenProjects(prev => ({ ...prev, [project.id]: !prev[project.id] }))}
                       role="button"
                       aria-expanded={openProjects[project.id]}
                       tabIndex={0}
                     >
                       <div className="flex items-center gap-2">
-                        <span className="text-cyan-400">❯</span>
+                        <span className="text-cyan-400 transform group-hover:rotate-90 transition-transform duration-300">❯</span>
                         <h3 className="text-purple-300 font-medium">{project.title}</h3>
                       </div>
                       {openProjects[project.id] ? 
@@ -400,9 +465,12 @@ const AnimatedPortfolio = () => {
                       }
                     </div>
 
-                    <div className={`project-content overflow-hidden transition-all duration-500 
-                      ${openProjects[project.id] ? 'max-h-[1000px] opacity-100 mt-4' : 'max-h-0 opacity-0'}`}>
-                      <div className="space-y-4">
+                    <div className={`
+                      project-content overflow-hidden transition-all duration-500 
+                      relative z-10
+                      ${openProjects[project.id] ? 'max-h-[1000px] opacity-100 mt-4' : 'max-h-0 opacity-0'}
+                    `}>
+                      <div className="space-y-4 p-4 bg-black/20 rounded-lg">
                         <p className="text-gray-300">{project.fullDesc}</p>
                         
                         <div className="tech-stack space-y-2">
@@ -446,13 +514,16 @@ const AnimatedPortfolio = () => {
                 ))}
             </div>
           </section>
-
           {/* Contact Section */}
           <section id="contact" className="footer mt-12 border-t border-white/20 pt-4">
             <div className="social-links flex items-center flex-wrap gap-4">
               <span className="text-cyan-400">❯ Find me on:</span>
               {[
-                { name: 'GitHub', icon: <Github size={16} className="text-cyan-400" />, url: 'https://github.com/rlohaw' },
+                { 
+                  name: 'GitHub', 
+                  icon: <Github size={16} className="text-cyan-400" />, 
+                  url: 'https://github.com/rlohaw' 
+                },
                 { 
                   name: 'Telegram', 
                   icon: (
@@ -480,7 +551,7 @@ const AnimatedPortfolio = () => {
                   className="social-link relative group"
                 >
                   <div className="link-gradient absolute -inset-0.5 bg-gradient-to-r from-purple-600 via-cyan-500 to-purple-600 rounded-full blur opacity-0 group-hover:opacity-60 transition duration-500" />
-                  <span className="relative flex items-center gap-1">
+                  <span className="relative flex items-center gap-1 px-3 py-1 bg-black/40 rounded-full">
                     {icon}
                     {name}
                   </span>
@@ -491,7 +562,9 @@ const AnimatedPortfolio = () => {
         </div>
       </div>
 
+      {/* Global styles and animations */}
       <style jsx>{`
+        /* Background animations */
         @keyframes moveGradient1 {
           0%, 100% { transform: translate(-50%, -50%) translate(100px, 100px) rotate(0deg); }
           25% { transform: translate(-50%, -50%) translate(-100px, 100px) rotate(90deg); }
@@ -513,6 +586,7 @@ const AnimatedPortfolio = () => {
           75% { transform: translate(-50%, -50%) translate(150px, 0) rotate(270deg); }
         }
 
+        /* Text gradient animations */
         @keyframes textGradient {
           0%, 100% { background-position: 0% 50%; }
           50% { background-position: 100% 50%; }
@@ -549,7 +623,7 @@ const AnimatedPortfolio = () => {
           animation: textGradient 2s linear infinite;
         }
 
-        /* Дополнительные стили для мобильных устройств */
+        /* Mobile responsiveness */
         @media (max-width: 768px) {
           .header-section {
             flex-direction: column;
@@ -564,13 +638,9 @@ const AnimatedPortfolio = () => {
             flex-direction: column;
             align-items: flex-start;
           }
-
-          .featured-projects {
-            grid-template-columns: 1fr;
-          }
         }
 
-        /* Улучшенные стили для hover-эффектов */
+        /* Enhanced hover effects */
         .project-card:hover,
         .skill-card:hover {
           transform: translateY(-2px);
@@ -581,24 +651,24 @@ const AnimatedPortfolio = () => {
           transform: scale(1.05);
         }
 
-        /* Плавные переходы */
+        /* Smooth transitions */
         .project-card,
         .skill-card,
         .social-link {
           transition: all 0.3s ease-in-out;
         }
 
-        /* Доступность - фокус клавиатуры */
-        .nav-item:focus,
-        .project-header:focus,
-        .skill-header:focus,
-        .social-link:focus {
+        /* Keyboard focus styles */
+        .nav-item:focus-visible,
+        .project-header:focus-visible,
+        .skill-header:focus-visible,
+        .social-link:focus-visible {
           outline: 2px solid #60daff;
           outline-offset: 2px;
           border-radius: 4px;
         }
 
-        /* Скроллбар */
+        /* Custom scrollbar */
         ::-webkit-scrollbar {
           width: 8px;
         }
@@ -615,9 +685,52 @@ const AnimatedPortfolio = () => {
         ::-webkit-scrollbar-thumb:hover {
           background: rgba(96, 218, 255, 0.5);
         }
+
+        /* Text content styles */
+        .text-gray-300 {
+          text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .text-purple-300 {
+          text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+        }
+
+        /* Content backgrounds */
+        .project-card .project-content,
+        .skill-card .skill-content {
+          position: relative;
+          isolation: isolate;
+        }
+
+        /* Improved card backgrounds */
+        .project-card,
+        .skill-card {
+          backdrop-filter: blur(8px);
+          position: relative;
+          isolation: isolate;
+        }
+
+        /* Gradient overlays */
+        .gradient-overlay {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(
+            to bottom right,
+            rgba(139, 92, 246, 0.1),
+            rgba(6, 182, 212, 0.1)
+          );
+          opacity: 0;
+          transition: opacity 0.3s ease;
+        }
+
+        .project-card:hover .gradient-overlay,
+        .skill-card:hover .gradient-overlay {
+          opacity: 1;
+        }
       `}</style>
     </div>
   );
 };
 
 export default AnimatedPortfolio;
+
