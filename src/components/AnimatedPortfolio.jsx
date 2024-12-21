@@ -358,11 +358,7 @@ const AnimatedPortfolio = () => {
                 <p>Name: <span className="text-purple-300">Rostislav Lokhov</span></p>
                 <p>Role: <span className="text-purple-300">DS/MLE</span></p>
                 <p>Location: <span className="text-purple-300">Moscow, Russia</span></p>
-                <p>
-                  Status: 
-                  <span className="animate-status-gradient">
-                    considering offers
-                  </span>
+                <p>Status: <span className="animate-status-gradient">Considering offers</span>
                 </p>
               </div>
             </div>
