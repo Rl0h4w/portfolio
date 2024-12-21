@@ -41,25 +41,32 @@ const AnimatedPortfolio = () => {
   ];
 
   const skills = {
-    "Machine Learning": {
-      items: ["PyTorch", "TensorFlow", "Scikit-learn", "XGBoost", "LightGBM"],
-      experience: "4 years of hands-on experience in developing and deploying ML models",
-      projects: "Implemented production ML systems for medical imaging and NLP",
+    "Computer Vision": {
+      items: ["Image Denoising", "Color Correction", "Image Super-Resolution", "Object Detection", "Semantic Segmentation"],
+      experience: "1 year of intensive research and model development",
+      projects: "Designed and trained custom architectures to enhance aerial imaging quality for UAVs, focusing on noise reduction, color consistency, and resolution optimization.",
       level: "Advanced"
     },
+    "Machine Learning": {
+      items: ["PyTorch", "TensorFlow", "Scikit-learn", "XGBoost", "LightGBM", "CatBoost", "Pandas", "NumPy", "Matplotlib", "Seaborn"],
+      experience: "1 year of applied experience",
+      projects: "Conducted research-driven ML model development, focusing on feature engineering, predictive analytics, and optimization with custom algorithms.",
+      level: "Intermediate"
+    },
     "Deep Learning": {
-      items: ["CNNs", "Transformers", "GANs", "Object Detection", "Segmentation"],
-      experience: "3 years working with neural networks and deep learning architectures",
-      projects: "Developed custom architectures for medical image analysis",
+      items: ["CNNs", "Transformers", "GANs", "Custom Architectures", "OpenCV", "Keras"],
+      experience: "2 years of focused architecture design and experimentation",
+      projects: "Created and refined deep learning models for challenging datasets, with an emphasis on custom architecture research and high-performance training.",
       level: "Advanced"
     },
     "MLOps": {
-      items: ["Docker", "Kubernetes", "MLflow", "DVC", "Airflow"],
-      experience: "2 years of experience in ML systems deployment and monitoring",
-      projects: "Built end-to-end ML pipelines for production environments",
-      level: "Intermediate"
+      items: ["Docker", "Kubernetes", "GitHub Actions"],
+      experience: "Limited exposure to deployment workflows",
+      projects: "Assisted in deploying ML models using basic containerization and automation tools to streamline production readiness.",
+      level: "Beginner"
     }
   };
+  
 
   const toggleSkill = (skillName) => {
     setOpenSkills(prev => ({
