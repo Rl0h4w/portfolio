@@ -408,22 +408,24 @@ const AnimatedPortfolio = () => {
                 <div className="achievement-item">
                   <h3 className="text-purple-300 text-lg mb-2">🏆 Key Technical Achievements</h3>
                   <ul className="list-disc list-inside space-y-2 text-gray-300">
-                    <li>Developed and optimized deep learning models for image processing, achieving a 40% reduction in processing time</li>
-                    <li>Successfully implemented resource-efficient models that run on limited hardware while maintaining high accuracy</li>
-                    <li>Created custom architectures for specialized image processing tasks, improving accuracy by 25%</li>
+                    <li>Finalist in the AIDAO International AI Olympiad by Yandex, competing against top AI talents to solve real-world challenges in AI and machine learning</li>
+                    <li>Recipient of the Central University Scholarship, recognizing academic excellence and innovative contributions to AI research</li>
+                    <li>Team Leader and Winner of the DataThon 2024, leading a team to secure 1st place by developing a cutting-edge solution for complex data challenges</li>
                   </ul>
                 </div>
                 <div className="achievement-item">
                   <h3 className="text-purple-300 text-lg mb-2">🎯 Project Impact</h3>
                   <ul className="list-disc list-inside space-y-2 text-gray-300">
-                    <li>Reduced model inference time by 35% through optimization techniques</li>
-                    <li>Implemented solutions that saved 50% in computational resources</li>
-                    <li>Developed scalable architectures that handle varying input qualities effectively</li>
+                    <li>Developed and deployed a high-performance fraud detection model for a 2.5D car image dataset under strict hardware limitations, optimizing inference on a single-core processor with 3GB RAM</li>
+                    <li>Successfully designed a resource-efficient deep learning pipeline, achieving significant results while optimizing for limited computational resources and maintaining high accuracy</li>
+                    <li>Led the creation of a custom image processing architecture that effectively handles challenging real-world data, improving model performance and accuracy in a resource-constrained environment</li>
                   </ul>
                 </div>
               </div>
             </div>
           </div>
+
+
 
           {/* Skills section */}
           <div id="skills" className="skills-section space-y-4">
