@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { ChevronDown, ChevronUp, ExternalLink, Github } from 'lucide-react';
 
 const AnimatedPortfolio = () => {
@@ -34,8 +34,7 @@ const AnimatedPortfolio = () => {
         "Optimized for inference on resource-constrained hardware with CosineAnnealingWarmRestarts scheduler and AdamW optimizer"
       ]
     }
-];
-
+  ];
 
   const skills = {
     "Computer Vision": {
@@ -82,9 +81,9 @@ const AnimatedPortfolio = () => {
     const isOpen = openProjects[project.id];
 
     return (
-      <div className="border border-white/20 p-4 rounded-lg transition-all duration-300 hover:border-cyan-400/50 bg-black/40 backdrop-blur-sm">
+      <div className="project-card border border-white/20 p-4 rounded-lg transition-all duration-300 hover:border-cyan-400/50 bg-black/40 backdrop-blur-sm">
         <div 
-          className="flex items-center justify-between cursor-pointer"
+          className="project-header flex items-center justify-between cursor-pointer"
           onClick={() => toggleProject(project.id)}
         >
           <div className="flex items-center gap-2">
@@ -95,21 +94,21 @@ const AnimatedPortfolio = () => {
         </div>
 
         {isOpen && (
-          <div className="mt-4 space-y-4">
+          <div className="project-content mt-4 space-y-4">
             <p className="text-gray-300">{project.fullDesc}</p>
             
-            <div className="space-y-2">
+            <div className="tech-stack space-y-2">
               <h4 className="text-purple-300">Tech Stack:</h4>
               <div className="flex flex-wrap gap-2">
                 {project.techStack.map((tech, index) => (
-                  <span key={index} className="px-2 py-1 bg-purple-900/30 rounded-md text-sm text-cyan-200">
+                  <span key={index} className="tech-badge px-2 py-1 bg-purple-900/30 rounded-md text-sm text-cyan-200">
                     {tech}
                   </span>
                 ))}
               </div>
             </div>
 
-            <div className="space-y-2">
+            <div className="achievements space-y-2">
               <h4 className="text-purple-300">Key Achievements:</h4>
               <ul className="list-disc list-inside space-y-1 text-gray-300">
                 {project.achievements.map((achievement, index) => (
@@ -118,28 +117,17 @@ const AnimatedPortfolio = () => {
               </ul>
             </div>
 
-            {(project.links?.github || project.links?.demo) && (
-              <div className="flex gap-4 pt-2">
+            {project.links && (
+              <div className="project-links flex gap-4 pt-2">
                 {project.links?.github && (
                   <a 
                     href={project.links.github}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-cyan-400 hover:text-cyan-300 transition-colors duration-300"
+                    className="link-github flex items-center gap-2 text-cyan-400 hover:text-cyan-300 transition-colors duration-300"
                   >
                     <Github size={16} />
                     View Code
-                  </a>
-                )}
-                {project.links?.demo && (
-                  <a 
-                    href={project.links.demo}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-cyan-400 hover:text-cyan-300 transition-colors duration-300"
-                  >
-                    <ExternalLink size={16} />
-                    Live Demo
                   </a>
                 )}
               </div>
@@ -154,9 +142,9 @@ const AnimatedPortfolio = () => {
     const isOpen = openSkills[name];
 
     return (
-      <div className="border border-white/20 p-4 rounded-lg transition-all duration-300 hover:border-cyan-400/50 bg-black/40 backdrop-blur-sm">
+      <div className="skill-card border border-white/20 p-4 rounded-lg transition-all duration-300 hover:border-cyan-400/50 bg-black/40 backdrop-blur-sm">
         <div 
-          className="flex items-center justify-between cursor-pointer"
+          className="skill-header flex items-center justify-between cursor-pointer"
           onClick={() => toggleSkill(name)}
         >
           <div className="flex items-center gap-2">
@@ -167,16 +155,16 @@ const AnimatedPortfolio = () => {
         </div>
 
         {isOpen && (
-          <div className="mt-4 space-y-4">
+          <div className="skill-content mt-4 space-y-4">
             <div className="flex flex-wrap gap-2">
               {skill.items.map((item, index) => (
-                <span key={index} className="px-2 py-1 bg-purple-900/30 rounded-md text-sm text-cyan-200">
+                <span key={index} className="skill-badge px-2 py-1 bg-purple-900/30 rounded-md text-sm text-cyan-200">
                   {item}
                 </span>
               ))}
             </div>
 
-            <div className="space-y-2 text-sm">
+            <div className="skill-details space-y-2 text-sm">
               <p className="text-gray-300">
                 <span className="text-purple-300">Experience: </span>
                 {skill.experience}
@@ -203,15 +191,16 @@ const AnimatedPortfolio = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white p-8 font-mono relative overflow-hidden">
-      {/* Enhanced background gradients */}
-      <div className="fixed inset-0 bg-gradient-to-br from-purple-950/60 via-black to-cyan-950/60 pointer-events-none" />
+    <div className="portfolio-container min-h-screen bg-black text-white p-8 font-mono relative overflow-hidden">
+      {/* Background gradients */}
+      <div className="background-main absolute inset-0 bg-gradient-to-br from-purple-950/80 via-black to-cyan-950/80" />
+      <div className="background-overlay absolute inset-0 bg-black/40" />
       
-      {/* Dynamic gradient background */}
-      <div className="fixed top-0 left-0 w-full h-full pointer-events-none overflow-hidden">
-        <div className="absolute w-full h-full">
+      {/* Animated background elements */}
+      <div className="background-animated absolute top-0 left-0 w-full h-full overflow-hidden">
+        <div className="gradient-container absolute w-full h-full">
           <div 
-            className="absolute w-96 h-96 bg-purple-900/10 rounded-full blur-3xl"
+            className="gradient-circle-1 absolute w-96 h-96 bg-purple-900/5 rounded-full blur-3xl"
             style={{
               animation: 'moveGradient1 25s infinite linear',
               transform: 'translate(-50%, -50%)',
@@ -220,7 +209,7 @@ const AnimatedPortfolio = () => {
             }}
           />
           <div 
-            className="absolute w-96 h-96 bg-cyan-900/10 rounded-full blur-3xl"
+            className="gradient-circle-2 absolute w-96 h-96 bg-cyan-900/5 rounded-full blur-3xl"
             style={{
               animation: 'moveGradient2 30s infinite linear',
               transform: 'translate(-50%, -50%)',
@@ -229,7 +218,7 @@ const AnimatedPortfolio = () => {
             }}
           />
           <div 
-            className="absolute w-96 h-96 bg-purple-800/10 rounded-full blur-3xl"
+            className="gradient-circle-3 absolute w-96 h-96 bg-purple-800/5 rounded-full blur-3xl"
             style={{
               animation: 'moveGradient3 28s infinite linear',
               transform: 'translate(-50%, -50%)',
@@ -328,62 +317,61 @@ const AnimatedPortfolio = () => {
       `}</style>
 
       {/* Main content */}
-      <div className="relative z-10">
-        <div className="flex items-center mb-12">
-          <div className="mr-8">
-            <div className="text-4xl font-bold tracking-wider animate-text-gradient">
+      <div className="content-wrapper relative z-10">
+        <div className="header-section flex items-center mb-12">
+          <div className="header-content mr-8">
+            <div className="header-title text-4xl font-bold tracking-wider animate-text-gradient">
               RLOHAW
             </div>
-            <div className="text-gray-300 mt-2">AND DREADFULLY DISTINCT AGAINST THE DARK,</div>
-            <div className="text-gray-300">A TALL WHITE FOUNTAIN PLAYED</div>
+            <div className="header-subtitle text-gray-300 mt-2">AND DREADFULLY DISTINCT AGAINST THE DARK,</div>
+            <div className="header-subtitle text-gray-300">A TALL WHITE FOUNTAIN PLAYED</div>
           </div>
-          <div className="ml-auto">
+          <div className="navigation-menu ml-auto">
             <nav>
-              <ul className="space-y-2">
-                <li className="hover:text-cyan-400 cursor-pointer transition-colors duration-300">→ Home</li>
-                <li className="hover:text-cyan-400 cursor-pointer transition-colors duration-300">→ Projects</li>
-                <li className="hover:text-cyan-400 cursor-pointer transition-colors duration-300">→ Skills</li>
-                <li className="hover:text-cyan-400 cursor-pointer transition-colors duration-300">→ Contact</li>
-                <li>
-                  <button className="mt-4 relative group">
-                    <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-600 via-cyan-500 to-purple-600 rounded blur opacity-60 group-hover:opacity-100 transition duration-1000 animate-gradient" />
-                    <div className="relative bg-black px-6 py-2 rounded">
+              <ul className="nav-list space-y-2">
+                <li className="nav-item hover:text-cyan-400 cursor-pointer transition-colors duration-300">→ Home</li>
+                <li className="nav-item hover:text-cyan-400 cursor-pointer transition-colors duration-300">→ Projects</li>
+                <li className="nav-item hover:text-cyan-400 cursor-pointer transition-colors duration-300">→ Skills</li>
+                <li className="nav-item hover:text-cyan-400 cursor-pointer transition-colors duration-300">→ Contact</li>
+                <li className="nav-item">
+                  <button className="hire-button mt-4 relative group">
+                    <div className="button-gradient absolute -inset-0.5 bg-gradient-to-r from-purple-600 via-cyan-500 to-purple-600 rounded blur opacity-60 group-hover:opacity-100 transition duration-1000" />
+                    <div className="button-content relative bg-black px-6 py-2 rounded">
                       HIRE ME
                     </div>
                   </button>
                 </li>
               </ul>
             </nav>
-          </div>
+            </div>
         </div>
 
         {/* Profile section */}
-        <div className="grid grid-cols-1 gap-8">
-          <div className="border border-white/20 p-6 rounded-lg relative overflow-hidden group bg-black/40 backdrop-blur-sm">
-            <div className="absolute inset-0 bg-gradient-to-br from-purple-900/30 via-purple-900/10 to-cyan-900/30 opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
-            <div className="relative">
-              <div className="text-xl mb-4 text-cyan-400">$ cat profile.txt</div>
-              <div className="space-y-2 text-sm">
+        <div className="main-content grid grid-cols-1 gap-8">
+          <div className="profile-card border border-white/20 p-6 rounded-lg relative overflow-hidden group bg-black/40 backdrop-blur-sm">
+            <div className="profile-gradient absolute inset-0 bg-gradient-to-br from-purple-900/30 via-purple-900/10 to-cyan-900/30 opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="profile-content relative">
+              <div className="profile-header text-xl mb-4 text-cyan-400">$ cat profile.txt</div>
+              <div className="profile-details space-y-2 text-sm">
                 <p>Name: <span className="text-purple-300">Rostislav Lokhov</span></p>
                 <p>Role: <span className="text-purple-300">DS/MLE</span></p>
                 <p>Location: <span className="text-purple-300">Moscow, Russia</span></p>
-                <p>Status: <span className="animate-status-gradient">Considering offers</span>
-                </p>
+                <p>Status: <span className="animate-status-gradient">Considering offers</span></p>
               </div>
             </div>
           </div>
 
           {/* Skills section */}
-          <div className="space-y-4">
-            <h2 className="text-xl text-cyan-400 mb-6">$ ls -la skills/</h2>
+          <div className="skills-section space-y-4">
+            <h2 className="section-title text-xl text-cyan-400 mb-6">$ ls -la skills/</h2>
             {Object.entries(skills).map(([name, skill]) => (
               <SkillCard key={name} name={name} skill={skill} />
             ))}
           </div>
 
           {/* Projects section */}
-          <div className="space-y-4">
-            <h2 className="text-xl text-cyan-400 mb-6">$ git log --oneline projects/</h2>
+          <div className="projects-section space-y-4">
+            <h2 className="section-title text-xl text-cyan-400 mb-6">$ git log --oneline projects/</h2>
             {projects.map(project => (
               <ProjectCard key={project.id} project={project} />
             ))}
@@ -391,16 +379,16 @@ const AnimatedPortfolio = () => {
         </div>
 
         {/* Footer */}
-        <div className="mt-12 border-t border-white/20 pt-4 text-sm">
-          <div className="flex items-center flex-wrap gap-4">
+        <div className="footer mt-12 border-t border-white/20 pt-4 text-sm">
+          <div className="social-links flex items-center flex-wrap gap-4">
             <span className="text-cyan-400">❯ Find me on:</span>
             {["GitHub", "LinkedIn", "Twitter"].map((platform, i) => (
               <a
                 key={i}
                 href="#"
-                className="relative group"
+                className="social-link relative group"
               >
-                <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-600 via-cyan-500 to-purple-600 rounded-full blur opacity-0 group-hover:opacity-60 transition duration-500" />
+                <div className="link-gradient absolute -inset-0.5 bg-gradient-to-r from-purple-600 via-cyan-500 to-purple-600 rounded-full blur opacity-0 group-hover:opacity-60 transition duration-500" />
                 <span className="relative">{platform}</span>
               </a>
             ))}
