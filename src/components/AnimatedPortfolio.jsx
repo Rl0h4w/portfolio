@@ -45,7 +45,7 @@ const AnimatedPortfolio = () => {
       items: ["Image Denoising", "Color Correction", "Image Super-Resolution", "Object Detection", "Semantic Segmentation"],
       experience: "1 year of intensive research and model development",
       projects: "Designed and trained custom architectures to enhance aerial imaging quality for UAVs, focusing on noise reduction, color consistency, and resolution optimization.",
-      level: "Advanced"
+      level: "Intermediate"
     },
     "Machine Learning": {
       items: ["PyTorch", "TensorFlow", "Scikit-learn", "XGBoost", "LightGBM", "CatBoost", "Pandas", "NumPy", "Matplotlib", "Seaborn"],
@@ -57,7 +57,7 @@ const AnimatedPortfolio = () => {
       items: ["CNNs", "Transformers", "GANs", "Custom Architectures", "OpenCV", "Keras"],
       experience: "2 years of focused architecture design and experimentation",
       projects: "Created and refined deep learning models for challenging datasets, with an emphasis on custom architecture research and high-performance training.",
-      level: "Advanced"
+      level: "Intermediate"
     },
     "MLOps": {
       items: ["Docker", "Kubernetes", "GitHub Actions"],
