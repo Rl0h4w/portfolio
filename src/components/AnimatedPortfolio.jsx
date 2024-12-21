@@ -31,10 +31,10 @@ const AnimatedPortfolio = () => {
                style={{
                  animation: 'gradient 3s ease infinite',
                }}>
-            ARC_DEV
+            RLOHAW
           </div>
-          <div className="text-gray-300 mt-2">PORTFOLIO REMAINS UNDEFEATED.</div>
-          <div className="text-gray-300">NEW PROJECTS STILL NEEDED<span className="animate-pulse text-cyan-400">_</span></div>
+          <div className="text-gray-300 mt-2">AND DREADFULLY DISTINCT AGAINST THE DARK</div>
+          <div className="text-gray-300">A TALL WHITE FOUNTAIN PLAYED<span className="animate-pulse text-cyan-400">_</span></div>
         </div>
         <div className="ml-auto">
           <nav>
