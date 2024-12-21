@@ -343,8 +343,8 @@ const AnimatedPortfolio = () => {
                 </li>
               </ul>
             </nav>
-            </div>
-        </div>
+          </div>
+          </div>
 
         {/* Profile section */}
         <div className="main-content grid grid-cols-1 gap-8">
@@ -378,20 +378,64 @@ const AnimatedPortfolio = () => {
           </div>
         </div>
 
-        {/* Footer */}
+        {/* Footer with social links */}
         <div className="footer mt-12 border-t border-white/20 pt-4 text-sm">
           <div className="social-links flex items-center flex-wrap gap-4">
             <span className="text-cyan-400">❯ Find me on:</span>
-            {["GitHub", "LinkedIn", "Twitter"].map((platform, i) => (
-              <a
-                key={i}
-                href="#"
-                className="social-link relative group"
-              >
-                <div className="link-gradient absolute -inset-0.5 bg-gradient-to-r from-purple-600 via-cyan-500 to-purple-600 rounded-full blur opacity-0 group-hover:opacity-60 transition duration-500" />
-                <span className="relative">{platform}</span>
-              </a>
-            ))}
+            <a
+              href="https://github.com/rlohaw"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="social-link relative group"
+            >
+              <div className="link-gradient absolute -inset-0.5 bg-gradient-to-r from-purple-600 via-cyan-500 to-purple-600 rounded-full blur opacity-0 group-hover:opacity-60 transition duration-500" />
+              <span className="relative flex items-center gap-1">
+                <Github size={16} className="text-cyan-400" />
+                GitHub
+              </span>
+            </a>
+            <a
+              href="https://t.me/rlohaw"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="social-link relative group"
+            >
+              <div className="link-gradient absolute -inset-0.5 bg-gradient-to-r from-purple-600 via-cyan-500 to-purple-600 rounded-full blur opacity-0 group-hover:opacity-60 transition duration-500" />
+              <span className="relative flex items-center gap-1">
+                <svg className="w-4 h-4 text-cyan-400" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.161c-.18 1.897-.962 6.502-1.359 8.627-.168.9-.5 1.201-.82 1.23-.697.064-1.226-.461-1.901-.903-1.056-.692-1.653-1.123-2.678-1.799-1.185-.781-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.139-5.062 3.345-.479.329-.913.489-1.302.481-.428-.008-1.252-.245-1.865-.447-.756-.244-1.356-.374-1.303-.788.026-.204.324-.416.892-.636 3.490-1.528 5.816-2.533 6.978-3.015 3.324-1.385 4.012-1.627 4.466-1.635.099-.002.321.023.465.14.122.102.198.265.21.466.012.2-.031.469-.043.553z"/>
+                </svg>
+                Telegram
+              </span>
+            </a>
+            <a
+              href="https://hh.ru/resume/12138874ff0bd4777a0039ed1f4e4c68357536"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="social-link relative group"
+            >
+              <div className="link-gradient absolute -inset-0.5 bg-gradient-to-r from-purple-600 via-cyan-500 to-purple-600 rounded-full blur opacity-0 group-hover:opacity-60 transition duration-500" />
+              <span className="relative flex items-center gap-1">
+                <svg className="w-4 h-4 text-cyan-400" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M19.5 0h-15A4.5 4.5 0 0 0 0 4.5v15A4.5 4.5 0 0 0 4.5 24h15a4.5 4.5 0 0 0 4.5-4.5v-15A4.5 4.5 0 0 0 19.5 0zM7 18H4V8h3v10zm-1.5-11A1.5 1.5 0 1 1 7 5.5 1.5 1.5 0 0 1 5.5 7zM18 18h-3v-4.5a1.5 1.5 0 1 0-3 0V18H9V8h3v1.5A3 3 0 0 1 15 8a3 3 0 0 1 3 3v7z"/>
+                </svg>
+                HH.ru
+              </span>
+            </a>
+            <a
+              href="https://hh.ru/resume/12138874ff0bd4777a0039ed1f4e4c68357536"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="social-link relative group"
+            >
+              <div className="link-gradient absolute -inset-0.5 bg-gradient-to-r from-purple-600 via-cyan-500 to-purple-600 rounded-full blur opacity-0 group-hover:opacity-60 transition duration-500" />
+              <span className="relative flex items-center gap-1">
+                <svg className="w-4 h-4 text-cyan-400" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                </svg>
+                LinkedIn
+              </span>
+            </a>
           </div>
         </div>
       </div>
