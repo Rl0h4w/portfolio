@@ -1,52 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { ChevronDown, ChevronUp, ExternalLink, Github } from 'lucide-react';
 
 const AnimatedPortfolio = () => {
   const [openSkills, setOpenSkills] = useState({});
   const [openProjects, setOpenProjects] = useState({});
-
-  // Function to open all projects
-  const openAllProjects = () => {
-    const allOpen = projects.reduce((acc, project) => {
-      acc[project.id] = true;
-      return acc;
-    }, {});
-    setOpenProjects(allOpen);
-  };
-
-  // Function to open all skills
-  const openAllSkills = () => {
-    const allOpen = Object.keys(skills).reduce((acc, skill) => {
-      acc[skill] = true;
-      return acc;
-    }, {});
-    setOpenSkills(allOpen);
-  };
-
-  // Scroll to section with offset for header
-  const scrollToSection = (sectionId) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      const offset = 80; // Adjust this value based on your header height
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - offset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
-    }
-  };
-
-  // Navigation handler
-  const handleNavigation = (section) => {
-    if (section === 'projects') {
-      openAllProjects();
-    } else if (section === 'skills') {
-      openAllSkills();
-    }
-    scrollToSection(section);
-  };
 
   const projects = [
     {
@@ -106,32 +63,33 @@ const AnimatedPortfolio = () => {
     }
   };
 
+  const handleNavigation = (sectionId) => {
+    if (sectionId === 'projects') {
+      const allProjectsOpen = projects.reduce((acc, project) => {
+        acc[project.id] = true;
+        return acc;
+      }, {});
+      setOpenProjects(allProjectsOpen);
+    } else if (sectionId === 'skills') {
+      const allSkillsOpen = Object.keys(skills).reduce((acc, skill) => {
+        acc[skill] = true;
+        return acc;
+      }, {});
+      setOpenSkills(allSkillsOpen);
+    }
+    
+    const element = document.getElementById(sectionId);
+    if (element) {
+      const offset = 80;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
 
-  const NavigationMenu = () => (
-    <div className="navigation-menu ml-auto">
-      <nav>
-        <ul className="nav-list space-y-2">
-          <li onClick={() => scrollToSection('home')} className="nav-item hover:text-cyan-400 cursor-pointer transition-colors duration-300">→ Home</li>
-          <li onClick={() => handleNavigation('projects')} className="nav-item hover:text-cyan-400 cursor-pointer transition-colors duration-300">→ Projects</li>
-          <li onClick={() => handleNavigation('skills')} className="nav-item hover:text-cyan-400 cursor-pointer transition-colors duration-300">→ Skills</li>
-          <li onClick={() => scrollToSection('contact')} className="nav-item hover:text-cyan-400 cursor-pointer transition-colors duration-300">→ Contact</li>
-          <li className="nav-item">
-            <a 
-              href="https://t.me/rlohaw"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hire-button mt-4 relative group block"
-            >
-              <div className="button-gradient absolute -inset-0.5 bg-gradient-to-r from-purple-600 via-cyan-500 to-purple-600 rounded blur opacity-60 group-hover:opacity-100 transition duration-1000" />
-              <div className="button-content relative bg-black px-6 py-2 rounded">
-                HIRE ME
-              </div>
-            </a>
-          </li>
-        </ul>
-      </nav>
-    </div>
-  );
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
+  };
 
   const toggleSkill = (skillName) => {
     setOpenSkills(prev => ({
@@ -398,13 +356,13 @@ const AnimatedPortfolio = () => {
           </div>
           <div className="navigation-menu ml-auto">
             <nav>
-              <ul className="nav-list space-y-2">
-                <li onClick={() => handleNavigation('home')} 
-                    className="nav-item hover:text-cyan-400 cursor-pointer transition-colors duration-300">→ Home</li>
-                <li onClick={() => handleNavigation('projects')} 
-                    className="nav-item hover:text-cyan-400 cursor-pointer transition-colors duration-300">→ Projects</li>
+            <ul className="nav-list space-y-2">
+                <li onClick={() => handleNavigation('achievements')} 
+                    className="nav-item hover:text-cyan-400 cursor-pointer transition-colors duration-300">→ Achievements</li>
                 <li onClick={() => handleNavigation('skills')} 
                     className="nav-item hover:text-cyan-400 cursor-pointer transition-colors duration-300">→ Skills</li>
+                <li onClick={() => handleNavigation('projects')} 
+                    className="nav-item hover:text-cyan-400 cursor-pointer transition-colors duration-300">→ Projects</li>
                 <li onClick={() => handleNavigation('contact')} 
                     className="nav-item hover:text-cyan-400 cursor-pointer transition-colors duration-300">→ Contact</li>
                 <li className="nav-item">
@@ -425,8 +383,9 @@ const AnimatedPortfolio = () => {
           </div>
         </div>
 
-        {/* Profile section */}
+        {/* Main content */}
         <div className="main-content grid grid-cols-1 gap-8">
+          {/* Profile section */}
           <div className="profile-card border border-white/20 p-6 rounded-lg relative overflow-hidden group bg-black/40 backdrop-blur-sm">
             <div className="profile-gradient absolute inset-0 bg-gradient-to-br from-purple-900/30 via-purple-900/10 to-cyan-900/30 opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
             <div className="profile-content relative">
@@ -436,6 +395,32 @@ const AnimatedPortfolio = () => {
                 <p>Role: <span className="text-purple-300">DS/MLE</span></p>
                 <p>Location: <span className="text-purple-300">Moscow, Russia</span></p>
                 <p>Status: <span className="animate-status-gradient">Considering offers</span></p>
+              </div>
+            </div>
+          </div>
+
+          {/* Achievements section */}
+          <div id="achievements" className="achievements-section space-y-4">
+            <h2 className="section-title text-xl text-cyan-400 mb-6">$ cat achievements.md</h2>
+            <div className="achievement-card border border-white/20 p-6 rounded-lg relative overflow-hidden group bg-black/40 backdrop-blur-sm">
+              <div className="achievement-gradient absolute inset-0 bg-gradient-to-br from-purple-900/30 via-purple-900/10 to-cyan-900/30 opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="achievement-content relative space-y-4">
+                <div className="achievement-item">
+                  <h3 className="text-purple-300 text-lg mb-2">🏆 Key Technical Achievements</h3>
+                  <ul className="list-disc list-inside space-y-2 text-gray-300">
+                    <li>Developed and optimized deep learning models for image processing, achieving a 40% reduction in processing time</li>
+                    <li>Successfully implemented resource-efficient models that run on limited hardware while maintaining high accuracy</li>
+                    <li>Created custom architectures for specialized image processing tasks, improving accuracy by 25%</li>
+                  </ul>
+                </div>
+                <div className="achievement-item">
+                  <h3 className="text-purple-300 text-lg mb-2">🎯 Project Impact</h3>
+                  <ul className="list-disc list-inside space-y-2 text-gray-300">
+                    <li>Reduced model inference time by 35% through optimization techniques</li>
+                    <li>Implemented solutions that saved 50% in computational resources</li>
+                    <li>Developed scalable architectures that handle varying input qualities effectively</li>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
@@ -502,7 +487,7 @@ const AnimatedPortfolio = () => {
               </span>
             </a>
             <a
-              href="https://hh.ru/resume/12138874ff0bd4777a0039ed1f4e4c68357536"
+              href="https://www.linkedin.com/in/rostislav-lokhov/"
               target="_blank"
               rel="noopener noreferrer"
               className="social-link relative group"
@@ -520,6 +505,6 @@ const AnimatedPortfolio = () => {
       </div>
     </div>
   );
-}
+};
 
 export default AnimatedPortfolio;
