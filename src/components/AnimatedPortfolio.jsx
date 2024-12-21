@@ -8,37 +8,34 @@ const AnimatedPortfolio = () => {
   const projects = [
     {
       id: 1,
-      title: "ML Image Process",
-      shortDesc: "High-performance medical image processing pipeline",
-      fullDesc: "Developed an end-to-end pipeline for medical image processing using deep learning models. Implemented efficient data processing and model serving architecture.",
-      techStack: ["Python", "PyTorch", "FastAPI", "Docker", "PostgreSQL"],
+      title: "Image Denoising and Enhancement",
+      shortDesc: "Efficient image processing with constrained resources",
+      fullDesc: "Developed models for image denoising, color correction, and super-resolution using deep learning techniques. Optimized hyperparameters with Optuna for enhanced performance under resource constraints.",
+      techStack: ["Python", "TensorFlow", "Optuna"],
       links: {
-        github: "https://github.com/rlohaw/project1",
-        demo: "https://demo-link.com"
+        github: "https://github.com/rlohaw/project1"
       },
       achievements: [
-        "Reduced image processing time by 60%",
-        "Implemented distributed processing pipeline",
-        "Achieved 95% accuracy in image classification"
+        "Implemented noise removal and color correction models with minimal latency",
+        "Integrated Residual Channel Attention Network (RCAN) for super-resolution tasks",
+        "Optimized models to run efficiently on limited computational resources"
       ]
     },
     {
       id: 2,
-      title: "NLP Analysis Tool",
-      shortDesc: "Natural Language Processing for document analysis",
-      fullDesc: "Created a tool for analyzing large volumes of text data using transformer models. Features include sentiment analysis, named entity recognition, and topic modeling.",
-      techStack: ["Python", "Hugging Face", "spaCy", "Flask", "Redis"],
-      links: {
-        github: "https://github.com/rlohaw/project2",
-        demo: "https://demo-link.com"
-      },
+      title: "Fraud Detection for Vehicle Images",
+      shortDesc: "Advanced fraud detection with 2.5D car imagery",
+      fullDesc: "Developed a model to detect fraud from 2.5D vehicle imagery (photos from four sides of a car). The solution was optimized to run inference on a single-core CPU with 3GB of RAM, meeting stringent resource constraints.",
+      techStack: ["Python", "PyTorch", "EfficientFormer"],
       achievements: [
-        "Processed over 1M documents",
-        "Integrated 5+ language models",
-        "Reduced analysis time by 40%"
+        "Implemented a unified backbone (EfficientFormer_l1) with separate heads for damage, fraud, and side classification",
+        "Introduced a combined binary target for an ALL_GOOD class for better generalization",
+        "Applied advanced, class-specific augmentations using imgaug to handle noisy and inconsistent annotations",
+        "Optimized for inference on resource-constrained hardware with CosineAnnealingWarmRestarts scheduler and AdamW optimizer"
       ]
     }
   ];
+  
 
   const skills = {
     "Computer Vision": {
