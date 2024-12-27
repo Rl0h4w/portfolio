@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronDown, ChevronUp, ExternalLink, Github, Filter } from 'lucide-react';
 
-/**
- * AnimatedPortfolio Component
- * A modern, animated portfolio showcasing skills, projects, and achievements
- * Features smooth transitions, responsive design, and interactive elements
- */
 const AnimatedPortfolio = () => {
   // State management for UI interactions
   const [activeSection, setActiveSection] = useState('home');
@@ -79,7 +74,6 @@ const AnimatedPortfolio = () => {
 
   /**
    * Handle scroll events and update active section
-   * Controls the progress bar and navigation highlighting
    */
   useEffect(() => {
     const handleScroll = () => {
@@ -104,7 +98,7 @@ const AnimatedPortfolio = () => {
         }
       }
 
-      // Check if reached the end of the page
+      // Check if near bottom
       if (window.innerHeight + window.pageYOffset >= document.documentElement.scrollHeight - 100) {
         currentSection = 'contact';
       }
@@ -117,8 +111,7 @@ const AnimatedPortfolio = () => {
   }, []);
 
   /**
-   * Smooth scroll to section when clicking navigation items
-   * @param {string} sectionId - ID of the target section
+   * Smooth scroll to section
    */
   const handleNavigation = (sectionId) => {
     const element = document.getElementById(sectionId);
@@ -138,7 +131,6 @@ const AnimatedPortfolio = () => {
 
   /**
    * Navigation Component
-   * Fixed position navigation with progress bar and responsive menu
    */
   const Navigation = () => (
     <nav className={`
@@ -150,7 +142,7 @@ const AnimatedPortfolio = () => {
     `}>
       <div className="progress-bar h-1 bg-gray-700/30 fixed top-0 left-0 right-0">
         <div 
-          className="h-full bg-gradient-to-r from-purple-500 to-cyan-500"
+          className="h-full bg-gradient-to-r from-emerald-500 to-cyan-500"
           style={{ width: `${scrollProgress}%` }}
         />
       </div>
@@ -198,8 +190,12 @@ const AnimatedPortfolio = () => {
             rel="noopener noreferrer"
             className="hire-button relative group block"
           >
-            <div className="button-gradient absolute -inset-0.5 bg-gradient-to-r from-purple-600 via-cyan-500 to-purple-600 rounded blur opacity-60 group-hover:opacity-100 transition duration-1000" />
-            <div className="button-content relative bg-black/60 backdrop-blur-sm px-6 py-2 rounded">
+            <div className="button-gradient absolute -inset-0.5 bg-gradient-to-r from-emerald-600 via-cyan-500 to-emerald-600 rounded blur opacity-60 group-hover:opacity-100 transition duration-1000" />
+            {/* 
+              .hire-button-animations now only has a subtle glow/pulse, 
+              no vertical translation. 
+            */}
+            <div className="button-content relative bg-black/60 backdrop-blur-sm px-6 py-2 rounded hire-button-animations">
               HIRE ME
             </div>
           </a>
@@ -210,29 +206,30 @@ const AnimatedPortfolio = () => {
 
   /**
    * Featured Projects Component
-   * Displays highlighted projects in a grid layout
    */
   const FeaturedProjects = () => {
     const featuredProjects = projects.filter(p => p.featured);
     
     return (
       <div className="featured-projects mt-12">
-        <h2 className="text-xl text-cyan-400 mb-6">Featured Projects</h2>
+        <h2 className="text-xl mb-6 animate-text-gradient">
+          Featured Projects
+        </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {featuredProjects.map(project => (
             <div 
               key={project.id}
               className="featured-card border border-white/20 p-6 rounded-lg relative overflow-hidden group bg-black/40 backdrop-blur-sm hover:border-cyan-400/50 transition-all duration-500"
             >
-              <div className="featured-gradient absolute inset-0 bg-gradient-to-br from-purple-900/30 via-purple-900/10 to-cyan-900/30 opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="featured-gradient absolute inset-0 bg-gradient-to-br from-gray-800/30 via-gray-800/10 to-gray-900/30 opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
               <div className="relative z-10">
-                <h3 className="text-purple-300 text-lg mb-2">{project.title}</h3>
+                <h3 className="text-cyan-300 text-lg mb-2">{project.title}</h3>
                 <p className="text-gray-300 mb-4">{project.shortDesc}</p>
                 <div className="flex flex-wrap gap-2 mb-4">
                   {project.techStack.map((tech, index) => (
                     <span 
                       key={index}
-                      className="px-2 py-1 bg-purple-900/30 rounded-md text-sm text-cyan-200"
+                      className="px-2 py-1 bg-gray-800/60 rounded-md text-sm text-emerald-200"
                     >
                       {tech}
                     </span>
@@ -256,40 +253,51 @@ const AnimatedPortfolio = () => {
   return (
     <div className="portfolio-container min-h-screen bg-black text-white p-8 font-mono relative overflow-hidden">
       {/* Background elements */}
-      <div className="background-main absolute inset-0 bg-gradient-to-br from-purple-950/80 via-black to-cyan-950/80" />
-      <div className="background-overlay absolute inset-0 bg-black/40" />
+      <div className="background-main absolute inset-0 bg-gradient-to-br from-gray-950 via-black to-gray-950" />
+      <div className="background-overlay absolute inset-0 bg-black/70" />
       
-      {/* Animated background */}
+      {/*
+        Two swirling layers with single colors, 
+        no color switching, just rotation from 0° → 360°.
+      */}
       <div className="background-animated absolute top-0 left-0 w-full h-full overflow-hidden">
-        <div className="gradient-container absolute w-full h-full">
-          <div 
-            className="gradient-circle-1 absolute w-96 h-96 bg-purple-900/5 rounded-full blur-3xl"
-            style={{
-              animation: 'moveGradient1 25s infinite linear',
-              transform: 'translate(-50%, -50%)',
-              left: '30%',
-              top: '30%'
-            }}
-          />
-          <div 
-            className="gradient-circle-2 absolute w-96 h-96 bg-cyan-900/5 rounded-full blur-3xl"
-            style={{
-              animation: 'moveGradient2 30s infinite linear',
-              transform: 'translate(-50%, -50%)',
-              left: '70%',
-              top: '60%'
-            }}
-          />
-          <div 
-            className="gradient-circle-3 absolute w-96 h-96 bg-purple-800/5 rounded-full blur-3xl"
-            style={{
-              animation: 'moveGradient3 28s infinite linear',
-              transform: 'translate(-50%, -50%)',
-              left: '50%',
-              top: '50%'
-            }}
-          />
-        </div>
+        {/* Layer 1 */}
+        <div
+          className="absolute w-[200%] h-[200%] pointer-events-none"
+          style={{
+            left: '50%',
+            top: '50%',
+            transform: 'translate(-50%, -50%)',
+            animation: 'layer1Diffuse 40s infinite linear',
+            background: `
+              radial-gradient(
+                circle at 50% 50%,
+                rgba(255, 0, 150, 0.1) 0%,
+                rgba(255, 0, 150, 0) 60%
+              )
+            `,
+            mixBlendMode: 'screen',
+          }}
+        />
+
+        {/* Layer 2 */}
+        <div
+          className="absolute w-[200%] h-[200%] pointer-events-none"
+          style={{
+            left: '50%',
+            top: '50%',
+            transform: 'translate(-50%, -50%)',
+            animation: 'layer2Diffuse 60s infinite linear',
+            background: `
+              radial-gradient(
+                circle at 50% 50%,
+                rgba(0, 200, 255, 0.1) 0%,
+                rgba(0, 200, 255, 0) 60%
+              )
+            `,
+            mixBlendMode: 'lighten',
+          }}
+        />
       </div>
 
       <Navigation />
@@ -299,6 +307,7 @@ const AnimatedPortfolio = () => {
         {/* Header Section */}
         <div id="home" className="header-section flex flex-col md:flex-row items-start md:items-center justify-between mb-12">
           <div className="header-content mr-8">
+            {/* Big gradient text */}
             <h1 className="header-title text-4xl font-bold tracking-wider animate-text-gradient mb-4">
               RLOHAW
             </h1>
@@ -308,13 +317,13 @@ const AnimatedPortfolio = () => {
           
           <div className="profile-info mt-8 md:mt-0">
             <div className="profile-card border border-white/20 p-6 rounded-lg relative overflow-hidden group bg-black/40 backdrop-blur-sm">
-              <div className="profile-gradient absolute inset-0 bg-gradient-to-br from-purple-900/30 via-purple-900/10 to-cyan-900/30 opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="profile-gradient absolute inset-0 bg-gradient-to-br from-gray-800/30 via-gray-800/10 to-gray-900/30 opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
               <div className="profile-content relative">
                 <div className="profile-header text-xl mb-4 text-cyan-400">$ cat profile.txt</div>
                 <div className="profile-details space-y-2 text-sm">
-                  <p>Name: <span className="text-purple-300">Rostislav Lokhov</span></p>
-                  <p>Role: <span className="text-purple-300">DS/MLE</span></p>
-                  <p>Location: <span className="text-purple-300">Moscow, Russia</span></p>
+                  <p>Name: <span className="text-cyan-300">Rostislav Lokhov</span></p>
+                  <p>Role: <span className="text-cyan-300">DS/MLE</span></p>
+                  <p>Location: <span className="text-cyan-300">Moscow, Russia</span></p>
                   <p>Status: <span className="animate-status-gradient">Considering offers</span></p>
                 </div>
               </div>
@@ -323,16 +332,19 @@ const AnimatedPortfolio = () => {
         </div>
 
         <FeaturedProjects />
-{/* Main content sections */}
-<div className="main-content space-y-16">
+
+        {/* Main content sections */}
+        <div className="main-content space-y-16">
           {/* Achievements Section */}
-          <section id="achievements" className="achievements-section">
-            <h2 className="text-xl text-cyan-400 mb-6">$ cat achievements.md</h2>
+          <section id="achievements" className="achievements-section mt-24">
+            <h2 className="text-xl mb-6 animate-text-gradient">
+              Achievements
+            </h2>
             <div className="achievement-card border border-white/20 p-6 rounded-lg relative overflow-hidden group bg-black/40 backdrop-blur-sm">
-              <div className="achievement-gradient absolute inset-0 bg-gradient-to-br from-purple-900/30 via-purple-900/10 to-cyan-900/30 opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="achievement-gradient absolute inset-0 bg-gradient-to-br from-gray-800/30 via-gray-800/10 to-gray-900/30 opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
               <div className="achievement-content relative space-y-4">
                 <div className="achievement-item">
-                  <h3 className="text-purple-300 text-lg mb-2">🏆 Key Technical Achievements</h3>
+                  <h3 className="text-cyan-300 text-lg mb-2">🏆 Key Technical Achievements</h3>
                   <ul className="list-disc list-inside space-y-2 text-gray-300">
                     <li>Finalist in the AIDAO International AI Olympiad by Yandex</li>
                     <li>Recipient of the Central University Scholarship</li>
@@ -340,7 +352,7 @@ const AnimatedPortfolio = () => {
                   </ul>
                 </div>
                 <div className="achievement-item">
-                  <h3 className="text-purple-300 text-lg mb-2">🎯 Project Impact</h3>
+                  <h3 className="text-cyan-300 text-lg mb-2">🎯 Project Impact</h3>
                   <ul className="list-disc list-inside space-y-2 text-gray-300">
                     <li>Developed and deployed a high-performance fraud detection model</li>
                     <li>Successfully designed a resource-efficient deep learning pipeline</li>
@@ -353,7 +365,9 @@ const AnimatedPortfolio = () => {
 
           {/* Skills Section */}
           <section id="skills" className="skills-section">
-            <h2 className="text-xl text-cyan-400 mb-6">$ ls -la skills/</h2>
+            <h2 className="text-xl mb-6 animate-text-gradient">
+              Skills
+            </h2>
             <div className="skills-grid space-y-4">
               {Object.entries(skills).map(([name, skill]) => (
                 <div key={name} 
@@ -367,7 +381,7 @@ const AnimatedPortfolio = () => {
                   >
                     <div className="flex items-center gap-2">
                       <span className="text-cyan-400 transform group-hover:rotate-90 transition-transform duration-300">❯</span>
-                      <h3 className="text-purple-300 font-medium">{name}</h3>
+                      <h3 className="text-cyan-300 font-medium">{name}</h3>
                     </div>
                     {openSkills[name] ? 
                       <ChevronUp className="text-cyan-400 transform transition-transform duration-300 group-hover:-translate-y-1" /> : 
@@ -383,24 +397,24 @@ const AnimatedPortfolio = () => {
                     <div className="space-y-4 p-4 bg-black/20 rounded-lg">
                       <div className="flex flex-wrap gap-2">
                         {skill.items.map((item, index) => (
-                          <span key={index} className="skill-badge px-2 py-1 bg-purple-900/30 rounded-md text-sm text-cyan-200">
+                          <span key={index} className="skill-badge px-2 py-1 bg-gray-800/60 rounded-md text-sm text-emerald-200">
                             {item}
                           </span>
                         ))}
                       </div>
                       <div className="skill-details space-y-2 text-sm">
                         <p className="text-gray-300">
-                          <span className="text-purple-300">Experience: </span>
+                          <span className="text-cyan-300">Experience: </span>
                           {skill.experience}
                         </p>
                         <p className="text-gray-300">
-                          <span className="text-purple-300">Projects: </span>
+                          <span className="text-cyan-300">Projects: </span>
                           {skill.projects}
                         </p>
                         <p className="text-gray-300">
-                          <span className="text-purple-300">Level: </span>
+                          <span className="text-cyan-300">Level: </span>
                           <span className={`
-                            ${skill.level === 'Advanced' ? 'text-green-400' : ''}
+                            ${skill.level === 'Advanced' ? 'text-emerald-400' : ''}
                             ${skill.level === 'Intermediate' ? 'text-yellow-400' : ''}
                             ${skill.level === 'Beginner' ? 'text-red-400' : ''}
                           `}>
@@ -417,7 +431,9 @@ const AnimatedPortfolio = () => {
 
           {/* Projects Section */}
           <section id="projects" className="projects-section">
-            <h2 className="text-xl text-cyan-400 mb-6">$ git log --oneline projects/</h2>
+            <h2 className="text-xl mb-6 animate-text-gradient">
+              Projects
+            </h2>
             {/* Project filters */}
             <div className="project-filters mb-6">
               <div className="flex flex-wrap gap-2">
@@ -457,7 +473,7 @@ const AnimatedPortfolio = () => {
                     >
                       <div className="flex items-center gap-2">
                         <span className="text-cyan-400 transform group-hover:rotate-90 transition-transform duration-300">❯</span>
-                        <h3 className="text-purple-300 font-medium">{project.title}</h3>
+                        <h3 className="text-cyan-300 font-medium">{project.title}</h3>
                       </div>
                       {openProjects[project.id] ? 
                         <ChevronUp className="text-cyan-400" /> : 
@@ -474,10 +490,10 @@ const AnimatedPortfolio = () => {
                         <p className="text-gray-300">{project.fullDesc}</p>
                         
                         <div className="tech-stack space-y-2">
-                          <h4 className="text-purple-300">Tech Stack:</h4>
+                          <h4 className="text-cyan-300">Tech Stack:</h4>
                           <div className="flex flex-wrap gap-2">
                             {project.techStack.map((tech, index) => (
-                              <span key={index} className="tech-badge px-2 py-1 bg-purple-900/30 rounded-md text-sm text-cyan-200">
+                              <span key={index} className="tech-badge px-2 py-1 bg-gray-800/60 rounded-md text-sm text-emerald-200">
                                 {tech}
                               </span>
                             ))}
@@ -485,10 +501,10 @@ const AnimatedPortfolio = () => {
                         </div>
 
                         <div className="achievements space-y-2">
-                          <h4 className="text-purple-300">Key Achievements:</h4>
+                          <h4 className="text-cyan-300">Key Achievements:</h4>
                           <ul className="list-disc list-inside space-y-1 text-gray-300">
-                            {project.achievements.map((achievement, index) => (
-                              <li key={index}>{achievement}</li>
+                            {project.achievements.map((achievement, idx) => (
+                              <li key={idx}>{achievement}</li>
                             ))}
                           </ul>
                         </div>
@@ -514,6 +530,7 @@ const AnimatedPortfolio = () => {
                 ))}
             </div>
           </section>
+
           {/* Contact Section */}
           <section id="contact" className="footer mt-12 border-t border-white/20 pt-4">
             <div className="social-links flex items-center flex-wrap gap-4">
@@ -550,7 +567,7 @@ const AnimatedPortfolio = () => {
                   rel="noopener noreferrer"
                   className="social-link relative group"
                 >
-                  <div className="link-gradient absolute -inset-0.5 bg-gradient-to-r from-purple-600 via-cyan-500 to-purple-600 rounded-full blur opacity-0 group-hover:opacity-60 transition duration-500" />
+                  <div className="link-gradient absolute -inset-0.5 bg-gradient-to-r from-emerald-600 via-cyan-500 to-emerald-600 rounded-full blur opacity-0 group-hover:opacity-60 transition duration-500" />
                   <span className="relative flex items-center gap-1 px-3 py-1 bg-black/40 rounded-full">
                     {icon}
                     {name}
@@ -561,176 +578,8 @@ const AnimatedPortfolio = () => {
           </section>
         </div>
       </div>
-
-      {/* Global styles and animations */}
-      <style jsx>{`
-        /* Background animations */
-        @keyframes moveGradient1 {
-          0%, 100% { transform: translate(-50%, -50%) translate(100px, 100px) rotate(0deg); }
-          25% { transform: translate(-50%, -50%) translate(-100px, 100px) rotate(90deg); }
-          50% { transform: translate(-50%, -50%) translate(-100px, -100px) rotate(180deg); }
-          75% { transform: translate(-50%, -50%) translate(100px, -100px) rotate(270deg); }
-        }
-        
-        @keyframes moveGradient2 {
-          0%, 100% { transform: translate(-50%, -50%) translate(-120px, -120px) rotate(0deg); }
-          25% { transform: translate(-50%, -50%) translate(120px, -120px) rotate(90deg); }
-          50% { transform: translate(-50%, -50%) translate(120px, 120px) rotate(180deg); }
-          75% { transform: translate(-50%, -50%) translate(-120px, 120px) rotate(270deg); }
-        }
-        
-        @keyframes moveGradient3 {
-          0%, 100% { transform: translate(-50%, -50%) translate(0, 150px) rotate(0deg); }
-          25% { transform: translate(-50%, -50%) translate(-150px, 0) rotate(90deg); }
-          50% { transform: translate(-50%, -50%) translate(0, -150px) rotate(180deg); }
-          75% { transform: translate(-50%, -50%) translate(150px, 0) rotate(270deg); }
-        }
-
-        /* Text gradient animations */
-        @keyframes textGradient {
-          0%, 100% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-        }
-
-        .animate-text-gradient {
-          background: linear-gradient(
-            to right,
-            #60daff 20%,
-            #ffffff 30%,
-            #a78bfa 70%,
-            #60daff 80%
-          );
-          background-size: 200% auto;
-          color: transparent;
-          background-clip: text;
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          animation: textGradient 3s linear infinite;
-        }
-
-        .animate-status-gradient {
-          background: linear-gradient(
-            to right,
-            #4ade80 20%,
-            #60daff 50%,
-            #4ade80 80%
-          );
-          background-size: 200% auto;
-          color: transparent;
-          background-clip: text;
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          animation: textGradient 2s linear infinite;
-        }
-
-        /* Mobile responsiveness */
-        @media (max-width: 768px) {
-          .header-section {
-            flex-direction: column;
-            gap: 2rem;
-          }
-
-          .profile-info {
-            width: 100%;
-          }
-
-          .social-links {
-            flex-direction: column;
-            align-items: flex-start;
-          }
-        }
-
-        /* Enhanced hover effects */
-        .project-card:hover,
-        .skill-card:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .social-link:hover {
-          transform: scale(1.05);
-        }
-
-        /* Smooth transitions */
-        .project-card,
-        .skill-card,
-        .social-link {
-          transition: all 0.3s ease-in-out;
-        }
-
-        /* Keyboard focus styles */
-        .nav-item:focus-visible,
-        .project-header:focus-visible,
-        .skill-header:focus-visible,
-        .social-link:focus-visible {
-          outline: 2px solid #60daff;
-          outline-offset: 2px;
-          border-radius: 4px;
-        }
-
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-          width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-          background: rgba(0, 0, 0, 0.2);
-        }
-
-        ::-webkit-scrollbar-thumb {
-          background: rgba(96, 218, 255, 0.3);
-          border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-          background: rgba(96, 218, 255, 0.5);
-        }
-
-        /* Text content styles */
-        .text-gray-300 {
-          text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-        }
-
-        .text-purple-300 {
-          text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
-        }
-
-        /* Content backgrounds */
-        .project-card .project-content,
-        .skill-card .skill-content {
-          position: relative;
-          isolation: isolate;
-        }
-
-        /* Improved card backgrounds */
-        .project-card,
-        .skill-card {
-          backdrop-filter: blur(8px);
-          position: relative;
-          isolation: isolate;
-        }
-
-        /* Gradient overlays */
-        .gradient-overlay {
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(
-            to bottom right,
-            rgba(139, 92, 246, 0.1),
-            rgba(6, 182, 212, 0.1)
-          );
-          opacity: 0;
-          transition: opacity 0.3s ease;
-        }
-
-        .project-card:hover .gradient-overlay,
-        .skill-card:hover .gradient-overlay {
-          opacity: 1;
-        }
-      `}</style>
     </div>
   );
 };
 
 export default AnimatedPortfolio;
-
