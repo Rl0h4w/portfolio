@@ -1,138 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { ChevronDown, ChevronUp, ExternalLink, Github, Filter } from 'lucide-react';
 
-const AnimatedPortfolio = () => {
-  // State management for UI interactions
-  const [activeSection, setActiveSection] = useState('home');
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const [openSkills, setOpenSkills] = useState({});
-  const [openProjects, setOpenProjects] = useState({});
-  const [selectedTech, setSelectedTech] = useState('all');
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  // Project data structure
-  const projects = [
-    {
-      id: 1,
-      title: "Image Denoising and Enhancement",
-      shortDesc: "Efficient image processing with constrained resources",
-      fullDesc: "Developed models for image denoising, color correction, and super-resolution using deep learning techniques. Optimized hyperparameters with Optuna for enhanced performance under resource constraints.",
-      techStack: ["Python", "TensorFlow", "Optuna"],
-      featured: true,
-      links: {
-        github: "https://github.com/rlohaw/project1"
-      },
-      achievements: [
-        "Implemented noise removal and color correction models with minimal latency",
-        "Integrated Residual Channel Attention Network (RCAN) for super-resolution tasks",
-        "Optimized models to run efficiently on limited computational resources"
-      ]
-    },
-    {
-      id: 2,
-      title: "Fraud Detection for Vehicle Images (NDA)",
-      shortDesc: "Advanced fraud detection with 2.5D car imagery",
-      fullDesc: "Developed a model to detect fraud from 2.5D vehicle imagery (photos from four sides of a car). The solution was optimized to run inference on a single-core CPU with 3GB of RAM, meeting stringent resource constraints.",
-      techStack: ["Python", "PyTorch", "EfficientFormer"],
-      featured: true,
-      achievements: [
-        "Implemented a unified backbone (EfficientFormer_l1) with separate heads for damage, fraud, and side classification",
-        "Introduced a combined binary target for an ALL_GOOD class for better generalization",
-        "Applied advanced, class-specific augmentations using imgaug to handle noisy and inconsistent annotations",
-        "Optimized for inference on resource-constrained hardware with CosineAnnealingWarmRestarts scheduler and AdamW optimizer"
-      ]
-    }
-  ];
-
-  // Skills data structure
-  const skills = {
-    "Computer Vision": {
-      items: ["Image Denoising", "Color Correction", "Image Super-Resolution", "Object Detection", "Semantic Segmentation"],
-      experience: "1 year of intensive research and model development",
-      projects: "Designed and trained custom architectures to enhance aerial imaging quality for UAVs, focusing on noise reduction, color consistency, and resolution optimization.",
-      level: "Intermediate"
-    },
-    "Machine Learning": {
-      items: ["PyTorch", "TensorFlow", "Scikit-learn", "XGBoost", "LightGBM", "CatBoost", "Pandas", "NumPy", "Matplotlib", "Seaborn"],
-      experience: "1 year of applied experience",
-      projects: "Conducted research-driven ML model development, focusing on feature engineering, predictive analytics, and optimization with custom algorithms.",
-      level: "Intermediate"
-    },
-    "Deep Learning": {
-      items: ["CNNs", "Transformers", "GANs", "Custom Architectures", "OpenCV", "Keras"],
-      experience: "2 years of focused architecture design and experimentation",
-      projects: "Created and refined deep learning models for challenging datasets, with an emphasis on custom architecture research and high-performance training.",
-      level: "Intermediate"
-    },
-    "MLOps": {
-      items: ["Docker", "Kubernetes", "GitHub Actions"],
-      experience: "Limited exposure to deployment workflows",
-      projects: "Assisted in deploying ML models using basic containerization and automation tools to streamline production readiness.",
-      level: "Beginner"
-    }
-  };
-
-  /**
-   * Handle scroll events and update active section
-   */
-  useEffect(() => {
-    const handleScroll = () => {
-      // Calculate scroll progress
-      const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
-      const currentProgress = (window.pageYOffset / totalScroll) * 100;
-      setScrollProgress(currentProgress);
-
-      // Update active section based on scroll position
-      const sections = ['home', 'achievements', 'skills', 'projects', 'contact'];
-      let currentSection = sections[0];
-      
-      for (const section of sections) {
-        const element = document.getElementById(section);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          const offset = 150;
-          if (rect.top <= offset && rect.bottom >= offset) {
-            currentSection = section;
-            break;
-          }
-        }
-      }
-
-      // Check if near bottom
-      if (window.innerHeight + window.pageYOffset >= document.documentElement.scrollHeight - 100) {
-        currentSection = 'contact';
-      }
-
-      setActiveSection(currentSection);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  /**
-   * Smooth scroll to section
-   */
-  const handleNavigation = (sectionId) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      const offset = 100;
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - offset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
-      
-      setIsMenuOpen(false);
-    }
-  };
-
-  /**
-   * Navigation Component
-   */
-  const Navigation = () => (
+/**
+ * Navigation Component
+ */
+const Navigation = React.memo(function Navigation({ 
+  isMenuOpen, 
+  setIsMenuOpen, 
+  scrollProgress, 
+  activeSection, 
+  handleNavigation 
+}) {
+  return (
     <nav className={`
       fixed top-0 right-0 p-4 
       bg-black/40 backdrop-blur-sm 
@@ -148,7 +27,7 @@ const AnimatedPortfolio = () => {
       </div>
       {/* Mobile menu toggle */}
       <button 
-        onClick={() => setIsMenuOpen(!isMenuOpen)}
+        onClick={() => setIsMenuOpen(prev => !prev)}
         className="md:hidden text-cyan-400 p-2 hover:text-cyan-300 transition-colors"
         aria-label="Toggle menu"
       >
@@ -191,10 +70,6 @@ const AnimatedPortfolio = () => {
             className="hire-button relative group block"
           >
             <div className="button-gradient absolute -inset-0.5 bg-gradient-to-r from-emerald-600 via-cyan-500 to-emerald-600 rounded blur opacity-60 group-hover:opacity-100 transition duration-1000" />
-            {/* 
-              .hire-button-animations now only has a subtle glow/pulse, 
-              no vertical translation. 
-            */}
             <div className="button-content relative bg-black/60 backdrop-blur-sm px-6 py-2 rounded hire-button-animations">
               HIRE ME
             </div>
@@ -203,53 +78,214 @@ const AnimatedPortfolio = () => {
       </ul>
     </nav>
   );
+});
+
+/**
+ * Featured Projects Component
+ */
+const FeaturedProjects = React.memo(function FeaturedProjects({ featuredProjects, handleNavigation }) {
+  return (
+    <div className="featured-projects mt-12">
+      <h2 className="text-xl mb-6 animate-text-gradient">
+        Featured Projects
+      </h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {featuredProjects.map(project => (
+          <div 
+            key={project.id}
+            className="featured-card border border-white/20 p-6 rounded-lg relative overflow-hidden group bg-black/40 backdrop-blur-sm hover:border-cyan-400/50 transition-all duration-500"
+          >
+            <div className="featured-gradient absolute inset-0 bg-gradient-to-br from-gray-800/30 via-gray-800/10 to-gray-900/30 opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="relative z-10">
+              <h3 className="text-cyan-300 text-lg mb-2">{project.title}</h3>
+              <p className="text-gray-300 mb-4">{project.shortDesc}</p>
+              <div className="flex flex-wrap gap-2 mb-4">
+                {project.techStack.map((tech, index) => (
+                  <span 
+                    key={index}
+                    className="px-2 py-1 bg-gray-800/60 rounded-md text-sm text-emerald-200"
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
+              <button 
+                onClick={() => handleNavigation('projects')}
+                className="text-cyan-400 hover:text-cyan-300 transition-colors flex items-center gap-2"
+              >
+                View Details
+                <ChevronDown size={16} />
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+});
+
+/**
+ * Main AnimatedPortfolio Component
+ */
+const AnimatedPortfolio = () => {
+  // State management for UI interactions
+  const [activeSection, setActiveSection] = useState('home');
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [openSkills, setOpenSkills] = useState({});
+  const [openProjects, setOpenProjects] = useState({});
+  const [selectedTech, setSelectedTech] = useState('all');
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  // Memoized Project data structure
+  const projects = useMemo(() => [
+    {
+      id: 1,
+      title: "Image Denoising and Enhancement",
+      shortDesc: "Efficient image processing with constrained resources",
+      fullDesc: "Developed models for image denoising, color correction, and super-resolution using deep learning techniques. Optimized hyperparameters with Optuna for enhanced performance under resource constraints.",
+      techStack: ["Python", "TensorFlow", "Optuna"],
+      featured: true,
+      links: {
+        github: "https://github.com/rlohaw/project1"
+      },
+      achievements: [
+        "Implemented noise removal and color correction models with minimal latency",
+        "Integrated Residual Channel Attention Network (RCAN) for super-resolution tasks",
+        "Optimized models to run efficiently on limited computational resources"
+      ]
+    },
+    {
+      id: 2,
+      title: "Fraud Detection for Vehicle Images (NDA)",
+      shortDesc: "Advanced fraud detection with 2.5D car imagery",
+      fullDesc: "Developed a model to detect fraud from 2.5D vehicle imagery (photos from four sides of a car). The solution was optimized to run inference on a single-core CPU with 3GB of RAM, meeting stringent resource constraints.",
+      techStack: ["Python", "PyTorch", "EfficientFormer"],
+      featured: true,
+      achievements: [
+        "Implemented a unified backbone (EfficientFormer_l1) with separate heads for damage, fraud, and side classification",
+        "Introduced a combined binary target for an ALL_GOOD class for better generalization",
+        "Applied advanced, class-specific augmentations using imgaug to handle noisy and inconsistent annotations",
+        "Optimized for inference on resource-constrained hardware with CosineAnnealingWarmRestarts scheduler and AdamW optimizer"
+      ]
+    }
+  ], []);
+
+  // Memoized Skills data structure
+  const skills = useMemo(() => ({
+    "Computer Vision": {
+      items: ["Image Denoising", "Color Correction", "Image Super-Resolution", "Object Detection", "Semantic Segmentation"],
+      experience: "1 year of intensive research and model development",
+      projects: "Designed and trained custom architectures to enhance aerial imaging quality for UAVs, focusing on noise reduction, color consistency, and resolution optimization.",
+      level: "Intermediate"
+    },
+    "Machine Learning": {
+      items: ["PyTorch", "TensorFlow", "Scikit-learn", "XGBoost", "LightGBM", "CatBoost", "Pandas", "NumPy", "Matplotlib", "Seaborn"],
+      experience: "1 year of applied experience",
+      projects: "Conducted research-driven ML model development, focusing on feature engineering, predictive analytics, and optimization with custom algorithms.",
+      level: "Intermediate"
+    },
+    "Deep Learning": {
+      items: ["CNNs", "Transformers", "GANs", "Custom Architectures", "OpenCV", "Keras"],
+      experience: "2 years of focused architecture design and experimentation",
+      projects: "Created and refined deep learning models for challenging datasets, with an emphasis on custom architecture research and high-performance training.",
+      level: "Intermediate"
+    },
+    "MLOps": {
+      items: ["Docker", "Kubernetes", "GitHub Actions"],
+      experience: "Limited exposure to deployment workflows",
+      projects: "Assisted in deploying ML models using basic containerization and automation tools to streamline production readiness.",
+      level: "Beginner"
+    }
+  }), []);
 
   /**
-   * Featured Projects Component
+   * Memoized Derived Data
    */
-  const FeaturedProjects = () => {
-    const featuredProjects = projects.filter(p => p.featured);
-    
-    return (
-      <div className="featured-projects mt-12">
-        <h2 className="text-xl mb-6 animate-text-gradient">
-          Featured Projects
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {featuredProjects.map(project => (
-            <div 
-              key={project.id}
-              className="featured-card border border-white/20 p-6 rounded-lg relative overflow-hidden group bg-black/40 backdrop-blur-sm hover:border-cyan-400/50 transition-all duration-500"
-            >
-              <div className="featured-gradient absolute inset-0 bg-gradient-to-br from-gray-800/30 via-gray-800/10 to-gray-900/30 opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
-              <div className="relative z-10">
-                <h3 className="text-cyan-300 text-lg mb-2">{project.title}</h3>
-                <p className="text-gray-300 mb-4">{project.shortDesc}</p>
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {project.techStack.map((tech, index) => (
-                    <span 
-                      key={index}
-                      className="px-2 py-1 bg-gray-800/60 rounded-md text-sm text-emerald-200"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-                <button 
-                  onClick={() => handleNavigation('projects')}
-                  className="text-cyan-400 hover:text-cyan-300 transition-colors flex items-center gap-2"
-                >
-                  View Details
-                  <ChevronDown size={16} />
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  };
+  const featuredProjects = useMemo(() => {
+    return projects.filter(p => p.featured);
+  }, [projects]);
 
+  const filteredProjects = useMemo(() => {
+    return selectedTech === 'all'
+      ? projects
+      : projects.filter((project) => project.techStack.includes(selectedTech));
+  }, [projects, selectedTech]);
+
+  /**
+   * Throttled Scroll Handler
+   */
+  useEffect(() => {
+    let ticking = false;
+
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          // Calculate scroll progress
+          const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
+          const currentProgress = (window.pageYOffset / totalScroll) * 100;
+          setScrollProgress(currentProgress);
+
+          // Update active section based on scroll position
+          const sections = ['home', 'achievements', 'skills', 'projects', 'contact'];
+          let currentSection = sections[0];
+          
+          for (const section of sections) {
+            const element = document.getElementById(section);
+            if (element) {
+              const rect = element.getBoundingClientRect();
+              const offset = 150;
+              if (rect.top <= offset && rect.bottom >= offset) {
+                currentSection = section;
+                break;
+              }
+            }
+          }
+
+          // Check if near bottom
+          if (window.innerHeight + window.pageYOffset >= document.documentElement.scrollHeight - 100) {
+            currentSection = 'contact';
+          }
+
+          setActiveSection(currentSection);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  /**
+   * Memoized Navigation Handler
+   */
+  const handleNavigation = useCallback((sectionId) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      const offset = 100;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+      
+      setIsMenuOpen(false);
+    }
+  }, []);
+
+  /**
+   * Memoized Project Filter Handler
+   */
+  const handleTechFilter = useCallback((tech) => {
+    setSelectedTech(tech);
+  }, []);
+
+  /**
+   * Main Render
+   */
   return (
     <div className="portfolio-container min-h-screen bg-black text-white p-8 font-mono relative overflow-hidden">
       {/* Background elements */}
@@ -300,7 +336,13 @@ const AnimatedPortfolio = () => {
         />
       </div>
 
-      <Navigation />
+      <Navigation 
+        isMenuOpen={isMenuOpen}
+        setIsMenuOpen={setIsMenuOpen}
+        scrollProgress={scrollProgress}
+        activeSection={activeSection}
+        handleNavigation={handleNavigation}
+      />
 
       {/* Main content */}
       <div className="content-wrapper relative z-10 max-w-6xl mx-auto pt-20">
@@ -331,7 +373,10 @@ const AnimatedPortfolio = () => {
           </div>
         </div>
 
-        <FeaturedProjects />
+        <FeaturedProjects 
+          featuredProjects={featuredProjects}
+          handleNavigation={handleNavigation}
+        />
 
         {/* Main content sections */}
         <div className="main-content space-y-16">
@@ -438,7 +483,7 @@ const AnimatedPortfolio = () => {
             <div className="project-filters mb-6">
               <div className="flex flex-wrap gap-2">
                 <button 
-                  onClick={() => setSelectedTech('all')}
+                  onClick={() => handleTechFilter('all')}
                   className={`px-3 py-1 rounded-full transition-colors duration-300 
                     ${selectedTech === 'all' ? 'bg-cyan-400 text-black' : 'bg-gray-800 text-gray-300 hover:bg-gray-700'}`}
                 >
@@ -447,7 +492,7 @@ const AnimatedPortfolio = () => {
                 {Array.from(new Set(projects.flatMap(p => p.techStack))).map(tech => (
                   <button
                     key={tech}
-                    onClick={() => setSelectedTech(tech)}
+                    onClick={() => handleTechFilter(tech)}
                     className={`px-3 py-1 rounded-full transition-colors duration-300 
                       ${selectedTech === tech ? 'bg-cyan-400 text-black' : 'bg-gray-800 text-gray-300 hover:bg-gray-700'}`}
                   >
@@ -459,75 +504,73 @@ const AnimatedPortfolio = () => {
             
             {/* Projects grid */}
             <div className="projects-grid space-y-4">
-              {projects
-                .filter(project => selectedTech === 'all' || project.techStack.includes(selectedTech))
-                .map(project => (
-                  <div key={project.id} 
-                       className="project-card border border-white/20 p-4 rounded-lg transition-all duration-300 hover:border-cyan-400/50 bg-black/40 backdrop-blur-sm">
-                    <div 
-                      className="project-header flex items-center justify-between cursor-pointer group"
-                      onClick={() => setOpenProjects(prev => ({ ...prev, [project.id]: !prev[project.id] }))}
-                      role="button"
-                      aria-expanded={openProjects[project.id]}
-                      tabIndex={0}
-                    >
-                      <div className="flex items-center gap-2">
-                        <span className="text-cyan-400 transform group-hover:rotate-90 transition-transform duration-300">❯</span>
-                        <h3 className="text-cyan-300 font-medium">{project.title}</h3>
-                      </div>
-                      {openProjects[project.id] ? 
-                        <ChevronUp className="text-cyan-400" /> : 
-                        <ChevronDown className="text-cyan-400" />
-                      }
+              {filteredProjects.map(project => (
+                <div key={project.id} 
+                     className="project-card border border-white/20 p-4 rounded-lg transition-all duration-300 hover:border-cyan-400/50 bg-black/40 backdrop-blur-sm">
+                  <div 
+                    className="project-header flex items-center justify-between cursor-pointer group"
+                    onClick={() => setOpenProjects(prev => ({ ...prev, [project.id]: !prev[project.id] }))}
+                    role="button"
+                    aria-expanded={openProjects[project.id]}
+                    tabIndex={0}
+                  >
+                    <div className="flex items-center gap-2">
+                      <span className="text-cyan-400 transform group-hover:rotate-90 transition-transform duration-300">❯</span>
+                      <h3 className="text-cyan-300 font-medium">{project.title}</h3>
                     </div>
+                    {openProjects[project.id] ? 
+                      <ChevronUp className="text-cyan-400" /> : 
+                      <ChevronDown className="text-cyan-400" />
+                    }
+                  </div>
 
-                    <div className={`
-                      project-content overflow-hidden transition-all duration-500 
-                      relative z-10
-                      ${openProjects[project.id] ? 'max-h-[1000px] opacity-100 mt-4' : 'max-h-0 opacity-0'}
-                    `}>
-                      <div className="space-y-4 p-4 bg-black/20 rounded-lg">
-                        <p className="text-gray-300">{project.fullDesc}</p>
-                        
-                        <div className="tech-stack space-y-2">
-                          <h4 className="text-cyan-300">Tech Stack:</h4>
-                          <div className="flex flex-wrap gap-2">
-                            {project.techStack.map((tech, index) => (
-                              <span key={index} className="tech-badge px-2 py-1 bg-gray-800/60 rounded-md text-sm text-emerald-200">
-                                {tech}
-                              </span>
-                            ))}
-                          </div>
+                  <div className={`
+                    project-content overflow-hidden transition-all duration-500 
+                    relative z-10
+                    ${openProjects[project.id] ? 'max-h-[1000px] opacity-100 mt-4' : 'max-h-0 opacity-0'}
+                  `}>
+                    <div className="space-y-4 p-4 bg-black/20 rounded-lg">
+                      <p className="text-gray-300">{project.fullDesc}</p>
+                      
+                      <div className="tech-stack space-y-2">
+                        <h4 className="text-cyan-300">Tech Stack:</h4>
+                        <div className="flex flex-wrap gap-2">
+                          {project.techStack.map((tech, index) => (
+                            <span key={index} className="tech-badge px-2 py-1 bg-gray-800/60 rounded-md text-sm text-emerald-200">
+                              {tech}
+                            </span>
+                          ))}
                         </div>
-
-                        <div className="achievements space-y-2">
-                          <h4 className="text-cyan-300">Key Achievements:</h4>
-                          <ul className="list-disc list-inside space-y-1 text-gray-300">
-                            {project.achievements.map((achievement, idx) => (
-                              <li key={idx}>{achievement}</li>
-                            ))}
-                          </ul>
-                        </div>
-
-                        {project.links && (
-                          <div className="project-links flex gap-4 pt-2">
-                            {project.links?.github && (
-                              <a 
-                                href={project.links.github}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="link-github flex items-center gap-2 text-cyan-400 hover:text-cyan-300 transition-colors duration-300"
-                              >
-                                <Github size={16} />
-                                View Code
-                              </a>
-                            )}
-                          </div>
-                        )}
                       </div>
+
+                      <div className="achievements space-y-2">
+                        <h4 className="text-cyan-300">Key Achievements:</h4>
+                        <ul className="list-disc list-inside space-y-1 text-gray-300">
+                          {project.achievements.map((achievement, idx) => (
+                            <li key={idx}>{achievement}</li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      {project.links && (
+                        <div className="project-links flex gap-4 pt-2">
+                          {project.links.github && (
+                            <a 
+                              href={project.links.github}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="link-github flex items-center gap-2 text-cyan-400 hover:text-cyan-300 transition-colors duration-300"
+                            >
+                              <Github size={16} />
+                              View Code
+                            </a>
+                          )}
+                        </div>
+                      )}
                     </div>
                   </div>
-                ))}
+                </div>
+              ))}
             </div>
           </section>
 
