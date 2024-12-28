@@ -1,5 +1,3 @@
-// src/components/AnimatedPortfolio.jsx
-
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { ChevronDown, ChevronUp, Github, Filter } from 'lucide-react';
 import StarburstEffect from './StarburstEffect'; // Убедитесь, что путь корректен
