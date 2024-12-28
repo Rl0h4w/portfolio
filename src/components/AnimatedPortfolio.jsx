@@ -1,8 +1,11 @@
+// src/components/AnimatedPortfolio.jsx
+
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { ChevronDown, ChevronUp, ExternalLink, Github, Filter } from 'lucide-react';
+import { ChevronDown, ChevronUp, Github, Filter } from 'lucide-react';
+import StarburstEffect from './StarburstEffect'; // Убедитесь, что путь корректен
 
 /**
- * Navigation Component
+ * Компонент Навигации
  */
 const Navigation = React.memo(function Navigation({ 
   isMenuOpen, 
@@ -14,18 +17,19 @@ const Navigation = React.memo(function Navigation({
   return (
     <nav className={`
       fixed top-0 right-0 p-4 
-      bg-black/40 backdrop-blur-sm 
       z-50 transition-all duration-300 
       ${isMenuOpen ? 'w-64' : 'w-auto'}
       rounded-bl-lg border-l border-b border-white/10
     `}>
+      {/* Прогресс-бар скролла */}
       <div className="progress-bar h-1 bg-gray-700/30 fixed top-0 left-0 right-0">
         <div 
           className="h-full bg-gradient-to-r from-emerald-500 to-cyan-500"
           style={{ width: `${scrollProgress}%` }}
         />
       </div>
-      {/* Mobile menu toggle */}
+
+      {/* Кнопка переключения меню на мобильных устройствах */}
       <button 
         onClick={() => setIsMenuOpen(prev => !prev)}
         className="md:hidden text-cyan-400 p-2 hover:text-cyan-300 transition-colors"
@@ -33,7 +37,8 @@ const Navigation = React.memo(function Navigation({
       >
         <Filter size={20} />
       </button>
-      {/* Navigation links */}
+
+      {/* Ссылки навигации */}
       <ul className={`
         nav-list space-y-2 
         ${isMenuOpen ? 'block' : 'hidden md:block'}
@@ -61,7 +66,8 @@ const Navigation = React.memo(function Navigation({
             → {label}
           </li>
         ))}
-        {/* Hire me button */}
+
+        {/* Кнопка "Hire Me" */}
         <li className="mt-4">
           <a 
             href="https://t.me/rlohaw"
@@ -81,7 +87,7 @@ const Navigation = React.memo(function Navigation({
 });
 
 /**
- * Featured Projects Component
+ * Компонент Избранных Проектов
  */
 const FeaturedProjects = React.memo(function FeaturedProjects({ featuredProjects, handleNavigation }) {
   return (
@@ -125,10 +131,10 @@ const FeaturedProjects = React.memo(function FeaturedProjects({ featuredProjects
 });
 
 /**
- * Main AnimatedPortfolio Component
+ * Главный Компонент AnimatedPortfolio
  */
 const AnimatedPortfolio = () => {
-  // State management for UI interactions
+  // Состояния для управления UI
   const [activeSection, setActiveSection] = useState('home');
   const [scrollProgress, setScrollProgress] = useState(0);
   const [openSkills, setOpenSkills] = useState({});
@@ -136,7 +142,7 @@ const AnimatedPortfolio = () => {
   const [selectedTech, setSelectedTech] = useState('all');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // Memoized Project data structure
+  // Данные проектов, мемоизированные для оптимизации
   const projects = useMemo(() => [
     {
       id: 1,
@@ -170,7 +176,7 @@ const AnimatedPortfolio = () => {
     }
   ], []);
 
-  // Memoized Skills data structure
+  // Данные навыков, мемоизированные для оптимизации
   const skills = useMemo(() => ({
     "Computer Vision": {
       items: ["Image Denoising", "Color Correction", "Image Super-Resolution", "Object Detection", "Semantic Segmentation"],
@@ -199,7 +205,7 @@ const AnimatedPortfolio = () => {
   }), []);
 
   /**
-   * Memoized Derived Data
+   * Полученные данные: Избранные и Отфильтрованные Проекты
    */
   const featuredProjects = useMemo(() => {
     return projects.filter(p => p.featured);
@@ -212,7 +218,7 @@ const AnimatedPortfolio = () => {
   }, [projects, selectedTech]);
 
   /**
-   * Throttled Scroll Handler
+   * Обработчик скролла с оптимизацией через requestAnimationFrame
    */
   useEffect(() => {
     let ticking = false;
@@ -220,12 +226,12 @@ const AnimatedPortfolio = () => {
     const handleScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
-          // Calculate scroll progress
+          // Вычисление прогресса скролла
           const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
           const currentProgress = (window.pageYOffset / totalScroll) * 100;
           setScrollProgress(currentProgress);
 
-          // Update active section based on scroll position
+          // Обновление активного раздела на основе позиции скролла
           const sections = ['home', 'achievements', 'skills', 'projects', 'contact'];
           let currentSection = sections[0];
           
@@ -241,7 +247,7 @@ const AnimatedPortfolio = () => {
             }
           }
 
-          // Check if near bottom
+          // Проверка, если пользователь почти добрался до конца страницы
           if (window.innerHeight + window.pageYOffset >= document.documentElement.scrollHeight - 100) {
             currentSection = 'contact';
           }
@@ -258,7 +264,7 @@ const AnimatedPortfolio = () => {
   }, []);
 
   /**
-   * Memoized Navigation Handler
+   * Обработчик навигации
    */
   const handleNavigation = useCallback((sectionId) => {
     const element = document.getElementById(sectionId);
@@ -272,70 +278,27 @@ const AnimatedPortfolio = () => {
         behavior: 'smooth'
       });
       
-      setIsMenuOpen(false);
+      setIsMenuOpen(false); // Закрытие меню после навигации
     }
   }, []);
 
   /**
-   * Memoized Project Filter Handler
+   * Обработчик фильтрации проектов по технологии
    */
   const handleTechFilter = useCallback((tech) => {
     setSelectedTech(tech);
   }, []);
 
   /**
-   * Main Render
+   * Основной рендер компонента
    */
   return (
-    <div className="portfolio-container min-h-screen bg-black text-white p-8 font-mono relative overflow-hidden">
-      {/* Background elements */}
-      <div className="background-main absolute inset-0 bg-gradient-to-br from-gray-950 via-black to-gray-950" />
-      <div className="background-overlay absolute inset-0 bg-black/70" />
+    <div className="portfolio-container min-h-screen text-white p-0 font-mono relative overflow-hidden">
       
-      {/*
-        Two swirling layers with single colors, 
-        no color switching, just rotation from 0° → 360°.
-      */}
-      <div className="background-animated absolute top-0 left-0 w-full h-full overflow-hidden">
-        {/* Layer 1 */}
-        <div
-          className="absolute w-[200%] h-[200%] pointer-events-none"
-          style={{
-            left: '50%',
-            top: '50%',
-            transform: 'translate(-50%, -50%)',
-            animation: 'layer1Diffuse 40s infinite linear',
-            background: `
-              radial-gradient(
-                circle at 50% 50%,
-                rgba(255, 0, 150, 0.1) 0%,
-                rgba(255, 0, 150, 0) 60%
-              )
-            `,
-            mixBlendMode: 'screen',
-          }}
-        />
+      {/* Анимированный фон с низким z-index */}
+      <StarburstEffect />
 
-        {/* Layer 2 */}
-        <div
-          className="absolute w-[200%] h-[200%] pointer-events-none"
-          style={{
-            left: '50%',
-            top: '50%',
-            transform: 'translate(-50%, -50%)',
-            animation: 'layer2Diffuse 60s infinite linear',
-            background: `
-              radial-gradient(
-                circle at 50% 50%,
-                rgba(0, 200, 255, 0.1) 0%,
-                rgba(0, 200, 255, 0) 60%
-              )
-            `,
-            mixBlendMode: 'lighten',
-          }}
-        />
-      </div>
-
+      {/* Навигация с высоким z-index */}
       <Navigation 
         isMenuOpen={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen}
@@ -344,12 +307,12 @@ const AnimatedPortfolio = () => {
         handleNavigation={handleNavigation}
       />
 
-      {/* Main content */}
-      <div className="content-wrapper relative z-10 max-w-6xl mx-auto pt-20">
+      {/* Основное содержимое с еще более высоким z-index */}
+      <div className="content-wrapper relative z-10 max-w-6xl mx-auto pt-20 px-4 sm:px-6 lg:px-8">
         {/* Header Section */}
         <div id="home" className="header-section flex flex-col md:flex-row items-start md:items-center justify-between mb-12">
-          <div className="header-content mr-8">
-            {/* Big gradient text */}
+          <div className="header-content mr-0 md:mr-8">
+            {/* Анимированный градиентный текст */}
             <h1 className="header-title text-4xl font-bold tracking-wider animate-text-gradient mb-4">
               RLOHAW
             </h1>
@@ -358,14 +321,15 @@ const AnimatedPortfolio = () => {
           </div>
           
           <div className="profile-info mt-8 md:mt-0">
-            <div className="profile-card border border-white/20 p-6 rounded-lg relative overflow-hidden group bg-black/40 backdrop-blur-sm">
-              <div className="profile-gradient absolute inset-0 bg-gradient-to-br from-gray-800/30 via-gray-800/10 to-gray-900/30 opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="profile-card border border-white/20 p-6 rounded-lg relative overflow-hidden group transition-opacity duration-500">
+              {/* Контент профиля */}
               <div className="profile-content relative">
                 <div className="profile-header text-xl mb-4 text-cyan-400">$ cat profile.txt</div>
                 <div className="profile-details space-y-2 text-sm">
                   <p>Name: <span className="text-cyan-300">Rostislav Lokhov</span></p>
                   <p>Role: <span className="text-cyan-300">DS/MLE</span></p>
                   <p>Location: <span className="text-cyan-300">Moscow, Russia</span></p>
+                  {/* Анимированный градиентный статус */}
                   <p>Status: <span className="animate-status-gradient">Considering offers</span></p>
                 </div>
               </div>
@@ -373,12 +337,13 @@ const AnimatedPortfolio = () => {
           </div>
         </div>
 
+        {/* Раздел с избранными проектами */}
         <FeaturedProjects 
           featuredProjects={featuredProjects}
           handleNavigation={handleNavigation}
         />
 
-        {/* Main content sections */}
+        {/* Основные разделы контента */}
         <div className="main-content space-y-16">
           {/* Achievements Section */}
           <section id="achievements" className="achievements-section mt-24">
@@ -386,7 +351,6 @@ const AnimatedPortfolio = () => {
               Achievements
             </h2>
             <div className="achievement-card border border-white/20 p-6 rounded-lg relative overflow-hidden group bg-black/40 backdrop-blur-sm">
-              <div className="achievement-gradient absolute inset-0 bg-gradient-to-br from-gray-800/30 via-gray-800/10 to-gray-900/30 opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
               <div className="achievement-content relative space-y-4">
                 <div className="achievement-item">
                   <h3 className="text-cyan-300 text-lg mb-2">🏆 Key Technical Achievements</h3>
@@ -439,7 +403,7 @@ const AnimatedPortfolio = () => {
                     ${openSkills[name] ? 'max-h-96 opacity-100 mt-4' : 'max-h-0 opacity-0'}
                     relative z-10
                   `}>
-                    <div className="space-y-4 p-4 bg-black/20 rounded-lg">
+                    <div className="space-y-4 p-4 rounded-lg">
                       <div className="flex flex-wrap gap-2">
                         {skill.items.map((item, index) => (
                           <span key={index} className="skill-badge px-2 py-1 bg-gray-800/60 rounded-md text-sm text-emerald-200">
@@ -479,7 +443,7 @@ const AnimatedPortfolio = () => {
             <h2 className="text-xl mb-6 animate-text-gradient">
               Projects
             </h2>
-            {/* Project filters */}
+            {/* Фильтры проектов */}
             <div className="project-filters mb-6">
               <div className="flex flex-wrap gap-2">
                 <button 
@@ -502,7 +466,7 @@ const AnimatedPortfolio = () => {
               </div>
             </div>
             
-            {/* Projects grid */}
+            {/* Сетка проектов */}
             <div className="projects-grid space-y-4">
               {filteredProjects.map(project => (
                 <div key={project.id} 
@@ -529,7 +493,7 @@ const AnimatedPortfolio = () => {
                     relative z-10
                     ${openProjects[project.id] ? 'max-h-[1000px] opacity-100 mt-4' : 'max-h-0 opacity-0'}
                   `}>
-                    <div className="space-y-4 p-4 bg-black/20 rounded-lg">
+                    <div className="space-y-4 p-4 rounded-lg">
                       <p className="text-gray-300">{project.fullDesc}</p>
                       
                       <div className="tech-stack space-y-2">
@@ -610,8 +574,7 @@ const AnimatedPortfolio = () => {
                   rel="noopener noreferrer"
                   className="social-link relative group"
                 >
-                  <div className="link-gradient absolute -inset-0.5 bg-gradient-to-r from-emerald-600 via-cyan-500 to-emerald-600 rounded-full blur opacity-0 group-hover:opacity-60 transition duration-500" />
-                  <span className="relative flex items-center gap-1 px-3 py-1 bg-black/40 rounded-full">
+                  <span className="relative flex items-center gap-1 px-3 py-1 rounded-full">
                     {icon}
                     {name}
                   </span>

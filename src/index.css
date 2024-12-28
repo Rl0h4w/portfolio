@@ -1,59 +1,30 @@
+/* src/index.css */
+
+/* Tailwind CSS директивы */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Base styles */
+/* Базовые стили */
 :root {
   color-scheme: dark;
 }
 
-body {
+html, body {
   margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden; /* Предотвращает горизонтальный скролл */
+}
+
+body {
   min-width: 320px;
   min-height: 100vh;
-  background: #000; /* fallback */
+  /* Фон теперь управляется компонентом StarburstEffect */
 }
 
-/* Swirling layers with single color, no color transitions */
-@keyframes layer1Diffuse {
-  0% {
-    background: radial-gradient(
-      circle at 50% 50%,
-      rgba(255, 0, 150, 0.1),
-      rgba(255, 0, 150, 0) 60%
-    );
-    transform: translate(-50%, -50%) rotate(0deg) scale(1);
-  }
-  100% {
-    background: radial-gradient(
-      circle at 50% 50%,
-      rgba(255, 0, 150, 0.1),
-      rgba(255, 0, 150, 0) 60%
-    );
-    transform: translate(-50%, -50%) rotate(360deg) scale(1.05);
-  }
-}
-
-@keyframes layer2Diffuse {
-  0% {
-    background: radial-gradient(
-      circle at 50% 50%,
-      rgba(0, 200, 255, 0.1),
-      rgba(0, 200, 255, 0) 60%
-    );
-    transform: translate(-50%, -50%) rotate(0deg) scale(1);
-  }
-  100% {
-    background: radial-gradient(
-      circle at 50% 50%,
-      rgba(0, 200, 255, 0.1),
-      rgba(0, 200, 255, 0) 60%
-    );
-    transform: translate(-50%, -50%) rotate(360deg) scale(1.05);
-  }
-}
-
-/* TEXT GRADIENTS */
+/* Анимация градиента текста */
 @keyframes textGradient {
   0%, 100% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
@@ -74,7 +45,7 @@ body {
   animation: textGradient 3s linear infinite;
 }
 
-/* Another example for statuses */
+/* Анимация градиента статуса */
 .animate-status-gradient {
   background: linear-gradient(
     to right,
@@ -90,7 +61,7 @@ body {
   animation: textGradient 2s linear infinite;
 }
 
-/* "Hire Me" button glow/pulse WITHOUT vertical jump */
+/* Анимация пульсации кнопки "Hire Me" */
 @keyframes glowPulse {
   0%, 100% {
     box-shadow: 0 0 8px rgba(34, 211, 238, 0.3);
@@ -103,26 +74,7 @@ body {
   animation: glowPulse 3s ease-in-out infinite;
 }
 
-/* Scrollbars & selection */
-::-webkit-scrollbar {
-  width: 8px;
-}
-::-webkit-scrollbar-track {
-  background: #1a1a1a;
-}
-::-webkit-scrollbar-thumb {
-  background: #333;
-  border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #444;
-}
-::selection {
-  background: rgba(34, 211, 238, 0.2);
-  color: #fff;
-}
-
-/* Basic transitions, fadeIn, etc. */
+/* Анимация появления элементов */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -137,9 +89,30 @@ body {
   animation: fadeIn 0.5s ease forwards;
 }
 
-/* For smaller screens */
+/* Адаптивный размер текста для маленьких экранов */
 @media (max-width: 640px) {
   .text-responsive {
     font-size: calc(14px + 1vw);
   }
+}
+
+/* Стилизация скроллбаров */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #444;
+}
+
+/* Стилизация выделения текста */
+::selection {
+  background: rgba(34, 211, 238, 0.2);
+  color: #fff;
 }
