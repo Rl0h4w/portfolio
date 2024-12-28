@@ -1,30 +1,6 @@
-/* src/index.css */
+/* src/styles/animations.css */
 
-/* Tailwind CSS директивы */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-/* Базовые стили */
-:root {
-  color-scheme: dark;
-}
-
-html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  overflow-x: hidden; /* Предотвращает горизонтальный скролл */
-}
-
-body {
-  min-width: 320px;
-  min-height: 100vh;
-  /* Фон теперь управляется компонентом StarburstEffect */
-}
-
-/* Анимация градиента текста */
+/* Text Gradient Animation */
 @keyframes textGradient {
   0%, 100% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
@@ -45,7 +21,11 @@ body {
   animation: textGradient 3s linear infinite;
 }
 
-/* Анимация градиента статуса */
+/* Status Gradient Animation */
+@keyframes statusGradient {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
 .animate-status-gradient {
   background: linear-gradient(
     to right,
@@ -58,10 +38,10 @@ body {
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: textGradient 2s linear infinite;
+  animation: statusGradient 2s linear infinite;
 }
 
-/* Анимация пульсации кнопки "Hire Me" */
+/* Hire Button Pulse Animation */
 @keyframes glowPulse {
   0%, 100% {
     box-shadow: 0 0 8px rgba(34, 211, 238, 0.3);
@@ -74,7 +54,7 @@ body {
   animation: glowPulse 3s ease-in-out infinite;
 }
 
-/* Анимация появления элементов */
+/* Fade In Animation */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -89,14 +69,14 @@ body {
   animation: fadeIn 0.5s ease forwards;
 }
 
-/* Адаптивный размер текста для маленьких экранов */
+/* Responsive Text Size for Small Screens */
 @media (max-width: 640px) {
   .text-responsive {
     font-size: calc(14px + 1vw);
   }
 }
 
-/* Стилизация скроллбаров */
+/* Scrollbar Styles */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -111,7 +91,7 @@ body {
   background: #444;
 }
 
-/* Стилизация выделения текста */
+/* Text Selection Styles */
 ::selection {
   background: rgba(34, 211, 238, 0.2);
   color: #fff;

@@ -1,9 +1,11 @@
-import AnimatedPortfolio from './components/AnimatedPortfolio'
+// src/App.jsx
+import React from 'react';
+import AnimatedPortfolio from './components/AnimatedPortfolio/AnimatedPortfolio';
 
-function App() {
+const App = () => {
   return (
     <AnimatedPortfolio />
-  )
-}
+  );
+};
 
-export default App
+export default App;

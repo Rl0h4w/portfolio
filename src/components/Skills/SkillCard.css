@@ -1,0 +1,49 @@
+/* src/components/Skills/SkillCard.css */
+
+/* Skill Card Styles */
+.skill-card {
+    border: 1px solid rgba(255, 255, 255, 0.125);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    transition: border-color 0.3s;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(10px);
+  }
+  
+  .skill-card:hover {
+    border-color: rgba(16, 185, 129, 0.5); /* cyan-400/50 */
+  }
+  
+  .skill-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+  }
+  
+  .skill-content {
+    overflow: hidden;
+    transition: max-height 0.5s, opacity 0.5s, margin-top 0.5s;
+  }
+  
+  .skill-content.max-h-96 {
+    max-height: 24rem; /* Adjust as needed */
+    opacity: 1;
+    margin-top: 1rem;
+  }
+  
+  .skill-content.max-h-0 {
+    max-height: 0;
+    opacity: 0;
+    margin-top: 0;
+  }
+  
+  /* Skill Badge Styles */
+  .skill-badge {
+    padding: 0.25rem 0.5rem;
+    background: rgba(31, 41, 55, 0.6); /* gray-800/60 */
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    color: #34d399; /* emerald-200 */
+  }
+  

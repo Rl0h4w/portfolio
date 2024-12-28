@@ -1,0 +1,26 @@
+/* src/components/Navigation/Navigation.css */
+
+/* Hire Button Styles */
+.hire-button {
+    position: relative;
+    display: block;
+  }
+  
+  .button-gradient {
+    position: absolute;
+    inset: -0.125rem; /* Equivalent to -0.5px if using Tailwind spacing */
+    background: linear-gradient(to right, #10b981, #06b6d4, #10b981);
+    border-radius: 0.5rem;
+    filter: blur(4px);
+    opacity: 0.6;
+    transition: opacity 1s;
+  }
+  
+  .button-content {
+    position: relative;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(10px);
+    padding: 0.5rem 1.5rem;
+    border-radius: 0.5rem;
+  }
+  
