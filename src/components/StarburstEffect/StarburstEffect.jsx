@@ -12,7 +12,7 @@ const StarburstEffect = () => {
   const animationFrameId = useRef(null);
 
   const createLines = () => {
-    const lineCount = 1000; 
+    const lineCount = 100; 
     return Array.from({ length: lineCount }, () => ({
       angle: Math.random() * Math.PI * 2,
       length: Math.random() * 700 + 800,
