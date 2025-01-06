@@ -171,7 +171,7 @@ function App() {
               fontSize: "1.8rem", 
               fontWeight: "bold" 
             }}>
-              Hello, I’m <span class="animate-text-gradient">[Your Name]</span>!
+              Hello, I’m <span class="animate-text-gradient">Rostislav Lokhov</span>!
             </h1>
             <p style={{ color: "#ccc", lineHeight: "1.5" }}>
               I’m a data scientist and computer vision enthusiast, specializing
