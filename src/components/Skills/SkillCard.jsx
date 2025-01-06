@@ -1,4 +1,5 @@
 // src/components/Skills/SkillCard.jsx
+
 import React from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import "./SkillCard.css";
@@ -7,13 +8,12 @@ const SkillCard = ({ name, skill, isOpen, toggleOpen }) => {
   return (
     <div className="skill-card">
       <div
-        className="skill-header"
+        className="skill-header flex justify-between items-center cursor-pointer"
         onClick={toggleOpen}
         role="button"
         aria-expanded={isOpen}
         tabIndex={0}
       >
-        {/* Removed the "❯" character, so only one arrow remains on the right */}
         <h3 className="text-cyan-300 font-medium">{name}</h3>
 
         {isOpen ? (

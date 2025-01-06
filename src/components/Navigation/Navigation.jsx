@@ -30,8 +30,17 @@ const Navigation = React.memo(function Navigation({
 
       {/* Nav container */}
       <div className="flex items-center justify-between p-4">
-        {/* Brand/Logo */}
-        <div className="text-cyan-300 font-bold text-xl">
+        {/* Brand/Logo with a text gradient */}
+        <div
+          className="
+            font-bold text-xl 
+            text-transparent 
+            bg-clip-text 
+            bg-gradient-to-r 
+            from-cyan-400 
+            to-emerald-400
+          "
+        >
           MyPortfolio
         </div>
 

@@ -11,7 +11,6 @@ import { projects } from "./data/projectsData";
 import { skills } from "./data/skillsData";
 import StarburstEffect from "./components/StarburstEffect/StarburstEffect";
 
-// The order of your sections as they appear in layout
 const SECTION_IDS = ["home", "achievements", "skills", "projects", "contact"];
 
 function App() {
@@ -24,10 +23,16 @@ function App() {
   // Scroll progress for the top bar
   const [scrollProgress, setScrollProgress] = useState(0);
 
-  // “Open All” skills if user clicks “Skills” menu
+  // Whether to open all skills
   const [openAllSkills, setOpenAllSkills] = useState(false);
 
-  // Which Project is open
+  // Keep track of an individually opened skill
+  const [openSkill, setOpenSkill] = useState(null);
+
+  // Whether to open all projects
+  const [openAllProjects, setOpenAllProjects] = useState(false);
+
+  // Keep track of an individually opened project
   const [openProjectId, setOpenProjectId] = useState(null);
 
   // IntersectionObserver to highlight sections in the menu
@@ -82,21 +87,36 @@ function App() {
       setOpenAllSkills(false);
     }
 
+    // If user picks "Projects," open them all
+    if (sectionId === "projects") {
+      setOpenAllProjects(true);
+    } else {
+      setOpenAllProjects(false);
+    }
+
     const targetElement = document.getElementById(sectionId);
     if (targetElement) {
       targetElement.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   };
 
-  // Called from FeaturedProjects to open a project
+  // Called from FeaturedProjects to open a specific project
   const handleProjectOpen = (projectId) => {
     setOpenProjectId(projectId);
+    // Also navigate to Projects section
     handleNavigation("projects");
   };
 
   // Toggling an individual project card
   const toggleProject = (id) => {
+    // If the same project is open, close it; otherwise open the new one
     setOpenProjectId((prevId) => (prevId === id ? null : id));
+  };
+
+  // Toggling an individual skill card
+  const toggleSkill = (skillName) => {
+    // If the same skill is open, close it; otherwise open the new one
+    setOpenSkill((prev) => (prev === skillName ? null : skillName));
   };
 
   return (
@@ -145,11 +165,15 @@ function App() {
           />
           {/* Intro Text */}
           <div style={{ flex: "1 1 300px" }}>
+            {/* You can use a text gradient via inline styles or a special class */}
             <h1
               style={{
                 marginBottom: "1rem",
-                color: "#fff",
+                background: "linear-gradient(to right, #4ade80, #22d3ee)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
                 fontSize: "1.8rem",
+                fontWeight: "bold",
               }}
             >
               Hello, I’m [Your Name]!
@@ -189,9 +213,9 @@ function App() {
             key={skillName}
             name={skillName}
             skill={skillData}
-            // Force each skill to open if openAllSkills is true
-            isOpen={openAllSkills}
-            toggleOpen={() => {}}
+            // If "openAllSkills" is true, all are open; otherwise check individual
+            isOpen={openAllSkills || openSkill === skillName}
+            toggleOpen={() => toggleSkill(skillName)}
           />
         ))}
       </section>
@@ -221,7 +245,8 @@ function App() {
           <ProjectCard
             key={project.id}
             project={project}
-            isOpen={openProjectId === project.id}
+            // If "openAllProjects" is true, all are open; otherwise check individually
+            isOpen={openAllProjects || openProjectId === project.id}
             toggleOpen={() => toggleProject(project.id)}
           />
         ))}
@@ -258,23 +283,9 @@ function App() {
               color: "#22d3ee",
             }}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="18"
-              height="18"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="icon icon-telegram"
-              viewBox="0 0 24 24"
-            >
-              <path d="M22 3L2 12l5.5 2 2.5 7 3.5-3 5 4 4-19z" />
-            </svg>
+            {/* ...icon... */}
             Telegram
           </a>
-
           {/* hh.ru */}
           <a
             href="https://hh.ru/resume/12138874ff0bd4777a0039ed1f4e4c68357536"
@@ -288,24 +299,9 @@ function App() {
               color: "#22d3ee",
             }}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="18"
-              height="18"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="icon icon-briefcase"
-              viewBox="0 0 24 24"
-            >
-              <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
-              <path d="M16 3h-8v4h8V3z"></path>
-            </svg>
+            {/* ...icon... */}
             hh.ru
           </a>
-
           {/* GitHub */}
           <a
             href="https://github.com/rl0h4w"
@@ -319,36 +315,9 @@ function App() {
               color: "#22d3ee",
             }}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="18"
-              height="18"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="icon icon-github"
-              viewBox="0 0 24 24"
-            >
-              <path
-                d="M9 19c-4.97 1-4.97-2.5-7-3
-                m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61
-                c3.14-.35 6.44-1.54 6.44-7
-                A5.44 5.44 0 0 0 20 4.77
-                A5.07 5.07 0 0 0 19.91 1
-                S19.09.65 16 2.48
-                a13.38 13.38 0 0 0-7 0
-                C5.91.65 5.09 1 5.09 1
-                A5.07 5.07 0 0 0 5 4.77
-                a5.44 5.44 0 0 0-1.5 3.72
-                c0 5.42 3.3 6.61 6.44 7
-                A3.37 3.37 0 0 0 9 17.13V21"
-              ></path>
-            </svg>
+            {/* ...icon... */}
             GitHub
           </a>
-
           {/* Gmail */}
           <a
             href="mailto:rl0h4w@gmail.com"
@@ -360,21 +329,7 @@ function App() {
               color: "#22d3ee",
             }}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="18"
-              height="18"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="icon icon-mail"
-              viewBox="0 0 24 24"
-            >
-              <path d="M4 4h16v16H4z" />
-              <path d="M22 6l-10 7L2 6" />
-            </svg>
+            {/* ...icon... */}
             Gmail
           </a>
         </div>

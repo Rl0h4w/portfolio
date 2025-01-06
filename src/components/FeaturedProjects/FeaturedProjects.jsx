@@ -29,7 +29,7 @@ const FeaturedProjects = React.memo(function FeaturedProjects({
                 ))}
               </div>
               <button
-                onClick={() => handleNavigation(project.id)}
+                onClick={() => handleNavigation("projects")}
                 className="text-cyan-400 hover:text-cyan-300 transition-colors flex items-center gap-2"
               >
                 View Details

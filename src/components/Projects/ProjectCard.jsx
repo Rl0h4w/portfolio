@@ -15,7 +15,6 @@ const ProjectCard = ({ project, isOpen, toggleOpen }) => {
         tabIndex={0}
       >
         <div className="flex items-center gap-2">
-          {/* Left arrow if you wish: ❯ */}
           <h3 className="text-cyan-300 font-medium">{project.title}</h3>
         </div>
         {isOpen ? (
