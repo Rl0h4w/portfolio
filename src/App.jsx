@@ -154,29 +154,24 @@ function App() {
         >
           {/* Photo */}
           <img
-            src="/profile.jpg"
+            src="./profile.jpg"
             alt="Profile"
             style={{
-              width: "220px",
-              height: "220px",
+              width: "333px",
+              height: "333px",
               objectFit: "cover",
-              borderRadius: "50%",
             }}
           />
           {/* Intro Text */}
           <div style={{ flex: "1 1 300px" }}>
             {/* You can use a text gradient via inline styles or a special class */}
-            <h1
-              style={{
-                marginBottom: "1rem",
-                background: "linear-gradient(to right, #4ade80, #22d3ee)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                fontSize: "1.8rem",
-                fontWeight: "bold",
-              }}
-            >
-              Hello, I’m [Your Name]!
+            <h1 style={{ 
+              marginBottom: "1rem", 
+              color: "white", 
+              fontSize: "1.8rem", 
+              fontWeight: "bold" 
+            }}>
+              Hello, I’m <span class="animate-text-gradient">[Your Name]</span>!
             </h1>
             <p style={{ color: "#ccc", lineHeight: "1.5" }}>
               I’m a data scientist and computer vision enthusiast, specializing

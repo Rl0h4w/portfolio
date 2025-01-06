@@ -14,7 +14,6 @@ const FeaturedProjects = React.memo(function FeaturedProjects({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {featuredProjects.map((project) => (
           <div key={project.id} className="featured-card">
-            <div className="featured-gradient" />
             <div className="relative z-10">
               <h3 className="text-cyan-300 text-lg mb-2">{project.title}</h3>
               <p className="text-gray-300 mb-4">{project.shortDesc}</p>

@@ -34,11 +34,7 @@ const Navigation = React.memo(function Navigation({
         <div
           className="
             font-bold text-xl 
-            text-transparent 
-            bg-clip-text 
-            bg-gradient-to-r 
-            from-cyan-400 
-            to-emerald-400
+            animate-text-gradient
           "
         >
           MyPortfolio
@@ -86,24 +82,22 @@ const Navigation = React.memo(function Navigation({
 
           {/* Hire Me (CTA) */}
           <a
-            href="https://t.me/rlohaw"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="
-              ml-4
-              px-3 py-1 
-              rounded-md 
-              bg-gradient-to-r 
-              from-cyan-400 
-              to-emerald-400 
-              text-black
-              font-semibold
-              hover:opacity-90
-              transition-opacity
-            "
-          >
-            Hire Me
-          </a>
+          href="https://t.me/rlohaw"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="
+            ml-4
+            px-3 py-1 
+            rounded-md 
+            text-black
+            font-semibold
+            hover:opacity-90
+            transition-opacity
+            animate-text-gradient
+          "
+        >
+          Hire Me
+        </a>
         </nav>
       </div>
     </header>
