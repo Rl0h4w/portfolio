@@ -1,7 +1,8 @@
 // src/components/FeaturedProjects/FeaturedProjects.jsx
+
 import React from "react";
 import { ChevronDown } from "lucide-react";
-import "./FeaturedProjects.css"; // unchanged
+import "./FeaturedProjects.css"; // optional
 
 const FeaturedProjects = React.memo(function FeaturedProjects({
   featuredProjects,

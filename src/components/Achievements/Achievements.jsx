@@ -1,6 +1,7 @@
 // src/components/Achievements/Achievements.jsx
+
 import React from "react";
-import "./Achievements.css"; // no change
+import "./Achievements.css"; // optional
 
 const Achievements = ({ achievementsData }) => {
   return (
@@ -18,8 +19,11 @@ const Achievements = ({ achievementsData }) => {
               ))}
             </ul>
           </div>
+
           <div className="achievement-item">
-            <h3 className="text-cyan-300 text-lg mb-2">🎯 Project Impact</h3>
+            <h3 className="text-cyan-300 text-lg mb-2">
+              🎯 Project Impact
+            </h3>
             <ul>
               {achievementsData.projectImpact.map((item, index) => (
                 <li key={index}>{item}</li>

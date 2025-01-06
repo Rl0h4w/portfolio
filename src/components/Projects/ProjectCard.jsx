@@ -1,22 +1,21 @@
 // src/components/Projects/ProjectCard.jsx
+
 import React from "react";
 import { ChevronDown, ChevronUp, Github } from "lucide-react";
-import "./ProjectCard.css"; // unchanged
+import "./ProjectCard.css"; // optional
 
 const ProjectCard = ({ project, isOpen, toggleOpen }) => {
   return (
     <div className="project-card">
       <div
-        className="project-header"
+        className="project-header flex justify-between items-center cursor-pointer"
         onClick={toggleOpen}
         role="button"
         aria-expanded={isOpen}
         tabIndex={0}
       >
         <div className="flex items-center gap-2">
-          <span className="text-cyan-400 transform group-hover:rotate-90 transition-transform duration-300">
-            ❯
-          </span>
+          {/* Left arrow if you wish: ❯ */}
           <h3 className="text-cyan-300 font-medium">{project.title}</h3>
         </div>
         {isOpen ? (
@@ -29,6 +28,7 @@ const ProjectCard = ({ project, isOpen, toggleOpen }) => {
       <div className={`project-content ${isOpen ? "max-h-[1000px]" : "max-h-0"}`}>
         <div className="space-y-4 p-4 rounded-lg">
           <p className="text-gray-300">{project.fullDesc}</p>
+
           <div className="tech-stack space-y-2">
             <h4 className="text-cyan-300">Tech Stack:</h4>
             <div className="flex flex-wrap gap-2">
@@ -39,6 +39,7 @@ const ProjectCard = ({ project, isOpen, toggleOpen }) => {
               ))}
             </div>
           </div>
+
           <div className="achievements space-y-2">
             <h4 className="text-cyan-300">Key Achievements:</h4>
             <ul className="list-disc list-inside space-y-1 text-gray-300">
@@ -47,6 +48,7 @@ const ProjectCard = ({ project, isOpen, toggleOpen }) => {
               ))}
             </ul>
           </div>
+
           {project.links && (
             <div className="project-links flex gap-4 pt-2">
               {project.links.github && (
@@ -54,7 +56,7 @@ const ProjectCard = ({ project, isOpen, toggleOpen }) => {
                   href={project.links.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="link-github"
+                  className="link-github flex items-center gap-1 text-cyan-400 hover:text-cyan-300"
                 >
                   <Github size={16} />
                   View Code

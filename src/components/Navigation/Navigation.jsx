@@ -1,7 +1,8 @@
 // src/components/Navigation/Navigation.jsx
+
 import React from "react";
 import { Filter } from "lucide-react";
-import "./Navigation.css"; // unchanged
+import "./Navigation.css"; // optional custom CSS
 
 const Navigation = React.memo(function Navigation({
   isMenuOpen,
@@ -11,94 +12,92 @@ const Navigation = React.memo(function Navigation({
   handleNavigation,
 }) {
   return (
-    <nav
-      className={`
-      fixed top-0 right-0 p-4 
-      z-50 transition-all duration-300 
-      ${isMenuOpen ? "w-64" : "w-auto"}
-      rounded-bl-lg border-l border-b border-white/10
-    `}
+    <header
+      className="
+        fixed top-0 left-0 right-0
+        bg-black/80 
+        backdrop-blur-sm
+        z-50
+      "
     >
-      {/* Progress Bar */}
-      <div className="progress-bar h-1 bg-gray-700/30 fixed top-0 left-0 right-0">
+      {/* Progress Bar at the top */}
+      <div className="relative w-full h-1 bg-gray-700/30">
         <div
           className="h-full bg-gradient-to-r from-emerald-500 to-cyan-500"
           style={{ width: `${scrollProgress}%` }}
         />
       </div>
 
-      {/* Toggle Button for Mobile */}
-      <button
-        onClick={() => setIsMenuOpen((prev) => !prev)}
-        className="md:hidden text-cyan-400 p-2 hover:text-cyan-300 transition-colors"
-        aria-label="Toggle menu"
-      >
-        <Filter size={20} />
-      </button>
+      {/* Nav container */}
+      <div className="flex items-center justify-between p-4">
+        {/* Brand/Logo */}
+        <div className="text-cyan-300 font-bold text-xl">
+          MyPortfolio
+        </div>
 
-      {/* Navigation Links */}
-      <ul
-        className={`
-        nav-list space-y-2 
-        ${isMenuOpen ? "block" : "hidden md:block"}
-        relative z-10
-      `}
-      >
-        {[
-          { id: "home", label: "Home" },
-          { id: "achievements", label: "Achievements" },
-          { id: "skills", label: "Skills" },
-          { id: "projects", label: "Projects" },
-          { id: "contact", label: "Contact" },
-        ].map(({ id, label }) => {
-          // Example scaling from 1.0 at top to 1.2 at bottom
-          const maxScale = 1.2;
-          let itemScale = 1 + (scrollProgress / 100) * 0.2; // up to +0.2
-          if (itemScale > maxScale) {
-            itemScale = maxScale;
-          }
+        {/* Toggle Button (mobile only) */}
+        <button
+          onClick={() => setIsMenuOpen((prev) => !prev)}
+          className="md:hidden text-cyan-400 p-2 hover:text-cyan-300 transition-colors"
+          aria-label="Toggle menu"
+        >
+          <Filter size={20} />
+        </button>
 
-          return (
-            <li
+        {/* Nav Links */}
+        <nav
+          className={`
+            ${isMenuOpen ? "block" : "hidden md:flex"} 
+            space-x-6
+          `}
+        >
+          {[
+            { id: "home", label: "Home" },
+            { id: "achievements", label: "Achievements" },
+            { id: "skills", label: "Skills" },
+            { id: "projects", label: "Projects" },
+            { id: "contact", label: "Contact" },
+          ].map(({ id, label }) => (
+            <button
               key={id}
               onClick={() => handleNavigation(id)}
-              style={{
-                transform: `scale(${itemScale})`,
-                transformOrigin: "left center", // so it expands from the left side
-                transition: "transform 0.2s ease",
-              }}
               className={`
-                nav-item cursor-pointer 
-                transition-all duration-300 
-                hover:bg-white/5 rounded px-2 py-1
+                relative px-2 py-1 
+                transition-colors duration-300 
                 ${
                   activeSection === id
-                    ? "text-cyan-400 translate-x-2 bg-white/10"
+                    ? "text-cyan-400 underline underline-offset-4"
                     : "text-gray-400 hover:text-cyan-400"
                 }
               `}
             >
-              → {label}
-            </li>
-          );
-        })}
+              {label}
+            </button>
+          ))}
 
-        {/* "Hire Me" Button */}
-        <li className="mt-4">
+          {/* Hire Me (CTA) */}
           <a
             href="https://t.me/rlohaw"
             target="_blank"
             rel="noopener noreferrer"
-            className="hire-button relative group"
+            className="
+              ml-4
+              px-3 py-1 
+              rounded-md 
+              bg-gradient-to-r 
+              from-cyan-400 
+              to-emerald-400 
+              text-black
+              font-semibold
+              hover:opacity-90
+              transition-opacity
+            "
           >
-            <div className="button-gradient" />
-            <div className="button-content hire-button-animations">
-              HIRE ME
-            </div>
+            Hire Me
           </a>
-        </li>
-      </ul>
-    </nav>
+        </nav>
+      </div>
+    </header>
   );
 });
 
