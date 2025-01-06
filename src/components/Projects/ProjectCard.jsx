@@ -1,12 +1,12 @@
 // src/components/Projects/ProjectCard.jsx
-import React from 'react';
-import { ChevronDown, ChevronUp, Github } from 'lucide-react';
-import './ProjectCard.css'; // Import component-specific CSS
+import React from "react";
+import { ChevronDown, ChevronUp, Github } from "lucide-react";
+import "./ProjectCard.css"; // unchanged
 
 const ProjectCard = ({ project, isOpen, toggleOpen }) => {
   return (
     <div className="project-card">
-      <div 
+      <div
         className="project-header"
         onClick={toggleOpen}
         role="button"
@@ -14,19 +14,21 @@ const ProjectCard = ({ project, isOpen, toggleOpen }) => {
         tabIndex={0}
       >
         <div className="flex items-center gap-2">
-          <span className="text-cyan-400 transform group-hover:rotate-90 transition-transform duration-300">❯</span>
+          <span className="text-cyan-400 transform group-hover:rotate-90 transition-transform duration-300">
+            ❯
+          </span>
           <h3 className="text-cyan-300 font-medium">{project.title}</h3>
         </div>
-        {isOpen ? 
-          <ChevronUp className="text-cyan-400" /> : 
+        {isOpen ? (
+          <ChevronUp className="text-cyan-400" />
+        ) : (
           <ChevronDown className="text-cyan-400" />
-        }
+        )}
       </div>
 
-      <div className={`project-content ${isOpen ? 'max-h-[1000px]' : 'max-h-0'}`}>
+      <div className={`project-content ${isOpen ? "max-h-[1000px]" : "max-h-0"}`}>
         <div className="space-y-4 p-4 rounded-lg">
           <p className="text-gray-300">{project.fullDesc}</p>
-          
           <div className="tech-stack space-y-2">
             <h4 className="text-cyan-300">Tech Stack:</h4>
             <div className="flex flex-wrap gap-2">
@@ -37,7 +39,6 @@ const ProjectCard = ({ project, isOpen, toggleOpen }) => {
               ))}
             </div>
           </div>
-
           <div className="achievements space-y-2">
             <h4 className="text-cyan-300">Key Achievements:</h4>
             <ul className="list-disc list-inside space-y-1 text-gray-300">
@@ -46,11 +47,10 @@ const ProjectCard = ({ project, isOpen, toggleOpen }) => {
               ))}
             </ul>
           </div>
-
           {project.links && (
             <div className="project-links flex gap-4 pt-2">
               {project.links.github && (
-                <a 
+                <a
                   href={project.links.github}
                   target="_blank"
                   rel="noopener noreferrer"

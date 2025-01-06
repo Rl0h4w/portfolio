@@ -32,8 +32,7 @@ export const projects = [
     ],
     links: {
       github: 'https://github.com/rlohaw/project2',
-      live: 'https://fraud-detection.example.com'  // Assuming you have a live
-                                                   // demo
+      live: 'https://fraud-detection.example.com'
     }
-  }  // You can add more project objects here following the same structure
+  }  // Additional projects, if any...
 ];
