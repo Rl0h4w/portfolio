@@ -1,9 +1,11 @@
-/* src/styles/animations.css */
-
 /* Text Gradient Animation */
 @keyframes textGradient {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
 }
 .animate-text-gradient {
   background: linear-gradient(
@@ -21,40 +23,7 @@
   animation: textGradient 3s linear infinite;
 }
 
-/* Status Gradient Animation */
-@keyframes statusGradient {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-}
-.animate-status-gradient {
-  background: linear-gradient(
-    to right,
-    #4ade80 20%,
-    #22d3ee 50%,
-    #4ade80 80%
-  );
-  background-size: 200% auto;
-  color: transparent;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: statusGradient 2s linear infinite;
-}
-
-/* Hire Button Pulse Animation */
-@keyframes glowPulse {
-  0%, 100% {
-    box-shadow: 0 0 8px rgba(34, 211, 238, 0.3);
-  }
-  50% {
-    box-shadow: 0 0 12px rgba(34, 211, 238, 0.6);
-  }
-}
-.hire-button-animations {
-  animation: glowPulse 3s ease-in-out infinite;
-}
-
-/* Fade In Animation */
+/* Simple fade-in */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -66,33 +35,25 @@
   }
 }
 .fade-in {
-  animation: fadeIn 0.5s ease forwards;
+  animation: fadeIn 0.8s ease forwards;
 }
 
-/* Responsive Text Size for Small Screens */
-@media (max-width: 640px) {
-  .text-responsive {
-    font-size: calc(14px + 1vw);
+/* Hover glows */
+.hover-glow:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  transform: translateY(-2px);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Pulse for a CTA button */
+@keyframes glowPulse {
+  0%, 100% {
+    box-shadow: 0 0 8px rgba(34, 211, 238, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 12px rgba(34, 211, 238, 0.6);
   }
 }
-
-/* Scrollbar Styles */
-::-webkit-scrollbar {
-  width: 8px;
-}
-::-webkit-scrollbar-track {
-  background: #1a1a1a;
-}
-::-webkit-scrollbar-thumb {
-  background: #333;
-  border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #444;
-}
-
-/* Text Selection Styles */
-::selection {
-  background: rgba(34, 211, 238, 0.2);
-  color: #fff;
+.pulse-cta {
+  animation: glowPulse 2.5s ease-in-out infinite;
 }

@@ -1,17 +1,18 @@
-// src/App.jsx
-
 import React, { useState, useEffect } from "react";
+import AOS from "aos";
 import Navigation from "./components/Navigation/Navigation";
-import FeaturedProjects from "./components/FeaturedProjects/FeaturedProjects";
+import Hero from "./components/Hero/Hero";
 import Achievements from "./components/Achievements/Achievements";
-import SkillCard from "./components/Skills/SkillCard";
-import ProjectCard from "./components/Projects/ProjectCard";
+import SkillsSection from "./components/Skills/SkillsSection";
+import FeaturedProjects from "./components/FeaturedProjects/FeaturedProjects";
+import ProjectsSection from "./components/Projects/ProjectsSection";
+import Footer from "./components/Footer/Footer";
+import StarburstEffect from "./components/StarburstEffect/StarburstEffect";
+
+// Data
 import { achievementsData } from "./data/achievementsData";
 import { projects } from "./data/projectsData";
 import { skills } from "./data/skillsData";
-import StarburstEffect from "./components/StarburstEffect/StarburstEffect";
-
-const SECTION_IDS = ["home", "achievements", "skills", "projects", "contact"];
 
 function App() {
   // Mobile menu toggling
@@ -20,23 +21,12 @@ function App() {
   // Active section for dynamic highlighting
   const [activeSection, setActiveSection] = useState("home");
 
-  // Scroll progress for the top bar
+  // Scroll progress for top nav bar
   const [scrollProgress, setScrollProgress] = useState(0);
 
-  // Whether to open all skills
-  const [openAllSkills, setOpenAllSkills] = useState(false);
-
-  // Keep track of an individually opened skill
-  const [openSkill, setOpenSkill] = useState(null);
-
-  // Whether to open all projects
-  const [openAllProjects, setOpenAllProjects] = useState(false);
-
-  // Keep track of an individually opened project
-  const [openProjectId, setOpenProjectId] = useState(null);
-
-  // IntersectionObserver to highlight sections in the menu
+  // Intersection Observer for section highlighting
   useEffect(() => {
+    const sections = ["home", "achievements", "skills", "projects", "contact"];
     const handleIntersect = (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
@@ -44,25 +34,22 @@ function App() {
         }
       });
     };
-
     const observer = new IntersectionObserver(handleIntersect, {
-      threshold: 0.55, // Adjust for when the section is ~55% in view
+      threshold: 0.5,
     });
-
-    SECTION_IDS.forEach((id) => {
+    sections.forEach((id) => {
       const el = document.getElementById(id);
       if (el) observer.observe(el);
     });
-
     return () => {
-      SECTION_IDS.forEach((id) => {
+      sections.forEach((id) => {
         const el = document.getElementById(id);
         if (el) observer.unobserve(el);
       });
     };
   }, []);
 
-  // Track scroll progress for the top progress bar
+  // Track scroll progress
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY;
@@ -71,57 +58,35 @@ function App() {
       const scrolled = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
       setScrollProgress(scrolled);
     };
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // AOS for scroll-based animations
+  useEffect(() => {
+    AOS.init({ duration: 800, offset: 100, once: true });
   }, []);
 
   // Smooth-scroll to a given section
   const handleNavigation = (sectionId) => {
     setIsMenuOpen(false);
-
-    // If user picks "Skills," open them all
-    if (sectionId === "skills") {
-      setOpenAllSkills(true);
-    } else {
-      setOpenAllSkills(false);
-    }
-
-    // If user picks "Projects," open them all
-    if (sectionId === "projects") {
-      setOpenAllProjects(true);
-    } else {
-      setOpenAllProjects(false);
-    }
-
     const targetElement = document.getElementById(sectionId);
     if (targetElement) {
       targetElement.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   };
 
-  // Called from FeaturedProjects to open a specific project
-  const handleProjectOpen = (projectId) => {
-    setOpenProjectId(projectId);
-    // Also navigate to Projects section
+  // For Featured Projects “View Details”: navigate to projects section & open that card
+  const handleFeaturedProjectOpen = (projectId) => {
+    // Navigate to the Projects section
     handleNavigation("projects");
-  };
-
-  // Toggling an individual project card
-  const toggleProject = (id) => {
-    // If the same project is open, close it; otherwise open the new one
-    setOpenProjectId((prevId) => (prevId === id ? null : id));
-  };
-
-  // Toggling an individual skill card
-  const toggleSkill = (skillName) => {
-    // If the same skill is open, close it; otherwise open the new one
-    setOpenSkill((prev) => (prev === skillName ? null : skillName));
+    // Optionally open that specific project card by ID 
+    // (You can integrate a Redux or useRef to trigger the open state.)
   };
 
   return (
-    <div className="App">
-      {/* Optional Starburst effect in the background */}
+    <>
+      {/* StarburstEffect is now truly in the background */}
       <StarburstEffect />
 
       <Navigation
@@ -132,204 +97,24 @@ function App() {
         handleNavigation={handleNavigation}
       />
 
-      {/* HOME Section */}
-      <section
-        id="home"
-        style={{
-          padding: "3rem 1rem",
-          minHeight: "70vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <div
-          style={{
-            maxWidth: "900px",
-            display: "flex",
-            flexWrap: "wrap",
-            gap: "2rem",
-            alignItems: "center",
-          }}
-        >
-          {/* Photo */}
-          <img
-            src="./profile.jpg"
-            alt="Profile"
-            style={{
-              width: "333px",
-              height: "333px",
-              objectFit: "cover",
-            }}
-          />
-          {/* Intro Text */}
-          <div style={{ flex: "1 1 300px" }}>
-            {/* You can use a text gradient via inline styles or a special class */}
-            <h1 style={{ 
-              marginBottom: "1rem", 
-              color: "white", 
-              fontSize: "1.8rem", 
-              fontWeight: "bold" 
-            }}>
-              Hello, I’m <span class="animate-text-gradient">Rostislav Lokhov</span>!
-            </h1>
-            <p style={{ color: "#ccc", lineHeight: "1.5" }}>
-              I’m a data scientist and computer vision enthusiast, specializing
-              in advanced deep learning techniques for image processing and
-              fraud detection. Check out my achievements, skills, and projects
-              to learn more about my work!
-            </p>
-          </div>
-        </div>
-      </section>
+      <Hero handleNavigation={handleNavigation} />
 
-      {/* ACHIEVEMENTS Section */}
-      <section
-        id="achievements"
-        style={{
-          padding: "3rem 1rem",
-          minHeight: "50vh",
-        }}
-      >
-        <Achievements achievementsData={achievementsData} />
-      </section>
+      <Achievements achievementsData={achievementsData} />
 
-      {/* SKILLS Section */}
-      <section
-        id="skills"
-        style={{
-          padding: "3rem 1rem",
-          minHeight: "50vh",
-        }}
-      >
-        <h2 className="text-xl mb-6 animate-text-gradient">Skills</h2>
-        {Object.entries(skills).map(([skillName, skillData]) => (
-          <SkillCard
-            key={skillName}
-            name={skillName}
-            skill={skillData}
-            // If "openAllSkills" is true, all are open; otherwise check individual
-            isOpen={openAllSkills || openSkill === skillName}
-            toggleOpen={() => toggleSkill(skillName)}
-          />
-        ))}
-      </section>
+      {/* FIXED: pass in the correct data from skillsData.js */}
+      <SkillsSection skills={skills} />
 
-      {/* FEATURED PROJECTS */}
-      <section
-        style={{
-          padding: "2rem 1.5rem",
-        }}
-      >
-        <FeaturedProjects
-          featuredProjects={projects.filter((p) => p.featured)}
-          handleNavigation={handleProjectOpen}
-        />
-      </section>
+      {/* Featured Projects - optional highlight */}
+      <FeaturedProjects
+        featuredProjects={projects.filter((p) => p.featured)}
+        onViewDetails={handleFeaturedProjectOpen}
+      />
 
-      {/* MAIN PROJECTS Section */}
-      <section
-        id="projects"
-        style={{
-          padding: "3rem 1rem",
-          minHeight: "50vh",
-        }}
-      >
-        <h2 className="text-xl mb-6 animate-text-gradient">Projects</h2>
-        {projects.map((project) => (
-          <ProjectCard
-            key={project.id}
-            project={project}
-            // If "openAllProjects" is true, all are open; otherwise check individually
-            isOpen={openAllProjects || openProjectId === project.id}
-            toggleOpen={() => toggleProject(project.id)}
-          />
-        ))}
-      </section>
+      {/* FIXED: Pass in the ‘projects’ array from projectsData */}
+      <ProjectsSection projects={projects} />
 
-      {/* CONTACT Section */}
-      <section
-        id="contact"
-        style={{
-          padding: "3rem 1rem 1rem",
-          minHeight: "auto",
-        }}
-      >
-        <h2 className="text-xl mb-6 animate-text-gradient">Contact Me</h2>
-        <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: "1.5rem",
-            alignItems: "center",
-            color: "#ccc",
-          }}
-        >
-          {/* Telegram */}
-          <a
-            href="https://t.me/rlohaw"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "0.5rem",
-              textDecoration: "none",
-              color: "#22d3ee",
-            }}
-          >
-            {/* ...icon... */}
-            Telegram
-          </a>
-          {/* hh.ru */}
-          <a
-            href="https://hh.ru/resume/12138874ff0bd4777a0039ed1f4e4c68357536"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "0.5rem",
-              textDecoration: "none",
-              color: "#22d3ee",
-            }}
-          >
-            {/* ...icon... */}
-            hh.ru
-          </a>
-          {/* GitHub */}
-          <a
-            href="https://github.com/rl0h4w"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "0.5rem",
-              textDecoration: "none",
-              color: "#22d3ee",
-            }}
-          >
-            {/* ...icon... */}
-            GitHub
-          </a>
-          {/* Gmail */}
-          <a
-            href="mailto:rl0h4w@gmail.com"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "0.5rem",
-              textDecoration: "none",
-              color: "#22d3ee",
-            }}
-          >
-            {/* ...icon... */}
-            Gmail
-          </a>
-        </div>
-      </section>
-    </div>
+      <Footer />
+    </>
   );
 }
 

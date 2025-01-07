@@ -159,7 +159,7 @@ const StarburstEffect = () => {
       ref={canvasRef}
       width={dimensions.width}
       height={dimensions.height}
-      className="canvas"
+      className="starburst-canvas"
     />
   );
 };

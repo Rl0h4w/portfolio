@@ -1,26 +1,58 @@
-/* src/components/Navigation/Navigation.css */
+.nav-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+}
 
-/* Hire Button Styles */
+.nav-logo {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.nav-links {
+  display: none;
+}
+.nav-links.open {
+  display: block;
+}
+@media (min-width: 768px) {
+  .nav-links {
+    display: flex;
+    gap: 1rem;
+  }
+}
+
+.nav-link {
+  position: relative;
+  font-size: 1rem;
+  color: #ccc;
+  padding: 0.5rem 1rem;
+  transition: color 0.2s, background-color 0.2s;
+}
+.nav-link:hover,
+.nav-link:focus {
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 0.25rem;
+}
+.active-link {
+  color: #06b6d4;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* Hire CTA Button */
 .hire-button {
-    position: relative;
-    display: block;
-  }
-  
-  .button-gradient {
-    position: absolute;
-    inset: -0.125rem; /* Equivalent to -0.5px if using Tailwind spacing */
-    background: linear-gradient(to right, #10b981, #06b6d4, #10b981);
-    border-radius: 0.5rem;
-    filter: blur(4px);
-    opacity: 0.6;
-    transition: opacity 1s;
-  }
-  
-  .button-content {
-    position: relative;
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(10px);
-    padding: 0.5rem 1.5rem;
-    border-radius: 0.5rem;
-  }
-  
+  margin-left: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #06b6d4; /* cyan-400 */
+  color: #000;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  transition: background-color 0.3s ease;
+  border: none;
+}
+.hire-button:hover {
+  background-color: #0dd3eb;
+}

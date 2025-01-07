@@ -1,0 +1,39 @@
+.projects-section {
+    padding: 3rem 1rem;
+    max-width: 1080px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .projects-title {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+  .filter-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .filter-button {
+    border: none;
+    border-radius: 9999px;
+    padding: 0.5rem 1rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ccc;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  .filter-button:hover {
+    background-color: rgba(6, 182, 212, 0.3);
+  }
+  .filter-button.active {
+    background-color: #06b6d4;
+    color: #000;
+  }
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+  

@@ -1,5 +1,3 @@
-// src/data/skillsData.js
-
 export const skills = {
   'Computer Vision': {
     items: [

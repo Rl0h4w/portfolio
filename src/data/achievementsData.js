@@ -1,5 +1,3 @@
-// src/data/achievementsData.js
-
 export const achievementsData = {
   keyTechnical: [
     'Finalist in the AIDAO International AI Olympiad by Yandex',

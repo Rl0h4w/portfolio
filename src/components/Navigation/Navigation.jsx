@@ -1,25 +1,16 @@
-// src/components/Navigation/Navigation.jsx
-
 import React from "react";
 import { Filter } from "lucide-react";
-import "./Navigation.css"; // optional custom CSS
+import "./Navigation.css";
 
-const Navigation = React.memo(function Navigation({
+const Navigation = ({
   isMenuOpen,
   setIsMenuOpen,
   scrollProgress,
   activeSection,
   handleNavigation,
-}) {
+}) => {
   return (
-    <header
-      className="
-        fixed top-0 left-0 right-0
-        bg-black/80 
-        backdrop-blur-sm
-        z-50
-      "
-    >
+    <header className="fixed top-0 left-0 right-0 bg-black/80 backdrop-blur-sm z-50">
       {/* Progress Bar at the top */}
       <div className="relative w-full h-1 bg-gray-700/30">
         <div
@@ -28,21 +19,14 @@ const Navigation = React.memo(function Navigation({
         />
       </div>
 
-      {/* Nav container */}
-      <div className="flex items-center justify-between p-4">
-        {/* Brand/Logo with a text gradient */}
-        <div
-          className="
-            font-bold text-xl 
-            animate-text-gradient
-          "
-        >
-          MyPortfolio
-        </div>
+      {/* Nav Container */}
+      <div className="nav-container fade-in">
+        {/* Brand / Logo */}
+        <div className="nav-logo animate-text-gradient">MyPortfolio</div>
 
         {/* Toggle Button (mobile only) */}
         <button
-          onClick={() => setIsMenuOpen((prev) => !prev)}
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
           className="md:hidden text-cyan-400 p-2 hover:text-cyan-300 transition-colors"
           aria-label="Toggle menu"
         >
@@ -50,12 +34,7 @@ const Navigation = React.memo(function Navigation({
         </button>
 
         {/* Nav Links */}
-        <nav
-          className={`
-            ${isMenuOpen ? "block" : "hidden md:flex"} 
-            space-x-6
-          `}
-        >
+        <nav className={`nav-links ${isMenuOpen ? "open" : ""}`}>
           {[
             { id: "home", label: "Home" },
             { id: "achievements", label: "Achievements" },
@@ -66,15 +45,9 @@ const Navigation = React.memo(function Navigation({
             <button
               key={id}
               onClick={() => handleNavigation(id)}
-              className={`
-                relative px-2 py-1 
-                transition-colors duration-300 
-                ${
-                  activeSection === id
-                    ? "text-cyan-400 underline underline-offset-4"
-                    : "text-gray-400 hover:text-cyan-400"
-                }
-              `}
+              className={`nav-link ${
+                activeSection === id ? "active-link" : ""
+              }`}
             >
               {label}
             </button>
@@ -82,26 +55,17 @@ const Navigation = React.memo(function Navigation({
 
           {/* Hire Me (CTA) */}
           <a
-          href="https://t.me/rlohaw"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="
-            ml-4
-            px-3 py-1 
-            rounded-md 
-            text-black
-            font-semibold
-            hover:opacity-90
-            transition-opacity
-            animate-text-gradient
-          "
-        >
-          Hire Me
-        </a>
+            href="https://t.me/rlohaw"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hire-button pulse-cta"
+          >
+            Hire Me
+          </a>
         </nav>
       </div>
     </header>
   );
-});
+};
 
 export default Navigation;

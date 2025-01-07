@@ -1,5 +1,3 @@
-// src/data/projectsData.js
-
 export const projects = [
   {
     id: 1,
@@ -18,7 +16,7 @@ export const projects = [
   },
   {
     id: 2,
-    title: 'Fraud Detection for Vehicle Images (NDA)',
+    title: 'Fraud Detection for Vehicle Images',
     shortDesc: 'Advanced fraud detection with 2.5D car imagery',
     fullDesc:
         'Developed a model to detect fraud from 2.5D vehicle imagery (photos from four sides of a car). The solution was optimized to run inference on a single-core CPU with 3GB of RAM, meeting stringent resource constraints.',
@@ -30,9 +28,6 @@ export const projects = [
       'Applied advanced, class-specific augmentations using imgaug to handle noisy and inconsistent annotations',
       'Optimized for inference on resource-constrained hardware with CosineAnnealingWarmRestarts scheduler and AdamW optimizer'
     ],
-    links: {
-      github: 'https://github.com/rlohaw/project2',
-      live: 'https://fraud-detection.example.com'
-    }
-  }  // Additional projects, if any...
+    links: {}
+  }
 ];
