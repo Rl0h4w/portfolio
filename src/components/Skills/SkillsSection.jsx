@@ -21,27 +21,24 @@ const SkillsSection = ({ skills }) => {
   };
 
   return (
-    <section id="skills" className="py-20 px-4">
-      <div className="max-w-7xl mx-auto">
-        <h2 className="text-4xl font-bold text-center mb-4">
-          <span className="bg-gradient-to-r from-cyan-400 to-emerald-400 text-transparent bg-clip-text">
+    <section id="skills" class="py-20 px-4">
+      <div class="max-w-7xl mx-auto">
+        <h2 class="text-4xl font-bold text-center mb-4">
+          <span class="bg-gradient-to-r from-cyan-400 to-emerald-400 text-transparent bg-clip-text">
             Technical Skills
           </span>
         </h2>
-        <p className="text-gray-400 text-center mb-12 max-w-2xl mx-auto">
+        <p class="text-gray-400 text-center mb-12 max-w-2xl mx-auto">
           Specialized in AI and computer vision, with a focus on developing
           efficient and scalable solutions for complex problems.
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
           {Object.entries(skills).map(([category, skillData]) => {
             const IconComponent = categoryIcons[category] || Brain;
             return (
-              <div
-                key={category}
-                className="bg-gray-900/50 backdrop-blur-sm rounded-xl p-6 border border-gray-800 hover:border-cyan-400/50 transition-colors"
-                data-aos="fade-up"
-              >
+              <div class="bg-gray-900/50 backdrop-blur-sm rounded-xl p-6 border border-gray-800">
+
                 <div className="flex items-center gap-4 mb-6">
                   <div className="p-3 rounded-lg bg-cyan-400/10 text-cyan-400">
                     <IconComponent size={24} />
