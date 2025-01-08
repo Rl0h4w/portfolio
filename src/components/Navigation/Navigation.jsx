@@ -1,24 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, UserCircle2, BookOpen, FolderKanban, MessageCircle, FileText } from 'lucide-react';
 
 const Navigation = ({ activeSection, handleNavigation }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
 
-  // Handle scroll event for sticky header styling
   useEffect(() => {
-    const handleScroll = () => {
-      setHasScrolled(window.scrollY > 50);
-    };
+    const handleScroll = () => setHasScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const navigationItems = [
-    { id: 'about', label: 'About' },
-    { id: 'skills', label: 'Skills' },
-    { id: 'projects', label: 'Projects' },
-    { id: 'contact', label: 'Contact' }
+    { id: 'about', label: 'About', icon: UserCircle2 },
+    { id: 'skills', label: 'Skills', icon: BookOpen },
+    { id: 'projects', label: 'Projects', icon: FolderKanban },
+    { id: 'contact', label: 'Contact', icon: MessageCircle }
   ];
 
   return (
@@ -36,16 +33,17 @@ const Navigation = ({ activeSection, handleNavigation }) => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex md:items-center md:space-x-8">
-            {navigationItems.map(({ id, label }) => (
+            {navigationItems.map(({ id, label, icon: Icon }) => (
               <button
                 key={id}
                 onClick={() => handleNavigation(id)}
-                className={`px-3 py-2 text-sm font-medium transition-colors ${
+                className={`px-3 py-2 text-sm font-medium transition-colors flex items-center gap-2 ${
                   activeSection === id
                     ? 'text-cyan-400 border-b-2 border-cyan-400'
                     : 'text-gray-300 hover:text-white'
                 }`}
               >
+                <Icon size={16} />
                 {label}
               </button>
             ))}
@@ -53,8 +51,9 @@ const Navigation = ({ activeSection, handleNavigation }) => {
               href="/resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-4 py-2 text-sm font-semibold text-black bg-cyan-400 rounded-md hover:bg-cyan-300 transition-colors"
+              className="px-4 py-2 text-sm font-semibold text-black bg-cyan-400 rounded-md hover:bg-cyan-300 transition-colors flex items-center gap-2"
             >
+              <FileText size={16} />
               Resume
             </a>
           </div>
@@ -64,7 +63,6 @@ const Navigation = ({ activeSection, handleNavigation }) => {
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="p-2 rounded-md text-gray-400 hover:text-white focus:outline-none"
-              aria-label="Toggle menu"
             >
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -78,19 +76,20 @@ const Navigation = ({ activeSection, handleNavigation }) => {
           }`}
         >
           <div className="px-2 pt-2 pb-3 space-y-1 bg-black/90 backdrop-blur-sm rounded-b-lg">
-            {navigationItems.map(({ id, label }) => (
+            {navigationItems.map(({ id, label, icon: Icon }) => (
               <button
                 key={id}
                 onClick={() => {
                   handleNavigation(id);
                   setIsMenuOpen(false);
                 }}
-                className={`block w-full px-3 py-2 text-base font-medium rounded-md text-left ${
+                className={`flex items-center gap-2 w-full px-3 py-2 text-base font-medium rounded-md text-left ${
                   activeSection === id
                     ? 'text-cyan-400 bg-cyan-400/10'
                     : 'text-gray-300 hover:bg-gray-700'
                 }`}
               >
+                <Icon size={18} />
                 {label}
               </button>
             ))}
@@ -98,8 +97,9 @@ const Navigation = ({ activeSection, handleNavigation }) => {
               href="/resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="block w-full px-3 py-2 text-base font-medium text-center text-black bg-cyan-400 rounded-md hover:bg-cyan-300"
+              className="flex items-center gap-2 w-full px-3 py-2 text-base font-medium text-center text-black bg-cyan-400 rounded-md hover:bg-cyan-300"
             >
+              <FileText size={18} />
               Resume
             </a>
           </div>

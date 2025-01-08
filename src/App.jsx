@@ -69,39 +69,41 @@ function App() {
   };
 
   return (
-    <div className="relative min-h-screen bg-gray-900">
-      {/* Background */}
-      <div className="fixed inset-0 z-0">
-        <StarburstEffect />
-      </div>
+    <ErrorBoundary>
+      <ToastProvider>
+        <div className="relative min-h-screen bg-gray-900">
+          <div className="fixed inset-0 z-0">
+            <StarburstEffect />
+          </div>
 
-      {/* Content */}
-      <div className="relative z-10">
-        <Navigation 
-          activeSection={activeSection}
-          scrollProgress={scrollProgress}
-          handleNavigation={handleNavigation}
-        />
-        
-        <main className="relative z-10">
-          <Hero handleNavigation={handleNavigation} />
-          
-          <div className="relative z-10 py-20">
-            <SkillsSection skills={skills} />
-          </div>
-          
-          <div className="relative z-10 py-20">
-            <ProjectsSection projects={projects} />
-          </div>
-          
-          <div className="relative z-10 py-20">
-            <Contact />
-          </div>
-        </main>
+          <div className="relative z-10">
+            <Navigation 
+              activeSection={activeSection}
+              scrollProgress={scrollProgress}
+              handleNavigation={handleNavigation}
+            />
+            
+            <main className="relative z-10">
+              <Hero handleNavigation={handleNavigation} />
+              
+              <div className="relative z-10 py-20">
+                <SkillsSection skills={skills} />
+              </div>
+              
+              <div className="relative z-10 py-20">
+                <ProjectsSection projects={projects} />
+              </div>
+              
+              <div className="relative z-10 py-20">
+                <Contact />
+              </div>
+            </main>
 
-        <Footer handleNavigation={handleNavigation} />
-      </div>
-    </div>
+            <Footer handleNavigation={handleNavigation} />
+          </div>
+        </div>
+      </ToastProvider>
+    </ErrorBoundary>
   );
 }
 

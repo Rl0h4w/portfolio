@@ -1,15 +1,7 @@
 import React from 'react';
-import { Brain, Image, Database, Cog } from 'lucide-react';
+import { SkillIcons } from '../Common/IconComponents';
 
 const SkillsSection = ({ skills }) => {
-  // Map category names to their respective icons
-  const categoryIcons = {
-    'Computer Vision': Image,
-    'Machine Learning': Brain,
-    'Deep Learning': Database,
-    'MLOps': Cog
-  };
-
   // Function to determine progress color based on level
   const getLevelColor = (level) => {
     switch (level.toLowerCase()) {
@@ -20,25 +12,34 @@ const SkillsSection = ({ skills }) => {
     }
   };
 
+  const getIcon = (category) => {
+    switch (category) {
+      case 'Computer Vision': return SkillIcons.ComputerVision;
+      case 'Machine Learning': return SkillIcons.MachineLearning;
+      case 'Deep Learning': return SkillIcons.DeepLearning;
+      case 'MLOps': return SkillIcons.MLOps;
+      default: return SkillIcons.MachineLearning;
+    }
+  };
+
   return (
-    <section id="skills" class="py-20 px-4">
-      <div class="max-w-7xl mx-auto">
-        <h2 class="text-4xl font-bold text-center mb-4">
-          <span class="bg-gradient-to-r from-cyan-400 to-emerald-400 text-transparent bg-clip-text">
+    <section id="skills" className="py-20 px-4">
+      <div className="max-w-7xl mx-auto">
+        <h2 className="text-4xl font-bold text-center mb-4">
+          <span className="bg-gradient-to-r from-cyan-400 to-emerald-400 text-transparent bg-clip-text">
             Technical Skills
           </span>
         </h2>
-        <p class="text-gray-400 text-center mb-12 max-w-2xl mx-auto">
+        <p className="text-gray-400 text-center mb-12 max-w-2xl mx-auto">
           Specialized in AI and computer vision, with a focus on developing
           efficient and scalable solutions for complex problems.
         </p>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
-          {Object.entries(skills).map(([category, skillData]) => {
-            const IconComponent = categoryIcons[category] || Brain;
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+          {Object.entries(skills).map(([category, skillData], index) => {
+            const IconComponent = getIcon(category);
             return (
-              <div class="bg-gray-900/50 backdrop-blur-sm rounded-xl p-6 border border-gray-800">
-
+              <div key={category} className="bg-gray-900/50 backdrop-blur-sm rounded-xl p-6 border border-gray-800">
                 <div className="flex items-center gap-4 mb-6">
                   <div className="p-3 rounded-lg bg-cyan-400/10 text-cyan-400">
                     <IconComponent size={24} />
@@ -71,7 +72,7 @@ const SkillsSection = ({ skills }) => {
                   <div className="flex flex-wrap gap-2">
                     {skillData.items.map((item, index) => (
                       <span
-                        key={index}
+                        key={`${category}-${index}`}
                         className="px-3 py-1 text-sm rounded-full bg-gray-800 text-gray-300 hover:bg-cyan-400/10 hover:text-cyan-400 transition-colors"
                       >
                         {item}

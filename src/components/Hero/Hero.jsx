@@ -1,17 +1,50 @@
 import React from 'react';
-import { ArrowRight, Github, Linkedin, FileText } from 'lucide-react';
-import './Hero.css';
+import { ArrowRight } from 'lucide-react';
+import { 
+  SocialIcons, 
+  StatusIcons, 
+  AchievementIcons 
+} from '../Common/IconComponents';
 
 const Hero = ({ handleNavigation }) => {
   const stats = [
-    { label: 'Years Experience', value: '2+' },
-    { label: 'Projects Completed', value: '15+' },
-    { label: 'Papers Published', value: '3' }
+    { 
+      label: 'Years Experience', 
+      value: '2+',
+      icon: AchievementIcons.Clock
+    },
+    { 
+      label: 'Projects Completed', 
+      value: '15+',
+      icon: AchievementIcons.Trophy
+    },
+    { 
+      label: 'Papers Published', 
+      value: '3',
+      icon: AchievementIcons.Document
+    }
+  ];
+
+  const socialLinks = [
+    {
+      icon: SocialIcons.GitHub,
+      href: 'https://github.com/rl0h4w',
+      label: 'GitHub Profile'
+    },
+    {
+      icon: SocialIcons.LinkedIn,
+      href: 'https://linkedin.com/in/username',
+      label: 'LinkedIn Profile'
+    },
+    {
+      icon: SocialIcons.Telegram,
+      href: 'https://t.me/rlohaw',
+      label: 'Telegram'
+    }
   ];
 
   return (
     <section id="about" className="relative min-h-screen flex items-center justify-center py-20">
-      {/* Background shapes */}
       <div className="bg-shape bg-shape-1" />
       <div className="bg-shape bg-shape-2" />
       
@@ -48,7 +81,6 @@ const Hero = ({ handleNavigation }) => {
                 className="cta-button px-6 py-3 bg-gradient-to-r from-cyan-400 to-emerald-400 
                          text-black font-semibold rounded-lg flex items-center gap-2 
                          hover:opacity-90 transition-all"
-                aria-label="View my projects"
               >
                 View My Work
                 <ArrowRight className="w-5 h-5" />
@@ -60,9 +92,9 @@ const Hero = ({ handleNavigation }) => {
                 rel="noopener noreferrer"
                 className="px-6 py-3 bg-gray-800 text-white font-semibold rounded-lg 
                          flex items-center gap-2 hover:bg-gray-700 transition-colors"
-                aria-label="Download resume"
               >
-                Resume <FileText className="w-5 h-5" />
+                Resume 
+                <StatusIcons.Document size={20} />
               </a>
             </div>
 
@@ -70,8 +102,11 @@ const Hero = ({ handleNavigation }) => {
             <div className="flex flex-wrap justify-center lg:justify-start gap-8">
               {stats.map((stat, index) => (
                 <div key={index} className="stat-counter text-center">
-                  <div className="text-3xl font-bold text-cyan-400 mb-1">
-                    {stat.value}
+                  <div className="flex items-center gap-2 justify-center mb-2">
+                    <stat.icon size={20} />
+                    <div className="text-3xl font-bold text-cyan-400">
+                      {stat.value}
+                    </div>
                   </div>
                   <div className="text-sm text-gray-400">
                     {stat.label}
@@ -82,24 +117,18 @@ const Hero = ({ handleNavigation }) => {
 
             {/* Social Links */}
             <div className="flex justify-center lg:justify-start gap-6 mt-8">
-              <a
-                href="https://github.com/rl0h4w"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-400 hover:text-white transition-colors"
-                aria-label="GitHub Profile"
-              >
-                <Github className="w-6 h-6" />
-              </a>
-              <a
-                href="https://linkedin.com/in/username"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-400 hover:text-white transition-colors"
-                aria-label="LinkedIn Profile"
-              >
-                <Linkedin className="w-6 h-6" />
-              </a>
+              {socialLinks.map((social, index) => (
+                <a
+                  key={index}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="transform hover:-translate-y-1 transition-transform"
+                  aria-label={social.label}
+                >
+                  <social.icon size={24} />
+                </a>
+              ))}
             </div>
           </div>
         </div>
