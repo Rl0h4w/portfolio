@@ -37,3 +37,6 @@ lerna-debug.log*
 
 test.py
 output.txt
+
+main.py
+output.txt
