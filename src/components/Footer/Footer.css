@@ -1,33 +1,70 @@
 /* Footer.css */
-
 .footer-section {
-    padding: 3rem 1rem;
-    text-align: center;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.footer-gradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(34, 211, 238, 0.2),
+    transparent
+  );
+}
+
+.social-link {
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.social-link:hover {
+  transform: translateY(-2px);
+}
+
+.footer-content {
+  position: relative;
+  z-index: 1;
+}
+
+.footer-nav-link {
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+.footer-nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: linear-gradient(90deg, #22d3ee, #10b981);
+  transition: width 0.2s ease;
+}
+
+.footer-nav-link:hover::after {
+  width: 100%;
+}
+
+/* Back to top button animation */
+.back-to-top {
+  transition: transform 0.2s ease;
+}
+
+.back-to-top:hover {
+  transform: translateY(-4px);
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
   }
-  .footer-heading {
-    font-size: 2rem;
-    margin-bottom: 1.5rem;
+  50% {
+    opacity: 0.5;
   }
-  .footer-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.5rem;
-    justify-content: center;
-    margin-bottom: 1rem;
-  }
-  .footer-links a {
-    color: #06b6d4;
-    text-decoration: none;
-    font-weight: 500;
-    transition: color 0.2s;
-  }
-  .footer-links a:hover {
-    color: #0dd3eb;
-  }
-  .footer-copy {
-    color: #888;
-    font-size: 0.875rem;
-    margin-top: 1rem;
-  }
-  
+}
