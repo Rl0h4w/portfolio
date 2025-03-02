@@ -29,7 +29,7 @@ const ContactSection = () => {
       icon: Linkedin,
       label: 'LinkedIn',
       value: 'linkedin.com/in/username',
-      href: 'https://linkedin.com/in/username',
+      href: 'https://linkedin.com/in/rl0h4w',
       description: 'Professional network and work history',
       baseColor: 'text-blue-400',
       glowColor: 'hover:shadow-[0_0_15px_rgba(96,165,250,0.5)]',
