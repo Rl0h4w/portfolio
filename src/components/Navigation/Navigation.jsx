@@ -27,7 +27,7 @@ const Navigation = ({ activeSection, handleNavigation }) => {
           {/* Logo */}
           <div className="flex-shrink-0">
             <span className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-emerald-400 text-transparent bg-clip-text">
-              Portfolio
+              RLOHAW
             </span>
           </div>
 
@@ -48,7 +48,7 @@ const Navigation = ({ activeSection, handleNavigation }) => {
               </button>
             ))}
             <a
-              href="/resume.pdf"
+              href="resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
               className="px-4 py-2 text-sm font-semibold text-black bg-cyan-400 rounded-md hover:bg-cyan-300 transition-colors flex items-center gap-2"
@@ -94,7 +94,7 @@ const Navigation = ({ activeSection, handleNavigation }) => {
               </button>
             ))}
             <a
-              href="/resume.pdf"
+              href="resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 w-full px-3 py-2 text-base font-medium text-center text-black bg-cyan-400 rounded-md hover:bg-cyan-300"

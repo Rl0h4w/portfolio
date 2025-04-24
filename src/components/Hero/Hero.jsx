@@ -14,13 +14,13 @@ const Hero = ({ handleNavigation }) => {
       icon: AchievementIcons.Clock
     },
     { 
-      label: 'Projects Completed', 
+      label: 'Pet Projects Completed', 
       value: '15+',
       icon: AchievementIcons.Trophy
     },
     { 
-      label: 'Papers Published', 
-      value: '3',
+      label: 'Current projects', 
+      value: '1',
       icon: AchievementIcons.Document
     }
   ];
@@ -33,7 +33,7 @@ const Hero = ({ handleNavigation }) => {
     },
     {
       icon: SocialIcons.LinkedIn,
-      href: 'https://linkedin.com/in/username',
+      href: 'https://linkedin.com/in/rl0h4w',
       label: 'LinkedIn Profile'
     },
     {
@@ -87,7 +87,7 @@ const Hero = ({ handleNavigation }) => {
               </button>
               
               <a
-                href="/resume.pdf"
+                href="resume.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-6 py-3 bg-gray-800 text-white font-semibold rounded-lg 

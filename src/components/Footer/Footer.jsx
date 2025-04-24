@@ -20,7 +20,7 @@ const Footer = ({ handleNavigation }) => {
     {
       name: 'LinkedIn',
       icon: Linkedin,
-      url: 'https://linkedin.com/in/username',
+      url: 'https://linkedin.com/in/rl0h4w',
       color: 'hover:text-[#0A66C2]'
     },
     {
