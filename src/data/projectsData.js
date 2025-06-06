@@ -29,5 +29,25 @@ export const projects = [
       'Optimized for inference on resource-constrained hardware with CosineAnnealingWarmRestarts scheduler and AdamW optimizer'
     ],
     links: {}
-  }
+  },
+  {
+    id: 3,
+    title: 'Real-time Heart Rate Estimation',
+    shortDesc: 'Deep learning model for contactless pulse detection from facial video',
+    fullDesc: 
+      'Developed a 3D CNN-LSTM architecture for real-time heart rate estimation from facial video streams. The solution combines YOLO-based face detection with a custom deep learning pipeline for temporal feature extraction.',
+    techStack: ['Python', 'TensorFlow', 'OpenCV', 'YOLO', 'Deep Learning'],
+    featured: true,
+    achievements: [
+      'Implemented a hybrid 3D CNN-LSTM architecture for temporal feature extraction',
+      'Integrated YOLOv8 face detection for robust face tracking and ROI extraction',
+      'Achieved real-time performance through efficient batch processing and data pipeline optimization',
+      'Built with TensorFlow distributed strategy for multi-GPU training support',
+      'MAE 0.82, RMSE: 1.001'
+    ],
+    links: {
+      github: 'https://github.com/Rl0h4w/BestHack'
+  },
+}
+
 ];

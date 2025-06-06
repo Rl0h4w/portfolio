@@ -21,7 +21,7 @@ export const skills = {
   },
   'Deep Learning': {
     items: [
-      'CNNs', 'Transformers', 'GANs', 'Custom Architectures', 'OpenCV', 'Keras'
+      'CNNs', 'Transformers', 'GANs', 'Custom Architectures', 'OpenCV', 'Keras', '3D CNNs', 'LSTM Networks', 'YOLO', 'Face Detection'
     ],
     experience: '2 years of focused architecture design and experimentation',
     projects:
