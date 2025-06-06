@@ -48,7 +48,7 @@ const Navigation = ({ activeSection, handleNavigation }) => {
               </button>
             ))}
             <a
-              href="cv.pdf"
+              href="/portfolio/cv.pdf"
               target="_blank"
               rel="noopener noreferrer"
               className="px-4 py-2 text-sm font-semibold text-black bg-cyan-400 rounded-md hover:bg-cyan-300 transition-colors flex items-center gap-2"
@@ -94,7 +94,7 @@ const Navigation = ({ activeSection, handleNavigation }) => {
               </button>
             ))}
             <a
-              href="cv.pdf"
+              href="/portfolio/cv.pdf"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 w-full px-3 py-2 text-base font-medium text-center text-black bg-cyan-400 rounded-md hover:bg-cyan-300"
