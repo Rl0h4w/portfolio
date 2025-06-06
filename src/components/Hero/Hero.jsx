@@ -87,7 +87,7 @@ const Hero = ({ handleNavigation }) => {
               </button>
               
               <a
-                href="resume.pdf"
+                href="cv.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-6 py-3 bg-gray-800 text-white font-semibold rounded-lg 
