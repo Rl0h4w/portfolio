@@ -35,7 +35,7 @@ let line = NSColor(srgbRed: 0.85, green: 0.83, blue: 0.89, alpha: 1)
 let left: CGFloat = 46
 let right = page.width - left
 let width = right - left
-var cursor = page.height - 42
+var cursor = page.height - 38
 
 func attributed(_ text: String, size: CGFloat, weight: NSFont.Weight, color: NSColor) -> NSAttributedString {
     NSAttributedString(string: text, attributes: [
@@ -68,9 +68,9 @@ func paragraph(
 }
 
 pdf.beginPDFPage(nil)
-paragraph(attributed(resume.name, size: 35, weight: .bold, color: ink), spacing: 4)
-paragraph(attributed(resume.role, size: 15, weight: .semibold, color: accent), spacing: 9)
-paragraph(attributed(resume.description, size: 11, weight: .regular, color: muted), spacing: 11)
+paragraph(attributed(resume.name, size: 32, weight: .bold, color: ink), spacing: 4)
+paragraph(attributed(resume.role, size: 15, weight: .semibold, color: accent), spacing: 7)
+paragraph(attributed(resume.description, size: 11, weight: .regular, color: muted), spacing: 8)
 
 var linkX = left
 let linkTop = cursor
@@ -82,7 +82,7 @@ for link in resume.links {
     pdf.setURL(link.url as CFURL, for: CGRect(x: linkX, y: cursor, width: linkWidth, height: height))
     linkX += linkWidth + 17
 }
-cursor -= 18
+cursor -= 14
 
 for section in resume.sections {
     pdf.setStrokeColor(line.cgColor)
@@ -90,7 +90,7 @@ for section in resume.sections {
     pdf.move(to: CGPoint(x: left, y: cursor))
     pdf.addLine(to: CGPoint(x: right, y: cursor))
     pdf.strokePath()
-    cursor -= 8
+    cursor -= 6
     paragraph(attributed(section.heading, size: 14, weight: .bold, color: accent), spacing: 5)
 
     for entry in section.entries {
@@ -120,7 +120,7 @@ for section in resume.sections {
         }
         cursor -= 4
     }
-    cursor -= 5
+    cursor -= 4
 }
 
 guard cursor > 32 else { fatalError("Résumé overflows the page") }

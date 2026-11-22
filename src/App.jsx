@@ -56,11 +56,11 @@ function App() {
             <section className="portfolio-section" id="experience" tabIndex={-1}>
               <h2 className="section-title">{content.experience}</h2>
               <div className="mx-auto grid max-w-5xl gap-4">
-                {content.jobs.map(job => (
+                {[...content.jobs, ...content.education].map(job => (
                   <article className="portfolio-card p-5 sm:p-6" key={job.org}>
                     <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
                       <h3 className="text-xl font-semibold text-white">{job.org}</h3>
-                      <p className="text-sm text-gray-400">{job.period}</p>
+                      {job.period && <p className="text-sm text-gray-400">{job.period}</p>}
                     </div>
                     <p className="mb-2 mt-1 font-medium text-cyan-300">{job.role}</p>
                     {job.text && <p className="text-gray-300">{job.text}</p>}

@@ -4,7 +4,7 @@ const lang = process.argv[2] ?? 'ru';
 if (!(lang in copy)) throw new Error(`Unsupported language: ${lang}`);
 const t = copy[lang];
 const ru = lang === 'ru';
-const [bank, lab, university] = t.jobs;
+const [bank, lab] = t.jobs;
 const bankProjects = t.projects.filter(project => project.resume);
 const restoration = t.projects.find(project => project.id === 'restoration');
 
@@ -26,7 +26,7 @@ const sections = [
   },
   {
     heading: ru ? 'Образование' : 'Education',
-    entries: [{ title: university.org, date: university.period, lines: [university.role] }],
+    entries: t.education.map(({ org, period, role }) => ({ title: org, date: period, lines: [role] })),
   },
   {
     heading: t.awards,
