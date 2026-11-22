@@ -29,7 +29,7 @@ export const copy = {
       { org: 'Лаборатория СПбГЭТУ «ЛЭТИ»', role: 'Research Engineer', period: '09.2023 — 08.2024', text: 'Вёл направление нейросетевого восстановления подводной съёмки. Сравнил шесть архитектур, внедрил выбранную модель в комплекс подводного мониторинга и передал решение заказчику.' },
     ],
     education: [
-      { org: 'Московский физико-технический институт (МФТИ)', role: 'Физтех-школа прикладной математики и информатики (ФПМИ)' },
+      { org: 'Московский физико-технический институт (МФТИ)', role: 'Физтех-школа прикладной математики и информатики (ФПМИ)', period: '2024 — настоящее время' },
       { org: 'Центральный университет', role: 'Математика и компьютерные науки · Бакалавриат', period: '2024 — настоящее время' },
     ],
     awards: 'Достижения',
@@ -152,7 +152,7 @@ export const copy = {
       { org: 'ETU “LETI” Research Lab', role: 'Research Engineer', period: 'Sep 2023 – Aug 2024', text: 'Led work on deep learning for underwater image restoration. Compared six architectures, integrated the selected model into an underwater monitoring system, and handed it over to the client.' },
     ],
     education: [
-      { org: 'Moscow Institute of Physics and Technology (MIPT)', role: 'Phystech School of Applied Mathematics and Informatics (FPMI)' },
+      { org: 'Moscow Institute of Physics and Technology (MIPT)', role: 'Phystech School of Applied Mathematics and Informatics (FPMI)', period: '2024 – Present' },
       { org: 'Central University', role: 'BSc in Mathematics and Computer Science', period: '2024 – Present' },
     ],
     awards: 'Recognition',
