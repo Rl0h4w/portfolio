@@ -21,6 +21,8 @@ export default function StarburstEffect() {
         y: Math.sin(angle),
         length: 0.74 + Math.random() * 0.44,
         width: 0.45 + Math.random() * 0.65,
+        // Spread neighboring rays across the spectrum instead of forming a color band.
+        hue: (index * 137.508) % 360,
         phase: Math.random() * Math.PI * 2,
         speed: 0.55 + Math.random() * 1.15,
       };
@@ -50,8 +52,8 @@ export default function StarburstEffect() {
         const endX = x + ray.x * ray.length * distance;
         const endY = y + ray.y * ray.length * distance;
         const wave = (1 + Math.sin(ray.phase + shimmerTime * ray.speed)) / 2;
-        const hue = 181 + 89 * wave;
-        const alpha = (0.18 + 0.37 * wave) * Math.min(growth * 3, 1);
+        const hue = (ray.hue + shimmerTime * ray.speed * 22) % 360;
+        const alpha = (0.24 + 0.31 * wave) * Math.min(growth * 3, 1);
         const gradient = context.createLinearGradient(x, y, endX, endY);
         gradient.addColorStop(0, `hsla(${hue}, 95%, 54%, 0)`);
         gradient.addColorStop(0.23, `hsla(${hue}, 95%, 54%, ${alpha})`);
