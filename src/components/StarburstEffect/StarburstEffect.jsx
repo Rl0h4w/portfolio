@@ -1,167 +1,107 @@
-// src/components/StarburstEffect/StarburstEffect.jsx
-import React, { useEffect, useRef, useState } from 'react';
-import './StarburstEffect.css'; // Import component-specific CSS
+import { useEffect, useRef } from 'react';
+import './StarburstEffect.css';
 
-const StarburstEffect = () => {
+const dotDuration = 1000;
+const growthDuration = 2000;
+const frameInterval = 1000 / 30;
+
+export default function StarburstEffect() {
   const canvasRef = useRef(null);
-  const [dimensions, setDimensions] = useState({ width: window.innerWidth, height: window.innerHeight });
-  const phase = useRef(0); // 0: dot, 1: lines growing, 2: color animation
-  const phaseStartTime = useRef(Date.now());
-  const growthProgress = useRef(0);
-  const lines = useRef([]);
-  const animationFrameId = useRef(null);
-
-  const createLines = () => {
-    const lineCount = 100; 
-    return Array.from({ length: lineCount }, () => ({
-      angle: Math.random() * Math.PI * 2,
-      length: Math.random() * 700 + 800,
-      width: Math.random() * 0.5 + 0.125,
-      colorPhase: Math.random() * Math.PI * 2,
-      colorSpeed: Math.random() * 0.02 + 0.01,
-      // Color parameters
-      isBright: Math.random() > 0.6,
-      purpleIntensity: Math.random() > 0.6 ? Math.random() * 40 + 70 : Math.random() * 20 + 10,
-      cyanIntensity: Math.random() > 0.6 ? Math.random() * 50 + 80 : Math.random() * 25 + 15,
-      opacity: Math.random() > 0.6 ? Math.random() * 0.3 + 0.4 : Math.random() * 0.2 + 0.2
-    }));
-  };
-
-  const getGradientColor = (line, progress = 1) => {
-    // Always update color phase
-    line.colorPhase += line.colorSpeed;
-
-    const r = Math.floor(line.purpleIntensity * Math.sin(line.colorPhase));
-    const g = Math.floor(line.cyanIntensity * Math.sin(line.colorPhase + Math.PI / 3));
-    const b = Math.floor((line.purpleIntensity + line.cyanIntensity) * Math.sin(line.colorPhase + Math.PI / 1.5));
-    
-    // During growth phase, blend with bright blue
-    if (phase.current === 1) {
-      const growthBlue = 150 * (1 - progress);
-      return `rgba(${r}, ${Math.max(g, growthBlue)}, ${Math.max(b, growthBlue)}, ${line.opacity})`;
-    }
-    
-    return `rgba(${r}, ${g}, ${b}, ${line.opacity})`;
-  };
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    const context = canvas.getContext('2d');
+    if (!context) return;
 
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-    
-    // Create all lines initially
-    lines.current = createLines();
-    
-    // Initialize phases
-    phase.current = 0;
-    phaseStartTime.current = Date.now();
-    growthProgress.current = 0;
+    const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const rays = Array.from({ length: 100 }, (_, index) => {
+      const angle = (index + Math.random() * 0.9) * Math.PI * 2 / 100;
+      return {
+        x: Math.cos(angle),
+        y: Math.sin(angle),
+        length: 0.74 + Math.random() * 0.44,
+        width: 0.45 + Math.random() * 0.65,
+        phase: Math.random() * Math.PI * 2,
+        speed: 0.55 + Math.random() * 1.15,
+      };
+    });
+    const startedAt = performance.now();
+    let animationFrame = 0;
+    let lastPaint = -Infinity;
 
-    const drawPoint = () => {
-      ctx.fillStyle = 'rgb(0, 150, 255)';
-      ctx.fillRect(dimensions.width / 2 - 1, dimensions.height / 2 - 1, 2, 2);
-    };
+    function draw(elapsed) {
+      const { width, height } = canvas;
+      const x = width / 2;
+      const y = height / 2;
+      context.clearRect(0, 0, width, height);
 
-    const drawLine = (line) => {
-      const centerX = dimensions.width / 2;
-      const centerY = dimensions.height / 2;
-
-      // Calculate current length based on phase
-      const currentLength = phase.current === 1 
-        ? line.length * growthProgress.current 
-        : line.length;
-
-      const endX = centerX + Math.cos(line.angle) * currentLength;
-      const endY = centerY + Math.sin(line.angle) * currentLength;
-
-      // Colors are updated in getGradientColor
-
-      const gradient = ctx.createLinearGradient(centerX, centerY, endX, endY);
-      gradient.addColorStop(0, 'rgba(0, 0, 0, 0)');
-      gradient.addColorStop(0.2, `rgba(0, 0, 0, ${line.opacity})`);
-      gradient.addColorStop(0.5, getGradientColor(line));
-      gradient.addColorStop(0.8, getGradientColor(line));
-      gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
-
-      ctx.beginPath();
-      ctx.moveTo(centerX, centerY);
-      ctx.lineTo(endX, endY);
-      ctx.strokeStyle = gradient;
-      ctx.lineWidth = line.width;
-      ctx.lineCap = 'round';
-      ctx.stroke();
-    };
-
-    const animate = () => {
-      // Clear the screen
-      ctx.fillStyle = phase.current === 0 ? 'rgba(0, 0, 0, 0.2)' : 'rgba(0, 0, 0, 0.03)';
-      ctx.fillRect(0, 0, dimensions.width, dimensions.height);
-
-      const currentTime = Date.now();
-      const timeSincePhaseStart = currentTime - phaseStartTime.current;
-
-      // Draw based on current phase
-      switch (phase.current) {
-        case 0: // Dot phase
-          drawPoint();
-          if (timeSincePhaseStart > 1000) {
-            phase.current = 1;
-            phaseStartTime.current = currentTime;
-            console.log('Starting growth phase');
-          }
-          break;
-
-        case 1: // Growth phase
-          growthProgress.current = Math.min(1, timeSincePhaseStart / 2000);
-          lines.current.forEach(line => drawLine(line));
-          
-          if (growthProgress.current >= 1) {
-            phase.current = 2;
-            console.log('Starting color phase');
-          }
-          break;
-
-        case 2: // Color phase
-          lines.current.forEach(line => drawLine(line));
-          break;
+      if (elapsed < dotDuration) {
+        context.fillStyle = '#0096ff';
+        context.fillRect(x - 1, y - 1, 2, 2);
+        return;
       }
 
-      animationFrameId.current = requestAnimationFrame(animate);
-    };
+      const growth = Math.min((elapsed - dotDuration) / growthDuration, 1);
+      const shimmerTime = Math.max(elapsed - dotDuration - growthDuration, 0) / 1000;
+      const distance = Math.hypot(x, y) * (1 - (1 - growth) ** 2);
+      const rayCount = width < 640 ? 60 : rays.length;
+      for (let index = 0; index < rayCount; index += 1) {
+        const ray = rays[Math.floor(index * rays.length / rayCount)];
+        const endX = x + ray.x * ray.length * distance;
+        const endY = y + ray.y * ray.length * distance;
+        const wave = (1 + Math.sin(ray.phase + shimmerTime * ray.speed)) / 2;
+        const hue = 181 + 89 * wave;
+        const alpha = (0.18 + 0.37 * wave) * Math.min(growth * 3, 1);
+        const gradient = context.createLinearGradient(x, y, endX, endY);
+        gradient.addColorStop(0, `hsla(${hue}, 95%, 54%, 0)`);
+        gradient.addColorStop(0.23, `hsla(${hue}, 95%, 54%, ${alpha})`);
+        gradient.addColorStop(0.57, `hsla(${hue}, 92%, 62%, ${alpha * 0.72})`);
+        gradient.addColorStop(1, `hsla(${hue}, 95%, 54%, 0)`);
+        context.beginPath();
+        context.moveTo(x, y);
+        context.lineTo(endX, endY);
+        context.strokeStyle = gradient;
+        context.lineWidth = ray.width;
+        context.stroke();
+      }
+    }
 
-    animate();
+    function tick(now) {
+      if (now - lastPaint >= frameInterval) {
+        draw(now - startedAt);
+        lastPaint = now;
+      }
+      animationFrame = requestAnimationFrame(tick);
+    }
 
+    function update() {
+      cancelAnimationFrame(animationFrame);
+      if (document.hidden) return;
+      if (motion.matches) {
+        draw(dotDuration + growthDuration);
+        return;
+      }
+      lastPaint = -Infinity;
+      animationFrame = requestAnimationFrame(tick);
+    }
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      update();
+    }
+
+    resize();
+    window.addEventListener('resize', resize);
+    document.addEventListener('visibilitychange', update);
+    motion.addEventListener('change', update);
     return () => {
-      if (animationFrameId.current) {
-        cancelAnimationFrame(animationFrameId.current);
-      }
+      cancelAnimationFrame(animationFrame);
+      window.removeEventListener('resize', resize);
+      document.removeEventListener('visibilitychange', update);
+      motion.removeEventListener('change', update);
     };
-  }, [dimensions]);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setDimensions({
-        width: window.innerWidth,
-        height: window.innerHeight
-      });
-    };
-
-    window.addEventListener('resize', handleResize);
-    handleResize();
-
-    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  return (
-    <canvas
-      ref={canvasRef}
-      width={dimensions.width}
-      height={dimensions.height}
-      className="starburst-canvas"
-    />
-  );
-};
-
-export default StarburstEffect;
+  return <canvas ref={canvasRef} className="starburst-canvas" aria-hidden="true" />;
+}

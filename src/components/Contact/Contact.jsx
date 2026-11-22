@@ -1,151 +1,43 @@
-import React from 'react';
-import { Mail, Github, Linkedin, MessagesSquare, MapPin, Clock, Flame } from 'lucide-react';
+import { FileText, Github, Linkedin, Mail, MapPin, MessageCircle } from 'lucide-react';
+import { email, github, telegram } from '../../../site/content.mjs';
 
-const ContactSection = () => {
-  const contactMethods = [
-    {
-      icon: Mail,
-      label: 'Email',
-      value: 'rl0h4w@gmail.com',
-      href: 'mailto:rl0h4w@gmail.com',
-      description: 'Professional inquiries and collaboration opportunities',
-      baseColor: 'text-red-400',
-      glowColor: 'hover:shadow-[0_0_15px_rgba(248,113,113,0.5)]',
-      bgHover: 'hover:bg-red-400/10',
-      borderHover: 'hover:border-red-400/50'
-    },
-    {
-      icon: Github,
-      label: 'GitHub',
-      value: 'github.com/rl0h4w',
-      href: 'https://github.com/rl0h4w',
-      description: 'View my open-source projects and contributions',
-      baseColor: 'text-white',
-      glowColor: 'hover:shadow-[0_0_15px_rgba(255,255,255,0.5)]',
-      bgHover: 'hover:bg-white/10',
-      borderHover: 'hover:border-white/50'
-    },
-    {
-      icon: Linkedin,
-      label: 'LinkedIn',
-      value: 'https://linkedin.com/in/rl0h4w',
-      href: 'https://linkedin.com/in/rl0h4w',
-      description: 'Professional network and work history',
-      baseColor: 'text-blue-400',
-      glowColor: 'hover:shadow-[0_0_15px_rgba(96,165,250,0.5)]',
-      bgHover: 'hover:bg-blue-400/10',
-      borderHover: 'hover:border-blue-400/50'
-    },
-    {
-      icon: MessagesSquare,
-      label: 'Telegram',
-      value: 't.me/rlohaw',
-      href: 'https://t.me/rlohaw',
-      description: 'Quick responses and instant messaging',
-      baseColor: 'text-cyan-400',
-      glowColor: 'hover:shadow-[0_0_15px_rgba(34,211,238,0.5)]',
-      bgHover: 'hover:bg-cyan-400/10',
-      borderHover: 'hover:border-cyan-400/50'
-    }
-  ];
+const methods = [
+  { Icon: Mail, name: 'Email', value: email, href: `mailto:${email}`, color: 'text-red-300' },
+  { Icon: Github, name: 'GitHub', value: 'github.com/Rl0h4w', href: github, color: 'text-white' },
+  { Icon: Linkedin, name: 'LinkedIn', value: 'linkedin.com/in/rl0h4w', href: 'https://linkedin.com/in/rl0h4w', color: 'text-blue-300' },
+  { Icon: MessageCircle, name: 'Telegram', value: 't.me/rlohaw', href: telegram, color: 'text-cyan-300' },
+];
 
-  const availabilityInfo = [
-    {
-      icon: Clock,
-      label: 'Working Hours',
-      value: '9:00 AM - 6:00 PM UTC+3',
-      baseColor: 'text-cyan-400',
-      glowColor: 'shadow-[0_0_10px_rgba(34,211,238,0.3)]'
-    },
-    {
-      icon: MapPin,
-      label: 'Location',
-      value: 'Remote / Moscow, Russia',
-      baseColor: 'text-red-400',
-      glowColor: 'shadow-[0_0_10px_rgba(248,113,113,0.3)]'
-    }
-  ];
-
+export default function Contact({ content, lang }) {
+  const ru = lang === 'ru';
+  const base = import.meta.env.BASE_URL;
   return (
-    <section id="contact" className="py-20 px-4">
-      <div className="max-w-7xl mx-auto">
-        <h2 className="text-4xl font-bold text-center mb-4">
-          <span className="bg-gradient-to-r from-cyan-400 to-emerald-400 text-transparent bg-clip-text">
-            Let's Connect
-          </span>
-        </h2>
-        <p className="text-gray-400 text-center mb-12 max-w-2xl mx-auto">
-          I'm always open to discussing new projects, creative ideas, or opportunities to be part of your visions.
-        </p>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Contact Methods */}
-          <div className="space-y-4">
-            {contactMethods.map((method, index) => {
-              const Icon = method.icon;
-              return (
-                <a
-                  key={index}
-                  href={method.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`group block p-6 bg-gray-900/50 backdrop-blur-sm rounded-xl 
-                    border border-gray-800 transition-all duration-300
-                    ${method.bgHover} ${method.borderHover} ${method.glowColor}`}
-                >
-                  <div className="flex items-center gap-6">
-                    <div className={`p-3 rounded-lg bg-gray-800/50 ${method.baseColor} transition-colors duration-300`}>
-                      <Icon size={24} className="transition-transform duration-300 group-hover:scale-110" />
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="text-lg font-semibold text-white mb-1">{method.label}</h3>
-                      <p className="text-gray-400">{method.value}</p>
-                      <p className="text-sm text-gray-500 mt-1">{method.description}</p>
-                    </div>
-                  </div>
-                </a>
-              );
-            })}
-          </div>
-
-          {/* Availability Info */}
-          <div className="lg:pl-8">
-            <div className="bg-gray-900/50 backdrop-blur-sm rounded-xl border border-gray-800 p-6">
-              <h3 className="text-xl font-semibold text-white mb-6">Availability</h3>
-              <div className="space-y-6">
-                {availabilityInfo.map((info, index) => {
-                  const Icon = info.icon;
-                  return (
-                    <div key={index} className="flex items-center gap-4">
-                      <div className={`p-3 rounded-lg bg-gray-800/50 ${info.baseColor} ${info.glowColor}`}>
-                        <Icon size={24} />
-                      </div>
-                      <div>
-                        <h4 className="text-gray-300 font-medium">{info.label}</h4>
-                        <p className="text-gray-400">{info.value}</p>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-              
-              <div className="mt-8 p-4 bg-emerald-400/10 rounded-lg border border-emerald-400/20">
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="text-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.3)]">
-                    <Flame size={20} />
-                  </div>
-                  <h4 className="text-emerald-400 font-medium">Currently Available</h4>
-                </div>
-                <p className="text-gray-300">
-                  Open to freelance projects and full-time opportunities in Computer Vision and ML
-                </p>
-              </div>
-            </div>
+    <section id="contact" tabIndex={-1} className="portfolio-section">
+      <h2 className="section-title">{content.contact}</h2>
+      <div className="mx-auto grid max-w-5xl gap-4 lg:grid-cols-2">
+        <div className="grid gap-3">
+          {methods.map(({ Icon, name, value, href, color }) => (
+            <a className="portfolio-card flex min-w-0 items-center gap-4 p-4 hover:border-cyan-400/60" href={href} key={name}>
+              <span className={`shrink-0 rounded-lg bg-gray-800 p-2.5 ${color}`}><Icon size={22} aria-hidden="true" /></span>
+              <span className="min-w-0">
+                <strong className="block text-white">{name}</strong>
+                <span className="break-words text-sm text-gray-300">{value}</span>
+              </span>
+            </a>
+          ))}
+        </div>
+        <div className="portfolio-card self-start p-5 sm:p-6">
+          <p className="mb-5 flex items-center gap-3 text-gray-300">
+            <MapPin className="text-red-300" size={20} aria-hidden="true" />
+            {ru ? 'Москва / удалённо' : 'Moscow / remote'}
+          </p>
+          <h3 className="mb-2 text-xl font-semibold text-white">{content.resume}</h3>
+          <div className="flex flex-wrap gap-2">
+            <a className="hero-action hero-secondary" href={`${base}cv-en.pdf`} hrefLang="en" lang="en"><FileText size={16} aria-hidden="true" />English PDF</a>
+            <a className="hero-action hero-secondary" href={`${base}cv.pdf`} hrefLang="ru" lang="ru"><FileText size={16} aria-hidden="true" />Русский PDF</a>
           </div>
         </div>
       </div>
     </section>
   );
-};
-
-export default ContactSection;
+}

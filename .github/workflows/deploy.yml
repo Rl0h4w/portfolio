@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Publish portfolio
 
 on:
   push:
@@ -8,45 +8,89 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
-  group: 'pages'
-  cancel-in-progress: true
+  group: portfolio-production
+  cancel-in-progress: false
 
 jobs:
-  build-and-deploy:
+  build:
+    if: github.ref_name == github.event.repository.default_branch
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Build for GitHub Pages
+        run: npm run build -- --outDir dist-pages
+        env:
+          PORTFOLIO_BASE: /portfolio/
+      - name: Build for Aeza
+        run: npm run build
+        env:
+          PORTFOLIO_BASE: /me/
+      - name: Upload GitHub Pages bundle
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist-pages
+      - name: Upload Aeza bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: portfolio-aeza
+          path: dist
+          if-no-files-found: error
+
+  github-pages:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Set up Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: |
-          npm install lucide-react@0.263.1 --save-exact
-          npm ci
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-
-      - name: Build
-        run: npm run build
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: './dist'
-
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+  aeza:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    environment:
+      name: aeza
+      url: https://rlohaw.ru/me/
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: portfolio-aeza
+          path: dist
+      - name: Publish to Moscow VPS
+        env:
+          AEZA_SSH_HOST: ${{ secrets.AEZA_SSH_HOST }}
+          AEZA_SSH_KEY: ${{ secrets.AEZA_SSH_KEY }}
+          AEZA_SSH_HOST_KEY: ${{ secrets.AEZA_SSH_HOST_KEY }}
+        run: |
+          set -euo pipefail
+          umask 077
+          export AEZA_SSH_KEY_FILE="$RUNNER_TEMP/portfolio_key"
+          export AEZA_SSH_KNOWN_HOSTS_FILE="$RUNNER_TEMP/portfolio_known_hosts"
+          trap 'unlink "$AEZA_SSH_KEY_FILE"; unlink "$AEZA_SSH_KNOWN_HOSTS_FILE"' EXIT
+          printf '%s\n' "$AEZA_SSH_KEY" > "$AEZA_SSH_KEY_FILE"
+          printf '%s\n' "$AEZA_SSH_HOST_KEY" > "$AEZA_SSH_KNOWN_HOSTS_FILE"
+          unset AEZA_SSH_KEY AEZA_SSH_HOST_KEY
+          bash scripts/publish-aeza.sh dist
+      - name: Verify public pages and résumés
+        run: |
+          set -euo pipefail
+          for file in index.html ru/index.html cv.pdf cv-en.pdf; do
+            route="${file%index.html}"
+            curl --fail --silent --show-error --max-time 15 \
+              "https://rlohaw.ru/me/${route}?release=$GITHUB_SHA" |
+              python3 -c 'import sys; from pathlib import Path; actual = sys.stdin.buffer.read(); expected = Path(sys.argv[1]).read_bytes(); sys.exit(0 if actual == expected else f"Published content differs: {sys.argv[1]}")' "dist/$file"
+          done
