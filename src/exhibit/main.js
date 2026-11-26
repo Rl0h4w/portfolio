@@ -44,7 +44,7 @@ function action(label, href) {
   return `<a class="action control-reveal" href="${href}"><span>${label}</span>${arrow}</a>`;
 }
 function updateMotion() {
-  optic.pause(paused);
+  optic?.pause(paused);
   document.body.classList.toggle('still', paused);
   motion.dataset.paused = String(paused);
   motion.title = paused ? words.play : words.pause;
@@ -96,10 +96,11 @@ function render(focus) {
     updateMotion();
   }
 
+  const nameEntrance = focus ? ' heading-reveal' : '';
   let html, title;
   if (view === 'home') {
     title = words.name;
-    html = `<section class="display-page"><div class="identity heading-reveal">
+    html = `<section class="display-page"><div class="identity${nameEntrance}">
       <p class="eyeline">Machine Learning / AI Engineer</p><h1 tabindex="-1">${title}</h1></div>
       ${action(words.work, projectPath(0))}</section>`;
   } else if (view === 'work') {
@@ -116,7 +117,7 @@ function render(focus) {
       <div class="links"><a class="text-link" href="${projectPath(projectIndex + 1)}">${words.next} →</a></div></article></div>`;
   } else {
     title = words.profile;
-    html = `<div class="reading"><article class="profile-copy heading-reveal"><p class="eyeline">${title}</p>
+    html = `<div class="reading"><article class="profile-copy${nameEntrance}"><p class="eyeline">${title}</p>
       <h1 tabindex="-1">${words.name}</h1><p class="lede">${words.bio}</p><p class="outcome">${words.lab}</p>
       <div class="links"><a class="text-link" href="mailto:rlohaw@yandex.ru">${words.email} ↗</a>
       <a class="text-link" href="https://t.me/rlohaw" target="_blank" rel="noopener">Telegram ↗</a>
@@ -129,7 +130,6 @@ function render(focus) {
   if (focus) document.querySelector('h1').focus({preventScroll:true});
 }
 
-window.addEventListener('hashchange', () => render(true));
 document.addEventListener('keydown', event => {
   if (currentView !== 'work' || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
   if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
@@ -137,5 +137,14 @@ document.addEventListener('keydown', event => {
     location.hash = projectPath(projectIndex + (event.key === 'ArrowRight' ? 1 : -1));
   }
 });
-render(false);
-requestAnimationFrame(() => document.body.classList.remove('initial-layout'));
+async function start() {
+  try {
+    await document.fonts.load('445 1em "Inter Name"', words.name);
+  } catch {
+    document.documentElement.style.setProperty('--name-font', 'system-ui');
+  }
+  render(false);
+  window.addEventListener('hashchange', () => render(true));
+  requestAnimationFrame(() => document.body.classList.remove('initial-layout'));
+}
+start();

@@ -1,3 +1,20 @@
+/* Inline the two name subsets so the first heading uses its final glyph metrics. */
+@font-face {
+  font-family: 'Inter Name';
+  font-style: normal;
+  font-weight: 445;
+  font-display: block;
+  src: url('./assets/name-latin.woff2?inline') format('woff2');
+  unicode-range: U+0000-007F;
+}
+@font-face {
+  font-family: 'Inter Name';
+  font-style: normal;
+  font-weight: 445;
+  font-display: block;
+  src: url('./assets/name-cyrillic.woff2?inline') format('woff2');
+  unicode-range: U+0400-04FF;
+}
 @font-face {
   font-family: 'Inter';
   font-style: normal;
@@ -92,6 +109,7 @@ body[data-palette="tide"] .ground {background:radial-gradient(ellipse closest-si
 .eyeline {font-size:clamp(12px,1vw,15px);line-height:1.5;color:var(--dim);font-weight:450;letter-spacing:-.015em;margin:0 0 12px}
 h1,h2,p {margin:0}
 h1 {font-weight:445;letter-spacing:-.06em;line-height:1.045}
+.identity h1,.profile-copy h1 {font-family:var(--name-font,'Inter Name'),system-ui,sans-serif}
 .identity h1 {font-size:clamp(54px,5.45vw,100px)}
 .gallery-title h1 {font-size:clamp(46px,4.9vw,86px)}
 .heading-reveal,.control-reveal {animation:reveal .75s cubic-bezier(.2,.7,.16,1) both}
