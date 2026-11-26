@@ -19,6 +19,8 @@ PORTFOLIO_BASE=/me/ npm run dev
 
 На московском VPS служба `rlohaw-portfolio-origin` раздаёт статику через Caddy на `127.0.0.1:18177`. Служба `rlohaw-portfolio-tunnel` подключает этот сервер к `rlohaw.ru` через Cloudflare Tunnel. Caddy перенаправляет `/me` и `/me/en` на пути с завершающей косой чертой.
 
+Правило Cloudflare `Portfolio homepage and favicon` перенаправляет корень `rlohaw.ru/` на `/me/` с кодом 301. Корневые адреса `/favicon.ico`, `/favicon-96.png` и `/apple-touch-icon.png` ведут к соответствующим файлам в `/me/`. Правило сохраняет параметры запроса.
+
 На Aeza workflow передаёт сборку по SSH с ключом окружения `aeza`. Ключ позволяет запустить только приёмник `scripts/receive-aeza-release.py`, установленный на сервере как `/usr/local/sbin/receive-rlohaw-portfolio`. Приёмник проверяет архив, создаёт каталог в `/srv/www/rlohaw.ru/releases/` и атомарно переключает ссылку `/srv/www/rlohaw.ru/current`. Caddy подхватывает обновление без перезапуска. Для отката достаточно вернуть ссылку на предыдущий каталог. Если Cloudflare отдаёт старую версию обновлённого файла, очистите кэш по его URL.
 
 ## Контент и резюме

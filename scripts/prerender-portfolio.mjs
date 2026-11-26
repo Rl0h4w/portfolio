@@ -26,7 +26,7 @@ function renderDocument(template, page, base) {
     `data-view="${state.view}" data-palette="${state.palette}"`);
   html = html.replace(/<header class="mast">[\s\S]*?<\/header>/, `<header class="mast">
     <a class="signature" href="${state.homePath}" aria-label="${words.home}">
-      <span class="sign" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span>rlohaw</span>
+      <span class="sign" aria-hidden="true"></span><span>rlohaw</span>
     </a>
     <nav aria-label="${words.navigation}">
       <a id="projects-nav" class="nav-link" href="${state.workPath}"${page.view === 'profile' ? '' : ' hidden'}>${words.projects}</a>
