@@ -1,6 +1,6 @@
 # Rostislav Lokhov · Portfolio
 
-Двуязычное портфолио на React и Vite. Английская версия открывается по `https://rlohaw.ru/me/`, русская — по `https://rlohaw.ru/me/ru/`. Ссылка `/me/en/` ведёт на английскую версию. Русское и английское резюме доступны по `/me/cv.pdf` и `/me/cv-en.pdf`.
+Двуязычное портфолио с WebGL-сценой на Vite. Английская версия открывается по `https://rlohaw.ru/me/`, русская — по `https://rlohaw.ru/me/ru/`. Ссылка `/me/en/` ведёт на английскую версию. Русское и английское резюме доступны по `/me/cv.pdf` и `/me/cv-en.pdf`.
 
 ## Локальный запуск
 
@@ -23,9 +23,9 @@ PORTFOLIO_BASE=/me/ npm run dev
 
 ## Контент и резюме
 
-Опыт, навыки и проекты на обоих языках находятся в `site/content.mjs`. Компоненты сайта находятся в `src/components/`, общие стили — в `src/index.css`.
+Три избранных кейса на обоих языках находятся в `src/exhibit/projects.js`, интерактивная сцена и стили — в `src/exhibit/`. Полные данные для резюме находятся в `site/content.mjs`.
 
-PDF используют те же данные. На macOS обновите их после правок опыта, кейсов или контактных данных. Для экспорта нужен Swift из Xcode Command Line Tools.
+PDF собираются из данных резюме. На macOS обновите их после правок опыта, кейсов или контактных данных. Для экспорта нужен Swift из Xcode Command Line Tools.
 
 ```sh
 swiftc scripts/export-resume.swift -o /tmp/portfolio-export-resume

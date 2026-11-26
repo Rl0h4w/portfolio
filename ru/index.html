@@ -2,8 +2,8 @@
 <html lang="ru">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#f7f7f3" />
     <title>Ростислав Лохов · Machine Learning / AI Engineer</title>
     <meta name="description" content="Ростислав Лохов проектирует платформы для ИИ-агентов и разрабатывает бэкенд на Go и Python." />
     <meta property="og:title" content="Ростислав Лохов · Machine Learning / AI Engineer" />
@@ -15,8 +15,32 @@
     <link rel="alternate" hreflang="en" href="https://rlohaw.ru/me/" />
     <link rel="alternate" hreflang="ru" href="https://rlohaw.ru/me/ru/" />
   </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<body class="initial-layout" data-view="home" data-palette="pearl">
+  <header class="mast">
+    <a class="signature" href="#/" aria-label="rlohaw — на главную">
+      <span class="sign" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+      <span>rlohaw</span>
+    </a>
+    <nav aria-label="Основная навигация">
+      <a id="projects-nav" class="nav-link" href="#/work/context" hidden>Работы</a>
+      <a id="profile-nav" class="nav-link" href="#/profile">Профиль <span aria-hidden="true">↗</span></a>
+      <a id="language-nav" class="nav-link" lang="en" hreflang="en" href="%BASE_URL%" aria-label="English version">EN</a>
+      <button class="motion-toggle" type="button" aria-label="Приостановить движение" title="Приостановить движение"><span aria-hidden="true"></span></button>
+    </nav>
+  </header>
+  <main>
+    <div id="exhibit" class="exhibit">
+      <div class="light-pool" aria-hidden="true"></div>
+      <div id="sculpture" class="sculpture" role="group" aria-label="Интерактивная оптическая скульптура" tabindex="0" aria-describedby="interaction-help">
+        <div class="ground" aria-hidden="true"></div>
+        <img class="poster" alt="" hidden>
+        <canvas id="glass" aria-hidden="true" hidden></canvas>
+        <span id="interaction-help" class="sr-only">Потяните мышью или пальцем, чтобы повернуть скульптуру. С клавиатуры используйте стрелки.</span>
+        <span class="hint" aria-hidden="true">Потяните, чтобы повернуть</span>
+      </div>
+    </div>
+    <div id="content"></div>
+  </main>
+  <script type="module" src="/src/exhibit/main.js"></script>
+</body>
 </html>
