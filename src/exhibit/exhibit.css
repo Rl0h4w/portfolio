@@ -1,34 +1,17 @@
-/* Inline the two name subsets so the first heading uses its final glyph metrics. */
-@font-face {
-  font-family: 'Inter Name';
-  font-style: normal;
-  font-weight: 445;
-  font-display: block;
-  src: url('./assets/name-latin.woff2?inline') format('woff2');
-  unicode-range: U+0000-007F;
-}
-@font-face {
-  font-family: 'Inter Name';
-  font-style: normal;
-  font-weight: 445;
-  font-display: block;
-  src: url('./assets/name-cyrillic.woff2?inline') format('woff2');
-  unicode-range: U+0400-04FF;
-}
 @font-face {
   font-family: 'Inter';
   font-style: normal;
   font-weight: 400 700;
-  font-display: swap;
-  src: url('./assets/cyrillic.woff2') format('woff2');
+  font-display: block;
+  src: url('./assets/cyrillic.woff2?inline') format('woff2');
   unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
 }
 @font-face {
   font-family: 'Inter';
   font-style: normal;
   font-weight: 400 700;
-  font-display: swap;
-  src: url('./assets/latin.woff2') format('woff2');
+  font-display: block;
+  src: url('./assets/latin.woff2?inline') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 :root {
@@ -40,7 +23,7 @@
   --gutter:clamp(24px,4.4vw,84px);
   --mast-h:clamp(68px,9svh,100px);
   --bottom:clamp(32px,6.3svh,78px);
-  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-family:var(--ui-font,Inter),-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   color:var(--ink);
   background:var(--paper);
   font-synthesis:none;
@@ -81,16 +64,19 @@ a:focus-visible,button:focus-visible,.sculpture:focus-visible {outline:2px solid
 .light-pool {position:absolute;inset:0;background:radial-gradient(ellipse at 50% 43%,var(--wash),transparent 56%);opacity:.8}
 .sculpture {
   position:absolute;left:4%;right:4%;top:calc(var(--mast-h) - 7px);bottom:clamp(145px,18.5svh,195px);
-  touch-action:none;user-select:none;-webkit-user-select:none;pointer-events:auto;cursor:grab;isolation:isolate;
+  touch-action:none;user-select:none;-webkit-user-select:none;pointer-events:auto;cursor:grab;isolation:isolate;container-type:size;
   transition:top .95s cubic-bezier(.22,.74,.15,1),bottom .95s cubic-bezier(.22,.74,.15,1),left .95s cubic-bezier(.22,.74,.15,1),right .95s cubic-bezier(.22,.74,.15,1),opacity .45s;
 }
 .sculpture:focus-visible {outline-offset:-8px;border-radius:12px}
 .sculpture.dragging {cursor:grabbing}
 .sculpture canvas,.poster {width:100%;height:100%;display:block;position:absolute;inset:0}
 .poster {object-fit:contain;transform:scale(var(--poster-scale,1))}
+@media (scripting:enabled) {
+  .initial-layout .mast,.initial-layout .exhibit {visibility:hidden}
+}
 .initial-layout,.initial-layout .sculpture {transition:none!important}
 .ground {
-  position:absolute;width:min(44%,52vh);height:9%;left:50%;bottom:3.5%;transform:translateX(-50%);
+  position:absolute;width:min(44%,52vh);height:9%;left:50%;top:calc(50% + 41.2cqmin);transform:translateX(-50%);
   background:radial-gradient(ellipse closest-side,rgba(42,43,57,.18),rgba(81,77,86,.077) 53%,transparent 100%);
   filter:blur(3px);pointer-events:none;
 }
@@ -109,11 +95,10 @@ body[data-palette="tide"] .ground {background:radial-gradient(ellipse closest-si
 .eyeline {font-size:clamp(12px,1vw,15px);line-height:1.5;color:var(--dim);font-weight:450;letter-spacing:-.015em;margin:0 0 12px}
 h1,h2,p {margin:0}
 h1 {font-weight:445;letter-spacing:-.06em;line-height:1.045}
-.identity h1,.profile-copy h1 {font-family:var(--name-font,'Inter Name'),system-ui,sans-serif}
 .identity h1 {font-size:clamp(54px,5.45vw,100px)}
 .gallery-title h1 {font-size:clamp(46px,4.9vw,86px)}
-.heading-reveal,.control-reveal {animation:reveal .75s cubic-bezier(.2,.7,.16,1) both}
-.control-reveal {animation-delay:.07s}
+#content.navigated .heading-reveal,#content.navigated .control-reveal {animation:reveal .75s cubic-bezier(.2,.7,.16,1) both}
+#content.navigated .control-reveal {animation-delay:.07s}
 @keyframes reveal {from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 .action {display:inline-flex;gap:16px;align-items:center;white-space:nowrap;font-weight:490;font-size:clamp(15px,1.18vw,20px);letter-spacing:-.035em;min-height:48px}
 .display-page>.action {margin-bottom:4px}
@@ -159,7 +144,7 @@ body:is([data-view="case"],[data-view="profile"]) .exhibit {position:fixed}
   .mast nav {gap:16px}.signature {font-size:21px;gap:7px}
   .motion-toggle {width:34px;height:34px}
   .sculpture {left:0;right:0;top:calc(var(--mast-h) + 6px);bottom:clamp(178px,24svh,218px)}
-  .ground {width:62%;bottom:4%;height:7%}
+  .ground {width:62%;height:7%}
   .display-page {align-items:flex-start;justify-content:flex-end;flex-direction:column;gap:20px}
   .display-page>.action,.gallery-controls {margin:0}
   .identity,.gallery-title {max-width:100%}
@@ -173,7 +158,6 @@ body:is([data-view="case"],[data-view="profile"]) .exhibit {position:fixed}
   .hint {bottom:0;font-size:10px}
   body:is([data-view="case"],[data-view="profile"]) .exhibit {position:absolute;height:clamp(240px,36svh,365px);min-height:0;top:var(--mast-h)}
   body:is([data-view="case"],[data-view="profile"]) .sculpture {inset:0 3% 5px;touch-action:pan-y}
-  body:is([data-view="case"],[data-view="profile"]) .ground {bottom:1%}
   body:is([data-view="case"],[data-view="profile"]) .hint {display:none}
   .reading {padding:calc(clamp(240px,36svh,365px) + 18px) var(--gutter) 45px}
   .reading article,.profile-copy {max-width:100%}

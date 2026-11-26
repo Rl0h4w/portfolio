@@ -96,11 +96,11 @@ function render(focus) {
     updateMotion();
   }
 
-  const nameEntrance = focus ? ' heading-reveal' : '';
+  document.getElementById('content').classList.toggle('navigated', focus);
   let html, title;
   if (view === 'home') {
     title = words.name;
-    html = `<section class="display-page"><div class="identity${nameEntrance}">
+    html = `<section class="display-page"><div class="identity heading-reveal">
       <p class="eyeline">Machine Learning / AI Engineer</p><h1 tabindex="-1">${title}</h1></div>
       ${action(words.work, projectPath(0))}</section>`;
   } else if (view === 'work') {
@@ -117,7 +117,7 @@ function render(focus) {
       <div class="links"><a class="text-link" href="${projectPath(projectIndex + 1)}">${words.next} →</a></div></article></div>`;
   } else {
     title = words.profile;
-    html = `<div class="reading"><article class="profile-copy${nameEntrance}"><p class="eyeline">${title}</p>
+    html = `<div class="reading"><article class="profile-copy heading-reveal"><p class="eyeline">${title}</p>
       <h1 tabindex="-1">${words.name}</h1><p class="lede">${words.bio}</p><p class="outcome">${words.lab}</p>
       <div class="links"><a class="text-link" href="mailto:rlohaw@yandex.ru">${words.email} ↗</a>
       <a class="text-link" href="https://t.me/rlohaw" target="_blank" rel="noopener">Telegram ↗</a>
@@ -139,9 +139,10 @@ document.addEventListener('keydown', event => {
 });
 async function start() {
   try {
-    await document.fonts.load('445 1em "Inter Name"', words.name);
+    // Both script subsets use one variable face for every interface weight.
+    await document.fonts.load('400 1em Inter', 'rlohaw ' + words.name);
   } catch {
-    document.documentElement.style.setProperty('--name-font', 'system-ui');
+    document.documentElement.style.setProperty('--ui-font', 'system-ui');
   }
   render(false);
   window.addEventListener('hashchange', () => render(true));

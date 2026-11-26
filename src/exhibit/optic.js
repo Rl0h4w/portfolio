@@ -4,7 +4,6 @@ export function createOptic(stage, getPoster, initialMode, staticLabel) {
   const interactiveLabel = stage.getAttribute('aria-label');
   const canvas = stage.querySelector('canvas');
   const poster = stage.querySelector('.poster');
-  const ground = stage.querySelector('.ground');
   const TAU = Math.PI * 2;
   let gl, program, triangles, sparks, observer;
   let requested = 0, previousTime = 0, clock = .55;
@@ -220,8 +219,6 @@ export function createOptic(stage, getPoster, initialMode, staticLabel) {
     cssWidth=rect.width;cssHeight=rect.height;
     density=Math.min(window.devicePixelRatio||1,1.8);
     stage.style.setProperty('--poster-scale',cssWidth<550?.595/.665:1);
-    ground.style.top=(cssHeight*.5+Math.min(cssWidth,cssHeight)*.412)+'px';
-    ground.style.bottom='auto';
     paintSoon();
   }
   function draw(now){
