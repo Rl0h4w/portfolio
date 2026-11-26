@@ -2,9 +2,10 @@ import { fileURLToPath } from 'node:url';
 import { env } from 'node:process';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
+import prerenderPortfolio from './scripts/prerender-portfolio.mjs';
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), prerenderPortfolio()],
   base: env.PORTFOLIO_BASE ?? '/portfolio/',
   build: {
     rollupOptions: {

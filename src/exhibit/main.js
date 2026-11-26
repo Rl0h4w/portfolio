@@ -1,6 +1,7 @@
 import './exhibit.css';
 import { createOptic } from './optic.js';
-import { russianProjects, englishProjects } from './projects.js';
+import { legacyPage, renderPage, resolvePage, routePath, wordsByLanguage } from './pages.js';
+import { russianProjects } from './projects.js';
 import ring from './assets/poster-0.webp';
 import layers from './assets/poster-1.webp';
 import wave from './assets/poster-2.webp';
@@ -8,41 +9,17 @@ import knot from './assets/poster-3.webp';
 
 const posters = [ring, layers, wave, knot];
 const base = import.meta.env.BASE_URL;
-const ru = document.documentElement.lang === 'ru';
-const projects = ru ? russianProjects : englishProjects;
-const words = ru ? {
-  name: 'Ростислав Лохов', profile: 'Профиль', work: 'Смотреть работы', open: 'О проекте',
-  back: 'К работам', result: 'Результат', next: 'Следующая работа', previous: 'Предыдущая работа',
-  browse: 'Листать работы', resume: 'Резюме', email: 'Почта', play: 'Включить движение',
-  pause: 'Приостановить движение', sculpture: 'Оптическая скульптура',
-  bio: 'Проектирую платформы для ИИ-агентов в Т-Банке. Веду бэкенд на Go и Python от архитектуры до запуска.',
-  lab: 'До Т-Банка занимался восстановлением подводной съёмки в лаборатории ЛЭТИ.'
-} : {
-  name: 'Rostislav Lokhov', profile: 'Profile', work: 'Explore my work', open: 'View case',
-  back: 'Back to work', result: 'Result', next: 'Next project', previous: 'Previous project',
-  browse: 'Browse projects', resume: 'Résumé', email: 'Email', play: 'Enable motion',
-  pause: 'Pause motion', sculpture: 'Optical sculpture',
-  bio: 'I design platforms for AI agents at T-Bank and lead backend development in Go and Python from architecture to launch.',
-  lab: 'Before T-Bank, I worked on underwater image restoration at the ETU LETI research lab.'
-};
-
+const lang = document.documentElement.lang;
+const words = wordsByLanguage[lang];
 const stage = document.getElementById('sculpture');
 const motion = document.querySelector('.motion-toggle');
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
-const arrow = '<span class="circle" aria-hidden="true"><span class="arr"></span></span>';
 let optic;
 let paused = reduced.matches;
 let chosenMotion = false;
 let currentView = 'home';
 let projectIndex = 0;
 
-function projectPath(index, view = 'work') {
-  const project = projects[(index + projects.length) % projects.length];
-  return '#/' + view + '/' + project.slug;
-}
-function action(label, href) {
-  return `<a class="action control-reveal" href="${href}"><span>${label}</span>${arrow}</a>`;
-}
 function updateMotion() {
   optic?.pause(paused);
   document.body.classList.toggle('still', paused);
@@ -62,90 +39,93 @@ reduced.addEventListener('change', () => {
   }
 });
 
-function galleryNav(index) {
-  return `<nav class="pager" aria-label="${words.browse}">
-    <a class="prev" href="${projectPath(index - 1)}" aria-label="${words.previous}">${arrow}</a>
-    <span class="count">${index + 1} / ${projects.length}</span>
-    <a href="${projectPath(index + 1)}" aria-label="${words.next}">${arrow}</a></nav>`;
+function migrateFragment() {
+  if (!location.hash) return;
+  const page = legacyPage(location.hash, lang);
+  history.replaceState(null, '', routePath(base, lang, page.view, page.slug) + location.search);
 }
 
 function render(focus) {
-  const [section, slug] = location.hash.replace(/^#\/?/, '').split('/');
-  const index = projects.findIndex(project => project.slug === slug);
-  let view = section || 'home';
-  if (['about', 'experience', 'skills', 'contact'].includes(view)) view = 'profile';
-  if (view === 'projects') view = 'work';
-  if (!['home','work','case','profile'].includes(view) ||
-      (section !== 'projects' && ['work','case'].includes(view) && index < 0)) view = 'home';
+  const page = resolvePage(location.pathname, base) || { lang, view: 'home', slug: '' };
+  const index = russianProjects.findIndex(project => project.slug === page.slug);
   if (index >= 0) projectIndex = index;
-  const project = projects[projectIndex];
-  const isWork = view === 'work' || view === 'case';
-  currentView = view;
-  document.body.dataset.view = view;
-  document.body.dataset.palette = isWork ? project.palette : 'pearl';
+  const state = renderPage(page, base, projectIndex);
+  currentView = state.view;
+  document.body.dataset.view = state.view;
+  document.body.dataset.palette = state.palette;
+  document.querySelector('.signature').href = state.homePath;
   const navWork = document.getElementById('projects-nav');
-  navWork.hidden = view !== 'profile';
-  navWork.href = projectPath(projectIndex);
-  document.getElementById('profile-nav').hidden = view === 'profile';
-  document.getElementById('language-nav').href = base + (ru ? '' : 'ru/') + location.hash;
-  const shape = isWork ? project.shape : 0;
+  navWork.hidden = state.view !== 'profile';
+  navWork.href = state.workPath;
+  const profileLink = document.getElementById('profile-nav');
+  profileLink.hidden = state.view === 'profile';
+  profileLink.href = state.profilePath;
+  document.getElementById('language-nav').href = state.languagePath;
   if (optic) {
-    optic.select(shape);
+    optic.select(state.shape);
   } else {
-    optic = createOptic(stage, i => posters[i], shape, words.sculpture);
+    optic = createOptic(stage, i => posters[i], state.shape, words.sculpture);
     updateMotion();
   }
 
-  document.getElementById('content').classList.toggle('navigated', focus);
-  let html, title;
-  if (view === 'home') {
-    title = words.name;
-    html = `<section class="display-page"><div class="identity heading-reveal">
-      <p class="eyeline">Machine Learning / AI Engineer</p><h1 tabindex="-1">${title}</h1></div>
-      ${action(words.work, projectPath(0))}</section>`;
-  } else if (view === 'work') {
-    title = project.title;
-    html = `<section class="display-page"><div class="gallery-title heading-reveal">
-      <p class="eyeline">${project.area}</p><h1 tabindex="-1">${title}</h1></div>
-      <div class="gallery-controls control-reveal">${galleryNav(projectIndex)}${action(words.open, projectPath(projectIndex, 'case'))}</div></section>`;
-  } else if (view === 'case') {
-    title = project.full;
-    html = `<div class="reading"><article class="heading-reveal">
-      <a class="back" href="${projectPath(projectIndex)}">← ${words.back}</a>
-      <p class="eyeline">${project.area}</p><h1 tabindex="-1">${title}</h1>
-      <p class="lede">${project.summary}</p><p class="outcome"><strong>${words.result}</strong>${project.result}</p>
-      <div class="links"><a class="text-link" href="${projectPath(projectIndex + 1)}">${words.next} →</a></div></article></div>`;
-  } else {
-    title = words.profile;
-    html = `<div class="reading"><article class="profile-copy heading-reveal"><p class="eyeline">${title}</p>
-      <h1 tabindex="-1">${words.name}</h1><p class="lede">${words.bio}</p><p class="outcome">${words.lab}</p>
-      <div class="links"><a class="text-link" href="mailto:rlohaw@yandex.ru">${words.email} ↗</a>
-      <a class="text-link" href="https://t.me/rlohaw" target="_blank" rel="noopener">Telegram ↗</a>
-      <a class="text-link" href="https://github.com/Rl0h4w" target="_blank" rel="noopener">GitHub ↗</a>
-      <a class="text-link" download="Rostislav-Lokhov-CV.pdf" href="${base}${ru ? 'cv' : 'cv-en'}.pdf">${words.resume} ↓</a></div></article></div>`;
+  document.title = state.title;
+  document.querySelector('meta[name="description"]').content = state.description;
+  document.querySelector('meta[property="og:title"]').content = state.title;
+  document.querySelector('meta[property="og:description"]').content = state.description;
+  document.querySelector('meta[property="og:url"]').content = state.canonical;
+  document.querySelector('link[rel="canonical"]').href = state.canonical;
+  for (const alternate of state.alternates) {
+    document.querySelector('link[hreflang="' + alternate.lang + '"]').href = alternate.url;
   }
-  document.title = title + ' · rlohaw';
-  document.getElementById('content').innerHTML = html;
-  window.scrollTo(0,0);
-  if (focus) document.querySelector('h1').focus({preventScroll:true});
+
+  const content = document.getElementById('content');
+  const path = routePath(base, lang, state.view, state.slug);
+  content.classList.toggle('navigated', focus);
+  if (content.dataset.path !== path || focus) {
+    content.innerHTML = state.html;
+    content.dataset.path = path;
+  }
+  window.scrollTo(0, 0);
+  if (focus) document.querySelector('h1').focus({ preventScroll: true });
 }
 
+function navigate(url) {
+  history.pushState(null, '', url);
+  render(true);
+}
+
+document.addEventListener('click', event => {
+  if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.altKey || event.shiftKey) return;
+  const link = event.target.closest('a[href]');
+  if (!link || link.target || link.hasAttribute('download')) return;
+  const url = new URL(link.href);
+  const page = resolvePage(url.pathname, base);
+  if (url.origin !== location.origin || url.hash || !page || page.lang !== lang) return;
+  event.preventDefault();
+  if (url.href !== location.href) navigate(url);
+});
+window.addEventListener('popstate', () => render(true));
+window.addEventListener('hashchange', () => {
+  migrateFragment();
+  render(true);
+});
 document.addEventListener('keydown', event => {
   if (currentView !== 'work' || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
   if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
     event.preventDefault();
-    location.hash = projectPath(projectIndex + (event.key === 'ArrowRight' ? 1 : -1));
+    const index = (projectIndex + (event.key === 'ArrowRight' ? 1 : -1) + russianProjects.length) % russianProjects.length;
+    navigate(routePath(base, lang, 'work', russianProjects[index].slug));
   }
 });
+
 async function start() {
   try {
-    // Both script subsets use one variable face for every interface weight.
     await document.fonts.load('400 1em Inter', 'rlohaw ' + words.name);
   } catch {
     document.documentElement.style.setProperty('--ui-font', 'system-ui');
   }
+  migrateFragment();
   render(false);
-  window.addEventListener('hashchange', () => render(true));
   requestAnimationFrame(() => document.body.classList.remove('initial-layout'));
 }
 start();
