@@ -1,6 +1,6 @@
 # Rostislav Lokhov · Portfolio
 
-Двуязычное портфолио с WebGL-сценой на Vite. Английская версия открывается по `https://rlohaw.ru/me/`, русская — по `https://rlohaw.ru/me/ru/`. Ссылка `/me/en/` ведёт на английскую версию. Русское и английское резюме доступны по `/me/cv.pdf` и `/me/cv-en.pdf`.
+Двуязычное портфолио с WebGL-сценой на Vite. Английская версия открывается по `https://rlohaw.ru/me/`, русская — по `https://rlohaw.ru/me/ru/`. Ссылка `/me/en/` ведёт на английскую версию.
 
 ## Локальный запуск
 
@@ -29,12 +29,16 @@ PORTFOLIO_BASE=/me/ npm run dev
 
 Общий рендерер `src/exhibit/pages.js` формирует страницы для браузера и сборки. Плагин `scripts/prerender-portfolio.mjs` сохраняет готовый HTML для профиля, галереи и кейсов, а также генерирует `sitemap.xml` с каноническими адресами и языковыми версиями. Например, русский кейс DataKnowledge доступен по `/me/ru/case/dataknowledge/`. Старые ссылки с `#/case/` переводятся на соответствующие адреса при открытии.
 
+В профиле доступны две версии резюме. Senior AI / ML Engineer — [RU](public/cv.pdf) и [EN](public/cv-en.pdf). Senior Backend Engineer — [RU](public/cv-backend.pdf) и [EN](public/cv-backend-en.pdf).
+
 PDF собираются из данных резюме. На macOS обновите их после правок опыта, кейсов или контактных данных. Для экспорта нужен Swift из Xcode Command Line Tools.
 
 ```sh
 swiftc scripts/export-resume.swift -o /tmp/portfolio-export-resume
-node scripts/resume-data.mjs ru | /tmp/portfolio-export-resume public/cv.pdf
-node scripts/resume-data.mjs en | /tmp/portfolio-export-resume public/cv-en.pdf
+node scripts/resume-data.mjs ru ai | /tmp/portfolio-export-resume public/cv.pdf
+node scripts/resume-data.mjs en ai | /tmp/portfolio-export-resume public/cv-en.pdf
+node scripts/resume-data.mjs ru backend | /tmp/portfolio-export-resume public/cv-backend.pdf
+node scripts/resume-data.mjs en backend | /tmp/portfolio-export-resume public/cv-backend-en.pdf
 PORTFOLIO_BASE=/me/ npm run build
 ```
 

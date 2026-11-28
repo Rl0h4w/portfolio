@@ -5,7 +5,7 @@ export const wordsByLanguage = {
   ru: {
     name: 'Ростислав Лохов', profile: 'Профиль', work: 'Смотреть работы', open: 'О проекте',
     back: 'К работам', result: 'Результат', next: 'Следующая работа', previous: 'Предыдущая работа',
-    browse: 'Листать работы', resume: 'Резюме', email: 'Почта', play: 'Включить движение',
+    browse: 'Листать работы', aiResume: 'Резюме AI / ML', backendResume: 'Резюме Backend', email: 'Почта', play: 'Включить движение',
     pause: 'Приостановить движение', sculpture: 'Оптическая скульптура',
     bio: 'Проектирую платформы для ИИ-агентов в Т-Банке. Веду бэкенд на Go и Python от архитектуры до запуска.',
     lab: 'До Т-Банка занимался восстановлением подводной съёмки в лаборатории ЛЭТИ.',
@@ -18,7 +18,7 @@ export const wordsByLanguage = {
   en: {
     name: 'Rostislav Lokhov', profile: 'Profile', work: 'Explore my work', open: 'View case',
     back: 'Back to work', result: 'Result', next: 'Next project', previous: 'Previous project',
-    browse: 'Browse projects', resume: 'Résumé', email: 'Email', play: 'Enable motion',
+    browse: 'Browse projects', aiResume: 'AI / ML résumé', backendResume: 'Backend résumé', email: 'Email', play: 'Enable motion',
     pause: 'Pause motion', sculpture: 'Optical sculpture',
     bio: 'I design platforms for AI agents at T-Bank and lead backend development in Go and Python from architecture to launch.',
     lab: 'Before T-Bank, I worked on underwater image restoration at the ETU LETI research lab.',
@@ -125,7 +125,8 @@ export function renderPage(page, base, galleryIndex = 0) {
       <div class="links"><a class="text-link" href="mailto:rlohaw@yandex.ru">${words.email} ↗</a>
       <a class="text-link" href="https://t.me/rlohaw" target="_blank" rel="noopener">Telegram ↗</a>
       <a class="text-link" href="https://github.com/Rl0h4w" target="_blank" rel="noopener">GitHub ↗</a>
-      <a class="text-link" download="Rostislav-Lokhov-CV.pdf" href="${base}${lang === 'ru' ? 'cv' : 'cv-en'}.pdf">${words.resume} ↓</a></div></article></div>`;
+      <a class="text-link" download="Rostislav-Lokhov-AI-ML-CV.pdf" href="${base}${lang === 'ru' ? 'cv' : 'cv-en'}.pdf">${words.aiResume} ↓</a>
+      <a class="text-link" download="Rostislav-Lokhov-Backend-CV.pdf" href="${base}${lang === 'ru' ? 'cv-backend' : 'cv-backend-en'}.pdf">${words.backendResume} ↓</a></div></article></div>`;
   }
   return {
     ...page, words, html, title, description,
