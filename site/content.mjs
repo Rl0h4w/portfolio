@@ -19,7 +19,7 @@ export const copy = {
     experience: 'Опыт и образование',
     jobs: [
       {
-        org: 'Т-Банк', role: 'ML / AI Engineer', period: '2024 — настоящее время',
+        org: 'Т-Банк', role: 'ML / AI Engineer', period: '08.2024 — настоящее время',
         text: 'Спроектировал архитектуру общебанковской платформы контекста, вёл DataKnowledge по всему стеку и сейчас отвечаю за бэкенд Copilot для коммерции. Также работал над Text2Segments и исследовал агентные рекомендации по товарному каталогу.',
         systems: [
           'Кэшировал ответы LLM в Redis и переиспользовал их при высоком косинусном сходстве эмбеддингов запросов. Поставил фоновые экспорты в очередь Kafka, чтобы воркеры могли продолжать обработку после перезапуска.',
@@ -142,7 +142,7 @@ export const copy = {
     experience: 'Experience & education',
     jobs: [
       {
-        org: 'T-Bank', role: 'ML / AI Engineer', period: '2024 – Present',
+        org: 'T-Bank', role: 'ML / AI Engineer', period: 'Aug 2024 – Present',
         text: 'Designed the architecture for a bank-wide context platform, owned DataKnowledge across the stack, and now lead backend development for an advertising sales copilot. Also worked on Text2Segments and researched agent-based product recommendations.',
         systems: [
           'Cached LLM responses in Redis and reused them for requests with high embedding cosine similarity. Queued background exports in Kafka so workers could resume processing after a restart.',
